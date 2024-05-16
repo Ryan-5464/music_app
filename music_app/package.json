@@ -1,0 +1,19 @@
+{
+  "name": "music_app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "electron": "^30.0.2"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.7",
+    "ytdl-core": "^4.11.5"
+  }
+}
