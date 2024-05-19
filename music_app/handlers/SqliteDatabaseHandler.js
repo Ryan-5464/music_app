@@ -45,7 +45,7 @@ class SqliteDatabaseHandler {
     
                     if (error) {
                         logger.error(LOG_ID, {'message': error.message})
-                        resolve(null)
+                        reject(error)
                     }
     
                     logger.info(LOG_ID, {'message': 'Connected to database'})
@@ -57,7 +57,11 @@ class SqliteDatabaseHandler {
 
         }
 
-        this.db = await connect_to_db(db_path)
+        try {
+            this.db = await connect_to_db(db_path)
+        } catch (error) {
+            this.db = null
+        }
 
     }
 
