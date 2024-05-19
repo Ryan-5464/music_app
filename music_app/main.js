@@ -1,8 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron/main')
 const path = require('node:path')
 const { selectPlaylists } = require('./databaseApi.js');
-const { selectTracksByTag } = require('./databaseFunctions/selectTracksByTag.js');
-const { deleteTrack } = require('./databaseFunctions/deleteTrack.js');
+const { select_tracks_by_tag } = require('./databaseFunctions/select_tracks_by_tag.js');
+const { delete_track } = require('./databaseFunctions/delete_track.js');
 const { download_audio, initialize_database } = require('./server_side.js');
 const { DB_FILEPATH, DEBUG } = require('./config.js');
 const { Logger } = require('./handlers/Logger.js')
@@ -45,7 +45,7 @@ app.whenReady().then(() => {
 
 
     ipcMain.on('persistent-to-main', (event, data) => {
-        selectTracksByTag(data.tags, data.anyButtonActive).then((result) => {
+        select_tracks_by_tag(DB_FILEPATH, data.tags, data.any_button_active).then((result) => {
             console.log('result', result);
             event.sender.send('persistent-from-main', result);
         });
@@ -53,19 +53,31 @@ app.whenReady().then(() => {
 
 
     ipcMain.on('delete-track-send', (event, data) => {
-        deleteTrack(data.audioFileId).then((result) => {
-            console.log(`Track with id ${data.audioFileId} deleted.`)
+        console.log("hello")
+
+        delete_track(DB_FILEPATH, data.audio_id).then((result) => {
+            console.log(`Track with id ${data.audio_id} deleted.`)
             event.sender.send('delete-track-receive', result);
         });
     });
 
 
     ipcMain.on('save-tags-playlist-send', (event, data) => {
-        saveTagsPlaylist(data.tags, data.playlistName).then((result) => {
+        saveTagsPlaylist(data.tags, data.playlistName).then(() => {
             const playlists = selectPlaylists();
             event.sender.send('save-tags-playlist-receive', playlists);
         });
     });
+
+    ipcMain.on('untagged-tracks-send', (event, data) => {
+        console.log("hello")
+
+        delete_track(DB_FILEPATH, data.audio_id).then((result) => {
+            console.log(`Track with id ${data.audio_id} deleted.`)
+            event.sender.send('untagged-tracks-receive', result);
+        });
+    });
+
 
 
     createWindow();
