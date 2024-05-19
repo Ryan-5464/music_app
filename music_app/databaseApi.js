@@ -88,13 +88,13 @@ function checkTableExists(db, tableName) {
 
 async function createAudioFilesTable(db) {
     const CREATE_AUDIOFILE_TAB_QUERY = `
-        CREATE TABLE IF NOT EXISTS audioFiles (
+        CREATE TABLE IF NOT EXISTS audio_metadata (
             id INTEGER PRIMARY KEY,
-            audioFileId TEXT NOT NULL,
-            youtubeLink TEXT NOT NULL,
-            durationSec INTEGER NOT NULL,
-            localFilePath TEXT NOT NULL,
-            fileSizeB INTEGER NOT NULL,
+            audio_id TEXT NOT NULL,
+            url TEXT NOT NULL,
+            duration_sec INTEGER NOT NULL,
+            local_file_path TEXT NOT NULL,
+            file_size_b INTEGER NOT NULL,
             alias TEXT NOT NULL
         )
     `;
@@ -113,11 +113,11 @@ async function createAudioFilesTable(db) {
 
 async function createAudioTagsTable(db) {
     const CREATE_AUDIOTAGS_TAB_QUERY = `
-        CREATE TABLE IF NOT EXISTS audioFileTags (
-            audioFileId INTEGER,
+        CREATE TABLE IF NOT EXISTS audio_tags (
+            audio_id INTEGER,
             tag TEXT NOT NULL,
-            FOREIGN KEY (audioFileId) REFERENCES audioFiles(audioFileId),
-            PRIMARY KEY (audioFileId, tag)
+            FOREIGN KEY (audio_id) REFERENCES audio_metadata(audio_id),
+            PRIMARY KEY (audio_id, tag)
         )
     `;
     
@@ -134,9 +134,9 @@ async function createAudioTagsTable(db) {
 
 async function createTagPlaylistsTable(db) {
     const CREATE_TAG_PLAYLISTS_TAB_QUERY = `
-        CREATE TABLE IF NOT EXISTS tagPlaylists (
+        CREATE TABLE IF NOT EXISTS playlists (
             tags TEXT PRIMARY KEY,
-            playlistName TEXT UNIQUE
+            alias TEXT UNIQUE
         );`
 
         try {
@@ -154,10 +154,10 @@ async function selectTracksByTag(tagsList) {
     const tags = tagsList.map(tag => tag.split(' ').map(word => `'${word}'`)).join(', ');
     console.log("tagslist", tags);
     const QUERY = `SELECT * 
-        FROM audioFiles 
-        WHERE audioFileId IN (
-            SELECT DISTINCT audioFileId 
-            FROM audioFileTags 
+        FROM audio_metadata 
+        WHERE audio_id IN (
+            SELECT DISTINCT audio_id 
+            FROM audio_tags 
             WHERE tag IN (${tags})
         );
     `;
@@ -178,7 +178,7 @@ async function selectTracksByTag(tagsList) {
 
 async function selectPlaylists() {
     const QUERY = `SELECT * 
-        FROM tagPlaylists; 
+        FROM playlists; 
     `;
     console.log("query", QUERY);
     try {
