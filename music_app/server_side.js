@@ -21,7 +21,7 @@ async function download_audio(db_filepath, url) {
 
     if (!success) {
         logger.info(LOG_ID, {'message': 'Could not download audio'})
-        return false
+        return
     }
 
     return true
@@ -32,9 +32,6 @@ async function initialize_database(db_filepath) {
     
     const database_initializer = new DatabaseInitializer()
     await database_initializer.initialize_database(db_filepath)
-    const database = new SqliteDatabaseHandler()
-    await database.connect(db_filepath)
-    return database
     
 }
 

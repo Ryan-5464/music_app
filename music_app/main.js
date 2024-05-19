@@ -27,66 +27,57 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
 
-    
-    try {
 
-        const LOG_ID = '382938'
-        
-        const database = initialize_database(DB_FILEPATH)
+    const LOG_ID = '382938'
     
-    
-        ipcMain.on('channelSend', (event, data) => {
-            download_audio(DB_FILEPATH, data.url).then((success) => {
-                if (!success) {
-                    event.sender.send('channelReceive', 'audio download failed: ' + error.message)
-                } else {
-                    event.sender.send('channelReceive', 'downloading audio');
-                }
-            })
-        })
-    
-    
-        ipcMain.on('persistent-to-main', (event, data) => {
-            selectTracksByTag(data.tags, data.anyButtonActive).then((result) => {
-                console.log('result', result);
-                event.sender.send('persistent-from-main', result);
-            });
-        });
-    
-    
-        ipcMain.on('delete-track-send', (event, data) => {
-            deleteTrack(data.audioFileId).then((result) => {
-                console.log(`Track with id ${data.audioFileId} deleted.`)
-                event.sender.send('delete-track-receive', result);
-            });
-        });
-    
-    
-        ipcMain.on('save-tags-playlist-send', (event, data) => {
-            saveTagsPlaylist(data.tags, data.playlistName).then((result) => {
-                const playlists = selectPlaylists();
-                event.sender.send('save-tags-playlist-receive', playlists);
-            });
-        });
-    
-    
-        createWindow();
-    
-    
-        app.on('activate', () => {
-            if (BrowserWindow.getAllWindows().length === 0) {
-                createWindow()
+    initialize_database(DB_FILEPATH)
+
+
+    ipcMain.on('channelSend', (event, data) => {
+        download_audio(DB_FILEPATH, data.url).then((success) => {
+            if (!success) {
+                event.sender.send('channelReceive', 'Audio download failed')
+            } else {
+                event.sender.send('channelReceive', 'Downloading audio');
             }
         })
+    })
 
-    }
 
-    catch (error) {
-        
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'origin': 'main.js', 'error message': error.message})
+    ipcMain.on('persistent-to-main', (event, data) => {
+        selectTracksByTag(data.tags, data.anyButtonActive).then((result) => {
+            console.log('result', result);
+            event.sender.send('persistent-from-main', result);
+        });
+    });
+
+
+    ipcMain.on('delete-track-send', (event, data) => {
+        deleteTrack(data.audioFileId).then((result) => {
+            console.log(`Track with id ${data.audioFileId} deleted.`)
+            event.sender.send('delete-track-receive', result);
+        });
+    });
+
+
+    ipcMain.on('save-tags-playlist-send', (event, data) => {
+        saveTagsPlaylist(data.tags, data.playlistName).then((result) => {
+            const playlists = selectPlaylists();
+            event.sender.send('save-tags-playlist-receive', playlists);
+        });
+    });
+
+
+    createWindow();
+
+
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow()
         }
-    }
+    })
+
+
 })
 
 

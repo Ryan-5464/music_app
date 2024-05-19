@@ -28,39 +28,32 @@ class SqliteDatabaseHandler {
 
 
     async connect(db_path) {
-    
-        async function connect_to_db (db_path) {
 
-            const LOG_ID = '493049'
-
-            if(DEBUG) {
-                logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > connect > connect_to_db)'})
-                logger.debug(LOG_ID, {'args': `{db_path: ${db_path}}`})
-            }
-
- 
-            return new Promise( (resolve, reject) => {
-
-                const db = new sqlite3.Database(db_path, (error) => {
-    
-                    if (error) {
-                        logger.error(LOG_ID, {'message': error.message})
-                        reject(error)
-                    }
-    
-                    logger.info(LOG_ID, {'message': 'Connected to database'})
-                    resolve(db)
-    
-                })
-
-            })
-
+        const LOG_ID = '493049'
+        if(DEBUG) {
+            logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > connect)'})
+            logger.debug(LOG_ID, {'args': `{db_path: ${db_path}}`})
         }
 
         try {
-            this.db = await connect_to_db(db_path)
-        } catch (error) {
-            this.db = null
+
+            this.db = await new Promise( (resolve, reject) => {
+                const db = new sqlite3.Database(db_path, (error) => {
+                    if (error) { 
+                        reject(error) 
+                    }
+                    else { 
+                        resolve(db) 
+                    }
+                }) 
+
+            })
+            logger.info(LOG_ID, {'message': 'Connected to database'})
+
+        }
+        
+        catch (error) {
+            logger.error(LOG_ID, {'message': error.message})
         }
 
     }
@@ -68,35 +61,36 @@ class SqliteDatabaseHandler {
 
 
     async disconnect() {
+        
+        const LOG_ID = '663634'
+        if (DEBUG) {
+            logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > disconnect)'})
+        }
+        
+        if (!this.db) {
+            logger.warning(LOG_ID, {'message': 'No database to close'})
+        }
 
-        const close_db = async () => {
+        try {
 
-            const LOG_ID = '663634'
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > disconnect > close_db)'})
-            }
-
-            return new Promise( (resolve, reject) => {
-
+            await new Promise( (resolve, reject) => {
                 this.db.close((error) => {
-    
                     if (error) {
-                        logger.error(LOG_ID, {'message': `${error.message}`})
-                        resolve(false)
+                        reject(error)
                     } 
-    
                     else {
-                        logger.info(LOG_ID, {'message': 'Database closed successfully'})
-                        resolve(true)
+                        resolve()
                     }
-    
                 })
-
             })
+            this.db = null
+            logger.info(LOG_ID, {'message': 'Database closed successfully'})
 
         }
 
-        return await close_db()
+        catch (error) {
+            logger.error(LOG_ID, {'message': `${error.message}`})
+        }
 
     }
 
@@ -104,35 +98,35 @@ class SqliteDatabaseHandler {
 
     async execute(query) {
 
-        const execute_query = async (query) => {
+        const LOG_ID = '019292'
+        if (DEBUG) {
+            logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > execute)'})
+            logger.debug(LOG_ID, {'query': `${query}`})
+        }
 
-            const LOG_ID = '019292'
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > execute > execute_query)'})
-                logger.debug(LOG_ID, {'query': `${query}`})
-            }
+        if (!this.db) {
+            logger.error(LOG_ID, {'message': 'Unable to execute query, not connected to database'})
+        }
 
-            return new Promise( (resolve, reject) => {
+        try {
 
+            await new Promise( (resolve, reject) => {
                 this.db.run(query, (error) => {
-
                     if (error) {
-                        logger.error(LOG_ID, {'message': `${error.message}`})
-                        resolve(false)
+                        reject(error)
                     }
-
                     else {
-                        logger.info(LOG_ID, {'message': 'Query executed successfully'})
-                        resolve(true)
+                        resolve()
                     }
-
                 })
-
             })
+            logger.info(LOG_ID, {'message': 'Query executed successfully'})
 
         }
 
-        return await execute_query(query)
+        catch (error) {
+            logger.error(LOG_ID, {'message': `${error.message}`})
+        }
 
     }
 
@@ -140,98 +134,109 @@ class SqliteDatabaseHandler {
 
     async upload(query, values) {
 
-        const upload_data = async (query, values) => {
+        const LOG_ID = '624564'
+        if (DEBUG) {
+            logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > upload)'})
+            logger.debug(LOG_ID, {'query': `${query}`, 'values': `${values}`})
+        }
+        
+        if (!this.db) {
+            logger.error(LOG_ID, {'message': 'Unable to upload, not connected to database'})
+            return
+        }
 
-            const LOG_ID = '624564'
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > upload > upload_data)'})
-                logger.debug(LOG_ID, {'query': `${query}`, 'values': `${values}`})
-            }
-
+        try {
+            
             const statement = await this.db.prepare(query)
 
-            return new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 statement.run(values, (error) => {
-
                     if (error) {
-                        logger.error(LOG_ID, {'message': `${error.message}`})
                         statement.finalize()
-                        resolve(false)
+                        reject(error)
                     } 
-
                     else {
-                        logger.info(LOG_ID, {'message': 'Data uploaded to database succesfully'})
                         statement.finalize()
-                        resolve(true)
+                        resolve()
                     }
-
                 })
             })
 
+            logger.info(LOG_ID, {'message': 'Data uploaded to database succesfully'})
+            return true
         }
-
-        return await upload_data(query, values)
+    
+        catch (error) {
+            logger.error(LOG_ID, {'message': `${error.message}`})
+        }
+        
     }
     
 
 
     async download(query, optional_values=null) {
-
-        const execute_query = async (query, optional_values) => {
-
-            const LOG_ID = '928482'
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > download > execute_query)'})
-                logger.debug(LOG_ID, {'query': `${query}`, 'optional_values': `${optional_values}`})
-            }
-
-            if (optional_values !== null) {
-
-                return new Promise((resolve, reject) => {
-
-                    this.db.all(query, optional_values, (error, data) => {
-
-                        if (error) {
-                            logger.error(LOG_ID, {'message': 'Could not retreieve data from database'})
-                            resolve(null)
-                        } 
-
-                        else {
-                            logger.info(LOG_ID, {'message': 'Data succesfully retreived'})
-                            resolve(data)
-                        }
-
-                    })
-
-                })
-
-            } 
-            
-            else {
-
-                return new Promise((resolve, reject) => {
-
-                    this.db.all(query, (error, data) => {
-
-                        if (error) {
-                            logger.error(LOG_ID, {'message': 'Could not retreieve data from database'})
-                            reject(null)
-                        } 
-
-                        else {
-                            logger.info(LOG_ID, {'message': 'Data succesfully retreived'})
-                            resolve(data)
-                        }
-
-                    })
-
-                })
-
-            }
+        
+        const LOG_ID = '928482'
+        if (DEBUG) {
+            logger.debug(LOG_ID, {'origin': '(SqliteDatabaseHandler > download)'})
+            logger.debug(LOG_ID, {'query': `${query}`, 'optional_values': `${optional_values}`})
         }
 
-        return await execute_query(query, optional_values)
+        if (!this.db) {
+            logger.error(LOG_ID, {'message': 'Unable to upload, not connected to database'})
+            return
+        }
+
+        if (optional_values !== null) {
+            
+            try {
     
+                const data = await new Promise((resolve, reject) => {
+                    this.db.all(query, optional_values, (error, data) => {
+                        if (error) {
+                            resolve(error)
+                        } 
+                        else {
+                            resolve(data)
+                        }
+                    })
+                })
+                logger.info(LOG_ID, {'message': 'Data succesfully retreived'})
+                return data
+
+            }
+            
+            catch (error) {
+                logger.error(LOG_ID, {'message': 'Could not retreieve data from database'})
+            }
+
+        }
+        
+        else {
+
+            try {
+
+                const data = await new Promise((resolve, reject) => {
+                    this.db.all(query, (error, data) => {
+                        if (error) {
+                            reject(error)
+                        } 
+                        else {
+                            resolve(data)
+                        }
+                    })
+                })
+                logger.info(LOG_ID, {'message': 'Data succesfully retreived'})
+                return data
+            
+            }
+
+            catch (error) {
+                logger.error(LOG_ID, {'message': 'Could not retreieve data from database'})
+            }
+            
+        }
+
     }
 
 }

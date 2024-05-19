@@ -25,19 +25,19 @@ class AudioDownloader {
         }   
     
         const metadata = await this.request_audio_metadata(url);
-        if (metadata === null) {
+        if (!metadata) {
             logger.error(LOG_ID, {'message': 'Failed to download audio'})
             return null;
         }
       
         const download_success = await this.download_file(url, metadata.local_file_path);
-        if (download_success === null) {
+        if (!download_success) {
             logger.error(LOG_ID, {'message': 'Failed to download audio'})
             return null;
         };
     
         const metadata_uploaded = await this.upload_metadata(db_filepath, metadata.audio_id, metadata.url, metadata.duration_sec, metadata.local_file_path, metadata.alias)
-        if (metadata_uploaded === false) {
+        if (!metadata_uploaded) {
             logger.error(LOG_ID, {'message': 'Failed to download audio'})
             return null;
         };
@@ -68,7 +68,7 @@ class AudioDownloader {
             if (DEBUG) {
                 logger.debug(LOG_ID, {'message': 'Audio does not exist'})
             }
-            return false
+            return
 
         } else {
 
@@ -94,22 +94,21 @@ class AudioDownloader {
         try {
 
             const info = await ytdl.getInfo(url)
-            crossOriginIsolated.log(info)
             const metadata = {
                 "audio_id": info.videoDetails.videoId,
-                "url": info.videoDetails.youtubeLink,
+                "url": url,
                 "duration_sec": info.videoDetails.lengthSeconds,
                 "local_file_path": AUDIO_FILENAME.replace("[]", info.videoDetails.videoId),
                 "alias": info.videoDetails.title 
             }
 
             if (DEBUG) {
-                // logger.debug(LOG_ID, {'metadata': metadata})
+                logger.debug(LOG_ID, {'metadata': `{'audio_id': ${metadata.audio_id}, 'url': ${metadata.url}, 'duration_sec': ${metadata.duration_sec}, 'local_file_path': ${metadata.local_file_path}, 'alias': ${metadata.alias}}`})
             }
 
             logger.info(LOG_ID, {'message': "Metadata retrieved"})
 
-            return metadata;
+            return metadata
 
         }
 
@@ -120,7 +119,7 @@ class AudioDownloader {
             }
 
             logger.error(LOG_ID, {'message': 'Audio not found'})
-            return null;
+            return
 
         }
 
@@ -159,7 +158,6 @@ class AudioDownloader {
             }
             
             logger.error(LOG_ID, {'message': `Unable to download file from url --> ${url}`})
-            return null
         }
       
     }
@@ -174,10 +172,10 @@ class AudioDownloader {
         }
 
         const file_handler = new FileHandler()
-        const file_size_b = await file_handler.file_size_in_bytes(local_file_path)
+        const file_size_b = file_handler.file_size_in_bytes(local_file_path)
 
         if (DEBUG) {
-            logger.debug(LOG_ID, {'value': file_size_b})
+            logger.debug(LOG_ID, {'file size in bytes': file_size_b})
         }
 
         const database  = new SqliteDatabaseHandler()
@@ -203,7 +201,7 @@ class AudioDownloader {
 
             await file_handler.delete(local_file_path) 
             await database.disconnect()
-            return null
+            return
         }
 
         await database.disconnect()

@@ -148,7 +148,7 @@ class DatabaseInitializer {
         await database.connect(db_filepath)
         await database.execute(QUERY)
         await database.disconnect()
-    
+
     }
 
 }
