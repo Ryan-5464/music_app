@@ -1,49 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <meta charset="UTF-8" />
-      <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-      />
-      <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-      />
-      <link rel="stylesheet" href="index.css">
-      <title>Hello from Electron renderer!</title>
-    </head>
-    <body>
-        <h1>Hello from Electron renderer!</h1>
-        <p>👋</p>
-        <p id="info"></p>
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Hairline&family=Genos:ital,wght@0,100..900;1,100..900&family=Pattaya&family=Raleway+Dots&family=Zen+Dots&display=swap" rel="stylesheet">   <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';  style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/home.css">
+    <title>Music Player</title>
+</head>
+
+<body>
+
+    <div id="body-content-container" class="genos-400 home-font-size">
+    
+        <div id="home-page-title-text">
+            MUSIC PLAYER
+        </div>
+
+        <!-- <div class="horizontal-line"></div> -->
         
-        <div id="download-track">
-            <input type="text" id="download-audio-input-box" placeholder="Enter URL...">
-            <button id="download-audio-button">Download</button>
+        <div id="enter-button-div">
+            <button id="enter-button" class="genos-200">ENTER</button>
         </div>
+    
+    </div>
 
-        <div id="tags">
-            <p>Usage - type tag1,tag2,... for tracks associated with any of the given tags, or type tag1+tag2+... for tracks associated with all given tags.</p>
-            <input type="text" id="tags-input-box" placeholder="Enter tags...">
-            <button id="toggle-any-button" class="active">Any</button>
-            <button id="toggle-all-button">All</button>
-            <input type=""text" id="playlist-name-input-box" placeholder="Enter playlist name (optional)">
-            <button id="save-tags-playlist-button">Save Playlist</button>
-        </div>
+</body>
+<script src="./js/content_container_transition.js"></script>
+<script src="./renderer.js"></script>
 
-        <div id="tags-track-list">
-
-        </div>
-
-        <div id="saved-playlists-list">
-
-        </div>
-
-        <div id="untagged-tracks-list">
-
-        </div>
-        
-    </body>
-    <script src="./renderer.js"></script>
 </html>

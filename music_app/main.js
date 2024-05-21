@@ -4,6 +4,7 @@ const { selectPlaylists } = require('./databaseApi.js');
 const { select_tracks_by_tag } = require('./databaseFunctions/select_tracks_by_tag.js');
 const { delete_track } = require('./databaseFunctions/delete_track.js');
 const { download_audio, initialize_database } = require('./server_side.js');
+const { select_untagged_tracks } = require('./databaseFunctions/select_untagged_tracks.js')
 const { DB_FILEPATH, DEBUG } = require('./config.js');
 const { Logger } = require('./handlers/Logger.js')
 
@@ -15,6 +16,8 @@ const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
         height: 600,
+        minWidth: 800,
+        minHeight: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }
@@ -72,9 +75,10 @@ app.whenReady().then(() => {
     ipcMain.on('untagged-tracks-send', (event, data) => {
         console.log("hello")
 
-        delete_track(DB_FILEPATH, data.audio_id).then((result) => {
-            console.log(`Track with id ${data.audio_id} deleted.`)
-            event.sender.send('untagged-tracks-receive', result);
+        select_untagged_tracks(DB_FILEPATH).then((result) => {
+            console.log(`Untagged tracks retrieved successfully.`)
+            console.log(result)
+            event.sender.send('untagged-tracks-receive', result)
         });
     });
 

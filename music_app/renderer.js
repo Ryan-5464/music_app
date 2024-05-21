@@ -7,7 +7,7 @@ const toggle_any_button = document.getElementById('toggle-any-button');
 const toggle_all_button = document.getElementById('toggle-all-button');
 const playlist_name_input_box = document.getElementById('playlist-name-input-box');
 const saved_playlists_list = document.getElementById('saved-playlists-list')
-const untagged_tracks_list = document.getELementById('untagged-track-list')
+const untagged_tracks_list = document.getElementById('untagged-tracks-list')
 
 
 window.onload = execute_onload_functions();
@@ -36,7 +36,8 @@ async function save_tags_playlist() {
 
 
 function execute_onload_functions() {
-    fetch_track_list_by_tags('');
+    fetch_track_list_by_tags('')
+    handle_untagged_tracks_list()
 }
 
 
@@ -74,8 +75,9 @@ async function handle_untagged_tracks_list () {
                 resolve(result)
             })
         }) 
-        console.log(result)
-        location.reload()
+        console.log("untagged results", result)
+        display_untagged_tracks(result);
+        // location.reload()
     
     }
 
@@ -147,8 +149,27 @@ function display_tags_tracklist(tracklist) {
         list_item.textContent = track.alias;
         const button = document.createElement('button');
         button.textContent = "del";
+        const tag = document.createElement('button');
+        tag.textContent = "add tag";
         button.id = track.audio_id;
         tags_track_list.appendChild(list_item);
+        list_item.appendChild(tag);
+        list_item.appendChild(button);
+    });
+}
+
+function display_untagged_tracks(tracklist) {
+    untagged_tracks_list.innerHTML = ''; 
+    tracklist.forEach(track => {
+        const list_item = document.createElement('li');
+        list_item.textContent = track.alias;
+        const button = document.createElement('button');
+        button.textContent = "del";
+        const tag = document.createElement('button');
+        tag.textContent = "add tag";
+        button.id = track.audio_id;
+        untagged_tracks_list.appendChild(list_item);
+        list_item.appendChild(tag);
         list_item.appendChild(button);
     });
 }

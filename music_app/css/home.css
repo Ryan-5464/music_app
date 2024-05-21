@@ -1,0 +1,90 @@
+
+
+#body-content-container {
+    min-width:600px;
+    min-height:300px;
+    border-bottom: 10px;
+    border-color: white;
+}
+
+
+#home-page-title-text {
+    margin-top: 30%;
+    display: block;
+    text-align: center;
+}
+
+.home-font-size {
+    font-size: clamp(50px, 8vw, 120px);
+}
+
+.enter-app-font-size {
+    font-size: clamp(30px, 6vw, 80px);
+}
+
+#enter-button-div {
+    display:flex;
+    justify-content: center;
+}
+
+button {
+    display: block;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: clamp(20px, 4vw, 50px);
+    border-radius: 100px;
+    border-width:1px;
+    padding-left:50px;
+    padding-right:50px;
+    border-color:rgba(255, 255, 255, 0);
+    border-style:solid;
+    transition: background-color 0.5s;
+}
+
+button:hover {
+    display: block;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 1);
+    color: black;
+    font-size: clamp(20px, 4vw, 50px);
+    border-radius: 100px;
+    border-width:1px;
+    padding-left:50px;
+    padding-right:50px;
+    border-color:rgba(255, 255, 255, 1);
+    border-style:solid;
+}
+
+
+.horizontal-line {
+    width: 100vw;
+    height: 1px;
+    margin-top: 5%;
+    background-color:rgba(255, 255, 255, 0.2);
+    box-shadow: 0 3px 5px rgb(0, 0, 0);
+}
+
+.genos-100 {
+    font-family: "Genos", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+    color: white;
+  }
+  
+  .genos-200 {
+    font-family: "Genos", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 200;
+    font-style: normal;
+    color: white;
+  }
+  
+  .genos-400 {
+    font-family: "Genos", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: white;
+  }
+  
