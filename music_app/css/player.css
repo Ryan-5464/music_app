@@ -1,7 +1,6 @@
-#home-page-title-text {
-    margin-top: 30%;
-    display: block;
-    text-align: center;
+#body-content-container {
+    height: 100%;
+    margin: 0;
 }
 
 .home-font-size {
@@ -17,12 +16,21 @@
     justify-content: center;
 }
 
-button {
-    display: block;
+#navigation {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    text-align: center;
+    padding: 10px;
+}
+
+.navigation-button {
+    display: inline;
     text-align: center;
     background-color: rgba(255, 255, 255, 0);
     font-size: clamp(20px, 4vw, 40px);
-    border-radius: 100px;
+    color: white;
     border-width:1px;
     padding-left:20px;
     padding-right:20px;
@@ -31,13 +39,12 @@ button {
     transition: background-color 0.5s;
 }
 
-button:hover {
-    display: block;
+.navigation-button:hover {
+    display: inline;
     text-align: center;
     background-color: rgba(255, 255, 255, 1);
     color: black;
     font-size: clamp(20px, 4vw, 40px);
-    border-radius: 100px;
     border-width:1px;
     padding-left:20px;
     padding-right:20px;

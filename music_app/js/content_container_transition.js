@@ -5,7 +5,7 @@ enter_button.addEventListener('click', content_container_transition)
 
 
 function content_container_transition() {
-    fetch("./html/download.html")
+    fetch("./html/player.html")
     .then(response => response.text())
     .then((data) => {
         const body_content_container = document.getElementById('body-content-container')
