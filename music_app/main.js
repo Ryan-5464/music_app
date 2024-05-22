@@ -7,6 +7,8 @@ const { download_audio, initialize_database } = require('./server_side.js');
 const { select_untagged_tracks } = require('./databaseFunctions/select_untagged_tracks.js')
 const { DB_FILEPATH, DEBUG } = require('./config.js');
 const { Logger } = require('./handlers/Logger.js')
+const { select_most_recent_tracks } = require('./databaseFunctions/select_most_recent_tracks.js')
+
 
 
 const logger = new Logger()
@@ -80,6 +82,17 @@ app.whenReady().then(() => {
             console.log(result)
             event.sender.send('untagged-tracks-receive', result)
         });
+    });
+
+    ipcMain.on('fetch-tracks-request', (event, data) => {
+        if (data.type === "most-recent") {
+
+            select_most_recent_tracks(DB_FILEPATH, data.limit).then((result) => {
+                console.log(`Most recent tracks.`)
+                console.log(result)
+                event.sender.send('fetch-tracks-response', result)
+            });
+        }
     });
 
 

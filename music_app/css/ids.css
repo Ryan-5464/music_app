@@ -1,0 +1,62 @@
+#logo {
+    font-size: 70px;
+}
+
+#body-content-container {
+    display: flex;
+    height: 100%;
+    margin: 0;
+}
+
+#sidebar {
+    width: 300px;
+    height: 90vh;
+    margin: 25px;
+    border-radius: 10px;
+    border-style: none;
+}
+
+#tracklist-container {
+    flex: 1;
+    height: 50vh;
+    margin: 25px 25px 25px 0;
+    border-radius: 10px;
+    border-style: none;
+}
+
+#tracklist-container-title {
+    font-size: 30px;
+    padding: 15px;
+    border-radius: 20px;
+    color: white;
+}
+
+#tracklist {
+    flex: 1;
+    height: 40vh;
+    margin: 25px 0px 25px 0;
+    border-radius: 10px;
+    border-style: none;
+    overflow-y: auto;
+    padding: 10px 0px 25px 0px;
+}
+
+#tracklist::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+#tracklist::-webkit-scrollbar-track {
+    background: #27272728; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+#tracklist::-webkit-scrollbar-thumb {
+    background: rgb(240,254,124);
+    background: linear-gradient(18deg, rgba(240,254,124,1) 0%, rgba(246,105,105,1) 39%);
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+#tracklist::-webkit-scrollbar-thumb:hover {
+    background: rgb(240,254,124);
+    background: linear-gradient(18deg, rgba(240,254,124,1) 0%, rgba(246,105,105,1) 39%);
+}
