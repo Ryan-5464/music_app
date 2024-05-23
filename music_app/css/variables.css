@@ -1,0 +1,12 @@
+:root {
+    --background-color: rgb(36, 36, 36);
+    --dark-charcoal-background: rgb(25,25,25);
+    --light-charcoal-background: rgb(40,40,40);
+    --color-gradient-1: linear-gradient(45deg, rgba(198,52,255,1) 0%, rgba(0,255,252,1) 100%);
+    --border-width: 1px;
+    --border-color: white;
+    --border-style: solid;
+    --font-color: white;
+    --delete-icon: url('../images/delete-icon.png');
+    --base-font-size: 1em;
+}

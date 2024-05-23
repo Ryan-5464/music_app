@@ -15,7 +15,9 @@
 //tags_input_box.addEventListener('input', fetch_track_list_by_tags);
 //toggle_any_button.addEventListener('click', toggle_tags_button);
 //toggle_all_button.addEventListener('click', toggle_tags_button);
-//tags_track_list.addEventListener('click', handle_delete_button);
+
+const tracklist_container = document.getElementById("tracklist-container")
+tracklist_container.addEventListener('click', handle_delete_button);
 
 
 
@@ -43,26 +45,26 @@
 
 
 
-// async function handle_delete_button(event) {
+async function handle_delete_button(event) {
 
-//     if (event.target.tagName === 'BUTTON') {
+    if (event.target.tagName === 'BUTTON') {
 
-//         const button_id = event.target.id
-//         console.log(button_id)
+        const button_id = event.target.id
+        console.log(button_id)
 
-//         try {
-//             await window.electronAPI.channelSend('delete-track-send', { audio_id: button_id})
-//             await window.electronAPI.channelReceive('delete-track-receive')
-//             location.reload()
-//             fetch_track_list_by_tags()
-//         } 
+        try {
+            await window.electronAPI.channelSend('delete-track-send', { audio_id: button_id})
+            await window.electronAPI.channelReceive('delete-track-receive')
+            location.reload()
+            fetch_track_list_by_tags()
+        } 
 
-//         catch (error) {
-//             console.error(error)
-//         }
+        catch (error) {
+            console.error(error)
+        }
 
-//     }
-// }
+    }
+}
 
 
 
@@ -282,6 +284,12 @@ class TracklistHandler {
 
             // tags.appendChild(tags_list)
             ul_item.appendChild(tags)
+
+            const delete_button = document.createElement("button")
+            delete_button.classList.add("delete_icon")
+            delete_button.id = track.audio_id
+            ul_item.appendChild(delete_button)
+
             this.tracklist_container.appendChild(ul_item)
         }
 
@@ -289,8 +297,9 @@ class TracklistHandler {
 
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    populate_track_list()
+document.addEventListener('DOMContentLoaded', async () => {
+    await populate_track_list()
+    addActiveToggleToTracks()
 });
 
 async function populate_track_list() {
@@ -299,6 +308,44 @@ async function populate_track_list() {
     await tracklist_handler.populate_track_list("most-recent", 20)
 }
 
+
+const download_button = document.getElementById("download-button")
+const download_input_box = document.getElementById("download-input-box")
+download_button.addEventListener("click", download_track_from_url)
+
+
+const download_progress = document.getElementById("download-progress")
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function download_track_from_url() {
+
+    try {
+
+        console.log("clicked download")
+        const url = download_input_box.value
+        download_progress.textContent = "Downloading track..."
+        await window.electronAPI.channelSend('download-track-send', { url: url })
+        const result = await new Promise((resolve, reject) => {
+            window.electronAPI.channelReceive('download-track-receive', (result) => {
+                resolve(result)
+            })
+        }) 
+        download_progress.textContent = result;
+
+        // Pause for 3 seconds before reloading
+        await sleep(3000);
+
+        download_progress.textContent = "";
+    
+    }
+
+    catch (error) {
+        console.error(error.message);
+    }
+}
 
 
 
@@ -335,3 +382,55 @@ function addActiveToggleToTracks() {
 
 addActiveToggleToTracks()
 
+
+
+
+
+// -- ALL TRACKS ---
+
+
+const cycle_previous_button = document.getElementById("cycle-previous-button")
+const previous_page_button = document.getElementById("previous-page-button")
+const current_page_button = document.getElementById("current-page-button")
+const next_page_button = document.getElementById("next-page-button")
+const cycle_next_button = document.getElementById("cycle-next-button")
+
+cycle_previous_button.addEventListener("click")
+previous_page_button.addEventListener("click")
+current_page_button.addEventListener("click")
+next_page_button.addEventListener("click")
+cycle_next_button.addEventListener("click")
+
+
+
+class AllTracks {
+
+    async display() {
+
+
+    }
+
+    async get(limit) {
+        try {
+    
+            await window.electronAPI.channelSend('request-all-tracks', {limit: limit})
+
+            const tracks = await new Promise( (resolve, reject) => {
+                window.electronAPI.channelReceive('receive-all-tracks', (tracks) => {
+                    resolve(tracks)
+                })
+                
+            })
+            console.log("tracklist", tracks)
+            return tracks
+
+        } 
+        catch (error) {
+            console.error(error.message)
+        }
+    } 
+}
+
+
+const all_tracks = AllTracks()
+all_tracks.display()

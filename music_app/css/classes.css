@@ -19,7 +19,7 @@
 
 .tracklist-row-container {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     list-style-type: none;
     margin: 10px;
     padding: 10px;
@@ -61,10 +61,6 @@
 
 .tracklist-row-item {
     color: white;
-    font-family: "Yanone Kaffeesatz", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
 }
 
 .track-name {
@@ -106,15 +102,6 @@
     margin:0px 5px 0px 5px;
 }
 
-.cherry-yellow-gradient {
-    background: rgb(240,254,124);
-    background: linear-gradient(18deg, rgba(240,254,124,1) 0%, rgba(246,105,105,1) 39%);
-}
-
-.aqua-purple-gradient {
-    background: rgb(254,124,245);
-    background: linear-gradient(18deg, rgba(254,124,245,1) 0%, rgba(105,238,246,1) 39%);
-}
 
 .horizontal-line {
     width: 100%;
@@ -124,17 +111,17 @@
 }
 
 
-.yanone-kaffeesatz-400 {
-    font-family: "Yanone Kaffeesatz", sans-serif;
+.font-style-200 {
+    font-family: "Urbanist", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 400;
+    font-weight: 200;
     font-style: normal;
 }
 
-.yanone-kaffeesatz-200 {
-    font-family: "Yanone Kaffeesatz", sans-serif;
+.font-style-400 {
+    font-family: "Urbanist", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 200;
+    font-weight: 400;
     font-style: normal;
 }
 
@@ -145,4 +132,108 @@
 
 .enter-app-font-size {
     font-size: clamp(30px, 6vw, 80px);
+}
+
+.delete_icon {
+    background: rgba(0,0,0,0);
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-image: url('../images/delete_icon.png');
+    background-size:cover;
+    border-style: none;
+}
+
+.delete_icon:hover {
+    background: rgba(0,0,0,0);
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-image: url('../images/delete_icon_hover.png');
+    background-size:cover;
+    border-style: none;
+}
+
+.delete_icon:active {
+    background: rgba(0,0,0,0);
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    background-image: url('../images/delete_icon_active.png');
+    background-size:cover;
+    border-style: none;
+}
+
+.sidebar-option {
+    color: var(--font-color);
+    text-align: center;
+    padding: 25px 0px 25px 0px;
+
+}
+
+.sidebar-option:hover {
+    color: rgb(255, 255, 255);
+    text-shadow: 
+    0 0 5px #ff00ff,
+    0 0 10px #ff00ff,
+    0 0 15px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 25px #ff00ff,
+    0 0 30px #ff00ff,
+    0 0 35px #ff00ff;
+    text-align: center;
+    padding: 25px 0px 25px 0px;
+    
+}
+
+.sidebar-option:active {
+    color: rgb(255, 255, 255);
+    text-shadow: 
+    0 0 5px #ffffff,
+    0 0 10px #ffffff,
+    0 0 15px #ffffff,
+    0 0 20px #ffffff,
+    0 0 25px #ffffff,
+    0 0 30px #ffffff,
+    0 0 35px #ffffff;
+    text-align: center;
+    padding: 25px 0px 25px 0px;
+}
+
+.page {
+    color: var(--font-color);
+    padding: 25px;
+    background-color: var(--dark-charcoal-background);
+    border-style: none;
+    font-size: var(--base-font-size)
+}
+
+.page:hover {
+    color: var(--font-color);
+    text-shadow: 
+    0 0 5px #ff00ff,
+    0 0 10px #ff00ff,
+    0 0 15px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 25px #ff00ff,
+    0 0 30px #ff00ff,
+    0 0 35px #ff00ff;
+    padding: 25px;
+    background-color: var(--dark-charcoal-background);
+    border-style: none;
+}
+
+.page:active {
+    color: var(--font-color);
+    text-shadow: 
+    0 0 5px #ffffff,
+    0 0 10px #ffffff,
+    0 0 15px #ffffff,
+    0 0 20px #ffffff,
+    0 0 25px #ffffff,
+    0 0 30px #ffffff,
+    0 0 35px #ffffff;
+    padding: 25px;
+    background-color: var(--dark-charcoal-background);
+    border-style: none;
 }

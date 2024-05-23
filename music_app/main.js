@@ -38,12 +38,12 @@ app.whenReady().then(() => {
     initialize_database(DB_FILEPATH)
 
 
-    ipcMain.on('channelSend', (event, data) => {
+    ipcMain.on('download-track-send', (event, data) => {
         download_audio(DB_FILEPATH, data.url).then((success) => {
             if (!success) {
-                event.sender.send('channelReceive', 'Audio download failed')
+                event.sender.send('download-track-receive', 'Could not download audio!')
             } else {
-                event.sender.send('channelReceive', 'Downloading audio');
+                event.sender.send('download-track-receive', 'Audio downloaded successfully!');
             }
         })
     })
