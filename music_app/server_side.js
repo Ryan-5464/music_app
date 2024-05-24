@@ -1,7 +1,7 @@
 const { AudioDownloader } = require("./handlers/AudioDownloader.js")
 const { DatabaseInitializer } = require("./handlers/DatabaseInitializer.js")
+const { TrackListHandler } = require("./handlers/TrackListHandler.js")
 const { Logger } = require("./handlers/Logger.js")
-const { SqliteDatabaseHandler } = require("./handlers/SqliteDatabaseHandler.js")
 const { DEBUG } = require('./config.js')
 
 
@@ -36,5 +36,10 @@ async function initialize_database(db_filepath) {
 }
 
 
+async function fetch_track_count(db_filepath) {
+    const tracklist_handler = new TrackListHandler()
+    await tracklist_handler.fetch_track_count(db_filepath)
+}
 
-module.exports = { download_audio, initialize_database }
+
+module.exports = { download_audio, initialize_database, fetch_track_count }

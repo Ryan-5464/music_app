@@ -5,6 +5,7 @@ const { select_tracks_by_tag } = require('./databaseFunctions/select_tracks_by_t
 const { delete_track } = require('./databaseFunctions/delete_track.js');
 const { download_audio, initialize_database } = require('./server_side.js');
 const { select_untagged_tracks } = require('./databaseFunctions/select_untagged_tracks.js')
+const { fetch_track_count } = require('./server_side.js')
 const { DB_FILEPATH, DEBUG } = require('./config.js');
 const { Logger } = require('./handlers/Logger.js')
 const { select_most_recent_tracks } = require('./databaseFunctions/select_most_recent_tracks.js')
@@ -46,6 +47,18 @@ app.whenReady().then(() => {
                 event.sender.send('download-track-receive', 'Audio downloaded successfully!');
             }
         })
+    })
+
+
+    ipcMain.on('track-count-send', (event, data) => {
+        fetch_track_count(DB_FILEPATH)
+            .then((track_count) => {
+                console.log("test")
+                event.sender.send('track-count-receive', track_count);
+            })
+            .catch((error) => {
+                event.sender.send('track-count-receive', error)
+            })
     })
 
 

@@ -35,13 +35,14 @@ tracklist_container.addEventListener('click', handle_delete_button);
 
 // }
 
+execute_onload_functions()
 
-
-// function execute_onload_functions() {
-//     //fetch_track_list_by_tags('')
-//     //handle_untagged_tracks_list()
-//     populate_track_list()
-// }
+function execute_onload_functions() {
+    //fetch_track_list_by_tags('')
+    //handle_untagged_tracks_list()
+    // populate_track_list()
+    display_track_count()
+}
 
 
 
@@ -65,6 +66,58 @@ async function handle_delete_button(event) {
 
     }
 }
+
+
+async function display_track_count() {
+    const track_count = await request_track_count()
+    console.log("track count", track_count)
+    const track_count_div = document.getElementById("track_count")
+    track_count_div.innerHTML = `1 - 10 of ${track_count}`
+}
+
+
+async function request_track_count() {
+    try {
+        const received_data = await request_data("track-count-send", "track-count-receive", {})   
+        console.log("received_data", received_data)
+    }
+    catch(error) {
+        console.log("error")
+        console.log(error.message)
+    }
+}
+
+
+
+async function request_data(channel_send_name, channel_receive_name, data_to_send) {
+
+    try {
+
+        await window.electronAPI.channelSend(channel_send_name, data_to_send)
+        
+        const received_data = await new Promise((resolve, reject) => {
+        
+            window.electronAPI.channelReceive(channel_receive_name, (received_data, error) => {
+                if (error) {
+                    reject(error)
+                } else {
+                    resolve(received_data)
+                }
+        
+            })
+        }) 
+        
+        console.log("Data retrieved successfully")
+        return received_data
+    
+    }
+
+    catch (error) {
+        console.error(error.message);
+    }
+
+}
+
 
 
 
@@ -265,7 +318,6 @@ class TracklistHandler {
             li_duration.classList.add("tracklist-row-item")
             li_duration.textContent = track.duration_sec
             ul_item.appendChild(li_duration)
-
             const tags = document.createElement("li")
             tags.classList.add("tags")
             tags.classList.add("tracklist-row-item")
@@ -395,12 +447,59 @@ const current_page_button = document.getElementById("current-page-button")
 const next_page_button = document.getElementById("next-page-button")
 const cycle_next_button = document.getElementById("cycle-next-button")
 
-cycle_previous_button.addEventListener("click")
-previous_page_button.addEventListener("click")
-current_page_button.addEventListener("click")
-next_page_button.addEventListener("click")
-cycle_next_button.addEventListener("click")
+const page_container = document.getElementById("page-container")
+cycle_previous_button.addEventListener("click", handle_pages)
+previous_page_button.addEventListener("click", handle_pages)
+current_page_button.addEventListener("click", handle_pages)
+next_page_button.addEventListener("click", handle_pages)
+cycle_next_button.addEventListener("click", handle_pages)
 
+async function handle_pages(event) {
+    event.stopPropagation()
+    if (event.target.tagName === 'BUTTON') {
+        const button_id = event.target.id
+        const current_page = Number(current_page_button.innerHTML)
+        
+        if (button_id === "cycle-previous-button") {
+            await handle_cycle_previous_page_button(current_page)
+        }
+
+        if (button_id === "cycle-next-button") {
+            await handle_cycle_next_page_button(current_page)
+        }
+
+        
+        
+    }
+}
+
+
+async function handle_cycle_previous_page_button(current_page) {
+    console.log("handle previous")
+    console.log(current_page)
+    previous_page_button.innerHTML = current_page - 2
+    current_page_button.innerHTML = current_page - 1
+    next_page_button.innerHTML = current_page
+}
+
+async function handle_previous_page_button() {
+
+}
+
+async function handle_current_page_button() {
+
+}
+
+async function handle_next_page_button() {
+
+}
+
+async function handle_cycle_next_page_button(current_page) {
+    console.log("handle next")
+    previous_page_button.innerHTML = current_page 
+    current_page_button.innerHTML = current_page + 1
+    next_page_button.innerHTML = current_page + 2
+}
 
 
 class AllTracks {
@@ -432,5 +531,5 @@ class AllTracks {
 }
 
 
-const all_tracks = AllTracks()
-all_tracks.display()
+//const all_tracks = AllTracks()
+//all_tracks.display()
