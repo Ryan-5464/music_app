@@ -1,8 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
-const { DEBUG } = require('../config.js');
 const { Logger } = require("../handlers/Logger.js")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
-
+const path = require('path');
+const script_name = path.basename(__filename);
+const { get_function_name } = require("../helpers/get_function_name.js")
 
 
 const logger = new Logger()
@@ -13,37 +14,21 @@ async function select_tracks_by_tag(db_filepath, tags_list, any_button_active) {
 
     const LOG_ID = '283743'
 
-    if (DEBUG) {
-        logger.debug(LOG_ID, {'origin': '(select_tracks_by_tag.js > select_tracks_by_tag)'})
-        logger.debug(LOG_ID, {'args': `{'db_filepath': ${db_filepath}, 'tags_list': ${tags_list}, 'any_button_active': ${any_button_active}}`}) 
-    }
-
     let QUERY;
     const tags = tags_list.map(tag => tag.split(' ').map(word => `'${word}'`)).join(', ');
     const n = tags.split(',').length;
     
-    if (DEBUG) {
-        logger.debug(LOG_ID, {'tags': tags})
-    }
+    logger.log("debug", LOG_ID, script_name, get_function_name(), `{'tags': ${tags}}`, "", Array.from(arguments))
     
     if (any_button_active === true) {
         
-        // QUERY = `
-        //     SELECT * FROM audio_metadata 
-        //     WHERE audio_id IN (
-        //         SELECT DISTINCT audio_id 
-        //             FROM audio_tags 
-        //             WHERE tag IN (${tags})
-        //     );
-        // `;
-
         QUERY = `
             SELECT *
-            FROM audio_metadata
-            LEFT JOIN audio_tags ON audio_metadata.audio_id = audio_tags.audio_id
-                AND audio_tags.tag IN (${tags})
-            WHERE audio_tags.tag IS NOT NULL
-            GROUP BY audio_metadata.audio_id;
+            FROM tracks
+            LEFT JOIN tags ON tracks.track_id = tags.track_id
+                AND tags.tag IN (${tags})
+            WHERE tags.tag IS NOT NULL
+            GROUP BY tracks.track_id;
         `
     } 
 
@@ -51,46 +36,36 @@ async function select_tracks_by_tag(db_filepath, tags_list, any_button_active) {
 
         QUERY = `
             SELECT * 
-            FROM audio_metadata
-            LEFT JOIN audio_tags ON audio_metadata.audio_id = audio_tags.audio_id
-                AND audio_tags.tag IN (${tags})
-                WHERE audio_tags.tag IS NOT NULL
-                GROUP BY audio_metadata.audio_id
+            FROM tracks
+            LEFT JOIN tags ON tracks.track_id = tags.track_id
+                AND tags.tag IN (${tags})
+                WHERE tags.tag IS NOT NULL
+                GROUP BY tracks.track_id
                 HAVING COUNT(DISTINCT tag) = ${n};
         `
-            // WHERE audio_id IN (
-            //     SELECT audio_id FROM audio_tags
-            //     WHERE tag IN (${tags})
-            //     GROUP BY audio_id
-            //     HAVING COUNT(DISTINCT tag) = ${n}
-            // );
     }
 
     if (tags.length === 2) {
 
         QUERY = `
-            SELECT * FROM audio_metadata;
+            SELECT * FROM tracks;
         `
     }
         
-    if (DEBUG) { 
-        logger.debug(LOG_ID, {'query': QUERY})
-    }
-    
+    logger.log("debug", LOG_ID, script_name, get_function_name(), `{'query': ${QUERY}}`, "", Array.from(arguments))
+
     try {
 
         const database = new SqliteDatabaseHandler()
         await database.connect(db_filepath)
         const result = await database.download(QUERY)
 
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'result': result})
-        }
+        logger.log("debug", LOG_ID, script_name, get_function_name(), `{'result': ${result}}`, "", Array.from(arguments))
         return result
     }
 
     catch(error) {
-        console.log(error.message)
+        logger.log("error", LOG_ID, script_name, get_function_name(), error.message, "", Array.from(arguments))
     }
 }
 

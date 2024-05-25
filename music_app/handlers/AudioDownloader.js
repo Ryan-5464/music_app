@@ -1,11 +1,13 @@
 
 const { SqliteDatabaseHandler } = require("./SqliteDatabaseHandler.js")
 const { FileHandler } = require("./FileHandler.js")
-const { DEBUG, DB_FILEPATH, AUDIO_FILENAME } = require("../config.js")
 const { Logger } = require("./Logger.js")
+const path = require('path');
+const script_name = path.basename(__filename);
+const { get_function_name } = require("../helpers/get_function_name.js")
 var ytdl = require('ytdl-core');
 const fs = require('fs');
-
+const { TRACK_FILENAME } = require("../config.js")
 
 
 const logger = new Logger() 
@@ -16,29 +18,29 @@ class AudioDownloader {
 
     async download_audio (db_filepath, url) {
 
-        const LOG_ID = "454535"
+        const LOGID = "454535"
 
         const audio_exists = await this.check_if_audio_exists(db_filepath, url);
         if (audio_exists) {
-            logger.error(LOG_ID, {'message': 'Failed to download audio'})
+            logger.log("error", LOGID, script_name, get_function_name(), 'Failed to download track', this.name, Array.from(arguments))
             return null;
         }   
     
-        const metadata = await this.request_audio_metadata(url);
+        const metadata = await this.request_tracks(url);
         if (!metadata) {
-            logger.error(LOG_ID, {'message': 'Failed to download audio'})
+            logger.log("error", LOGID, script_name, get_function_name(), 'Failed to download track', this.name, Array.from(arguments))
             return null;
         }
       
-        const download_success = await this.download_file(url, metadata.local_file_path);
+        const download_success = await this.download_file(url, metadata.local_path);
         if (!download_success) {
-            logger.error(LOG_ID, {'message': 'Failed to download audio'})
+            logger.log("error", LOGID, script_name, get_function_name(), 'Failed to download track', this.name, Array.from(arguments))
             return null;
         };
     
-        const metadata_uploaded = await this.upload_metadata(db_filepath, metadata.audio_id, metadata.url, metadata.duration_sec, metadata.local_file_path, metadata.alias)
+        const metadata_uploaded = await this.upload_metadata(db_filepath, metadata.track_id, metadata.url, metadata.duration_sec, metadata.local_path, metadata.title)
         if (!metadata_uploaded) {
-            logger.error(LOG_ID, {'message': 'Failed to download audio'})
+            logger.log("error", LOGID, script_name, get_function_name(), 'Failed to download track', this.name, Array.from(arguments))
             return null;
         };
     
@@ -48,33 +50,24 @@ class AudioDownloader {
 
     async check_if_audio_exists(db_filepath, url) {
 
-        const LOG_ID = '273482'
-
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'origin': '(AudioDownloader > check_if_audio_exists)'})
-            logger.debug(LOG_ID, {'args': `{'db_filepath: ${db_filepath}, url: ${url}}`})
-        }
+        const LOGID = '273482'
 
         const database = new SqliteDatabaseHandler()
         await database.connect(db_filepath)
 
-        const query = `SELECT * FROM audio_metadata WHERE url = ?`
+        const query = `SELECT * FROM tracks WHERE url = ?`
         const values = [url]
         const result = await database.download(query, values)
         await database.disconnect()
 
         if (result.length === 0) {
 
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'message': 'Audio does not exist'})
-            }
+            logger.log("debug", LOGID, script_name, get_function_name(), 'Audio does not exist', this.name, Array.from(arguments))
             return
 
         } else {
 
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'message': 'Audio exists'})
-            }
+            logger.log("debug", LOGID, script_name, get_function_name(), 'Audio exists', this.name, Array.from(arguments))
             return true
 
         }
@@ -82,31 +75,26 @@ class AudioDownloader {
     }
 
         
-    async request_audio_metadata(url) {
+    async request_tracks(url) {
 
-        const LOG_ID = '192892'
-
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'origin': '(AudioDownloader > request_audio_metadata)'})
-            logger.debug(LOG_ID, {'args': `{'url': ${url}}`})
-        }
+        const LOGID = '192892'
 
         try {
 
             const info = await ytdl.getInfo(url)
+            console.log(info)
+            console.log("info", info.videoDetails.videoId)
             const metadata = {
-                "audio_id": info.videoDetails.videoId,
+                "track_id": info.videoDetails.videoId,
                 "url": url,
                 "duration_sec": info.videoDetails.lengthSeconds,
-                "local_file_path": AUDIO_FILENAME.replace("[]", info.videoDetails.videoId),
-                "alias": info.videoDetails.title 
+                "local_path": TRACK_FILENAME.replace("[]", info.videoDetails.videoId),
+                "title": info.videoDetails.title 
             }
 
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'metadata': `{'audio_id': ${metadata.audio_id}, 'url': ${metadata.url}, 'duration_sec': ${metadata.duration_sec}, 'local_file_path': ${metadata.local_file_path}, 'alias': ${metadata.alias}}`})
-            }
-
-            logger.info(LOG_ID, {'message': "Metadata retrieved"})
+            const message = `{'track_id': ${metadata.track_id}, 'url': ${metadata.url}, 'duration_sec': ${metadata.duration_sec}, 'local_path': ${metadata.local_path}, 'title': ${metadata.title}}`
+            logger.log("debug", LOGID, script_name, get_function_name(), message, this.name, Array.from(arguments))
+            logger.log("info", LOGID, script_name, get_function_name(), "Metadata retrieved", this.name, Array.from(arguments))
 
             return metadata
 
@@ -114,11 +102,7 @@ class AudioDownloader {
 
         catch (error) {
             
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'error': error.message})
-            }
-
-            logger.error(LOG_ID, {'message': 'Audio not found'})
+            logger.log("error", LOGID, script_name, get_function_name(), error.message, this.name, Array.from(arguments))
             return
 
         }
@@ -126,80 +110,63 @@ class AudioDownloader {
     }
 
 
-    async download_file(url, local_file_path) {
+    async download_file(url, local_path) {
 
-        const LOG_ID = '038238'
+        const LOGID = '038238'
 
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'origin': '(AudioDownloader > download_file)'})
-            logger.debug(LOG_ID, {'args': `{'url': ${url}, 'local_file_path': ${local_file_path}}`})
-        }
 
         try {
 
             const video = ytdl(url,{ filter: 'audioonly', format: 'mp3' })
-            const output_stream = fs.createWriteStream(local_file_path)
+            const output_stream = fs.createWriteStream(local_path)
         
             await new Promise((resolve, reject) => {
                 output_stream.on('finish', resolve)
                 output_stream.on('error', reject)
                 video.pipe(output_stream)
             });
-
-            console.log(LOG_ID, {'message': 'Audio downloaded successfully'})
+            logger.log("debug", LOGID, script_name, get_function_name(), 'Audio downloaded successfully', this.name, Array.from(arguments))
             return true
 
         }
     
         catch (error) {
 
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'error message': error.message})
-            }
-            
-            logger.error(LOG_ID, {'message': `Unable to download file from url --> ${url}`})
+            logger.log("error", LOGID, script_name, get_function_name(), error.message, this.name, Array.from(arguments))
+            logger.log("info", LOGID, script_name, get_function_name(), `Unable to download file from url --> ${url}`, this.name, Array.from(arguments))
         }
       
     }
     
-    async upload_metadata(db_filepath, audio_id, url, duration_sec, local_file_path, alias) {
+    async upload_metadata(db_filepath, track_id, url, duration_sec, local_path, title) {
 
-        const LOG_ID = '738473'
-
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'origin': '(AudioDownloader > upload_metadata)'})
-            logger.debug(LOG_ID, {'args': `{'db_filepath': ${db_filepath}, 'audio_id': ${audio_id}, 'url': ${url}, 'duration_sec': ${duration_sec}, 'local_file_path': ${local_file_path}, 'alias': ${alias}}`})
-        }
+        const LOGID = '738473'
 
         const file_handler = new FileHandler()
-        const file_size_b = file_handler.file_size_in_bytes(local_file_path)
+        const file_size_b = file_handler.file_size_in_bytes(local_path)
 
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'file size in bytes': file_size_b})
-        }
+        logger.log("debug", LOGID, script_name, get_function_name(), `{"file size in bytes": ${file_size_b}}`, this.name, Array.from(arguments))
 
         const database  = new SqliteDatabaseHandler()
         await database.connect(db_filepath)
 
         const INSERT_QUERY = `
-            INSERT INTO audio_metadata
-            (audio_id, url, duration_sec, local_file_path, file_size_b, alias) 
+            INSERT INTO tracks
+            (track_id, url, duration_sec, local_path, file_size_b, title) 
             VALUES 
             (?, ?, ?, ?, ?, ?)
         `
 
-        const values = [audio_id, url, duration_sec, local_file_path, file_size_b, alias]
+        const values = [track_id, url, duration_sec, local_path, file_size_b, title]
 
         const success = await database.upload(INSERT_QUERY, values)
 
         if (!success) {
 
-            if (DEBUG) {
-                logger.debug(LOG_ID, {'error message': error.message})
-                logger.debug(LOG_ID, {'message': 'Failed to upload metadata. Deleting audio file...'})
-            }
+            logger.log("error", LOGID, script_name, get_function_name(), error.message, this.name, Array.from(arguments))
+            logger.log("info", LOGID, script_name, get_function_name(), 'Failed to upload metadata. Deleting audio file...', this.name, Array.from(arguments))
 
-            await file_handler.delete(local_file_path) 
+            await file_handler.delete(local_path) 
             await database.disconnect()
             return
         }

@@ -6,7 +6,7 @@ class TrackListHandler {
     async fetch_track_count(db_filepath) {
 
         const query = `
-            SELECT COUNT(*) AS count FROM audio_metadata;
+            SELECT COUNT(*) AS count FROM tracks;
         `
 
         const database = new SqliteDatabaseHandler()

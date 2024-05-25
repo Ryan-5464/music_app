@@ -6,9 +6,10 @@ const { delete_track } = require('./databaseFunctions/delete_track.js');
 const { download_audio, initialize_database } = require('./server_side.js');
 const { select_untagged_tracks } = require('./databaseFunctions/select_untagged_tracks.js')
 const { fetch_track_count } = require('./server_side.js')
-const { DB_FILEPATH, DEBUG } = require('./config.js');
+const { DB_FILEPATH } = require('./config.js');
 const { Logger } = require('./handlers/Logger.js')
 const { select_most_recent_tracks } = require('./databaseFunctions/select_most_recent_tracks.js')
+const { save_playlist } = require("./databaseFunctions/save_playlist.js")
 
 
 
@@ -54,6 +55,7 @@ app.whenReady().then(() => {
         fetch_track_count(DB_FILEPATH)
             .then((track_count) => {
                 console.log("test")
+                console.log(track_count)
                 event.sender.send('track-count-receive', track_count);
             })
             .catch((error) => {
@@ -73,17 +75,17 @@ app.whenReady().then(() => {
     ipcMain.on('delete-track-send', (event, data) => {
         console.log("hello")
 
-        delete_track(DB_FILEPATH, data.audio_id).then((result) => {
-            console.log(`Track with id ${data.audio_id} deleted.`)
+        delete_track(DB_FILEPATH, data.track_id).then((result) => {
+            console.log(`Track with id ${data.track_id} deleted.`)
             event.sender.send('delete-track-receive', result);
         });
     });
 
 
-    ipcMain.on('save-tags-playlist-send', (event, data) => {
-        saveTagsPlaylist(data.tags, data.playlistName).then(() => {
+    ipcMain.on('save-playlist-send', (event, data) => {
+        save_playlist(DB_FILEPATH, data.tags, data.title).then(() => {
             const playlists = selectPlaylists();
-            event.sender.send('save-tags-playlist-receive', playlists);
+            event.sender.send('save-playlist-receive', playlists);
         });
     });
 

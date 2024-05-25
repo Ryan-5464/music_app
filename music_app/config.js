@@ -1,16 +1,24 @@
-const DEBUG = true
+// DEBUG = 0
+// INFO = 1
+// WARNING = 2
+// ERROR = 3
+
+
+
+const LOG_LEVEL = 0
 
 const DB_FILEPATH = './database/audio_files.sqlite';
 
-const DB_TABLE_AUDIOFILES = 'audioFiles';
-const DB_TABLE_AUDIOFILETAGS = 'audioFileTags';
+const TRACK_FILENAME = "./tracks/[].mp3";
 
-const AUDIO_FILENAME = "./audio_files/[].mp3";
+const ACTIVE_LOGS = ["ALL"]
+
+
+
 
 module.exports = {
-    DEBUG,
+    LOG_LEVEL,
     DB_FILEPATH,
-    DB_TABLE_AUDIOFILES,
-    DB_TABLE_AUDIOFILETAGS, 
-    AUDIO_FILENAME,
+    TRACK_FILENAME,
+    ACTIVE_LOGS
 };

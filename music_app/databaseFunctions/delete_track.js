@@ -1,7 +1,11 @@
-const { DEBUG, AUDIO_FILENAME } = require('../config.js');
 const { Logger } = require("../handlers/Logger.js")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
 const { FileHandler } = require("../handlers/FileHandler.js");
+const { AUDIO_FILENAME } = require("../config.js")
+const path = require('path');
+const script_name = path.basename(__filename);
+const { get_function_name } = require("../helpers/get_function_name.js")
+
 
 
 const logger = new Logger()
@@ -12,19 +16,14 @@ async function delete_track(db_filepath, audio_id) {
 
     const LOG_ID = '273783'
 
-    if (DEBUG) {
-        logger.debug(LOG_ID, {'origin': '(delete_track.js > delete_track)'})
-        logger.debug(LOG_ID, {'args': `{'db_filepath': ${db_filepath}, 'audio_id': ${audio_id}}`})
-    }
-
     const QUERY = `
-        DELETE FROM audio_metadata
-        WHERE audio_id = ?;
+        DELETE FROM tracks
+        WHERE track_id = ?;
     `;
 
     const file_handler = new FileHandler()
-    const filePath = AUDIO_FILENAME.replace("[]", audio_id);
-    await file_handler.delete(filePath);
+    const file_path = AUDIO_FILENAME.replace("[]", audio_id);
+    await file_handler.delete(file_path);
 
     const database = new SqliteDatabaseHandler()
     await database.connect(db_filepath)
@@ -32,9 +31,7 @@ async function delete_track(db_filepath, audio_id) {
     await database.upload(QUERY, values)
     await database.disconnect()
 
-    if (DEBUG) {
-        logger.info(LOG_ID, {'message': 'Track deleted successfully'})
-    }
+    logger.log("info", LOG_ID, script_name, get_function_name(), 'Track deleted successfully', "", Array.from(arguments))
 
 }
 

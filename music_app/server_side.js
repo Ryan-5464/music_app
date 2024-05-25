@@ -2,7 +2,10 @@ const { AudioDownloader } = require("./handlers/AudioDownloader.js")
 const { DatabaseInitializer } = require("./handlers/DatabaseInitializer.js")
 const { TrackListHandler } = require("./handlers/TrackListHandler.js")
 const { Logger } = require("./handlers/Logger.js")
-const { DEBUG } = require('./config.js')
+const path = require('path');
+const script_name = path.basename(__filename);
+const { get_function_name } = require("./helpers/get_function_name.js")
+
 
 
 const logger = new Logger()
@@ -12,15 +15,13 @@ async function download_audio(db_filepath, url) {
 
     const LOG_ID = '478382'
 
-    if(DEBUG) {
-        logger.debug(LOG_ID , {'origin': '(server_side > download_audio)'})
-    }
+
 
     const audio_downloader = new AudioDownloader()
     const success = await audio_downloader.download_audio(db_filepath, url)
 
     if (!success) {
-        logger.info(LOG_ID, {'message': 'Could not download audio'})
+        logger.log("warning", LOG_ID, script_name, get_function_name(), 'Could not download audio', "", Array.from(arguments))
         return
     }
 
@@ -38,7 +39,9 @@ async function initialize_database(db_filepath) {
 
 async function fetch_track_count(db_filepath) {
     const tracklist_handler = new TrackListHandler()
-    await tracklist_handler.fetch_track_count(db_filepath)
+    const track_count = await tracklist_handler.fetch_track_count(db_filepath)
+    console.log("tr", track_count[0].count)
+    return track_count[0].count
 }
 
 

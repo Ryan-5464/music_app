@@ -54,7 +54,7 @@ async function handle_delete_button(event) {
         console.log(button_id)
 
         try {
-            await window.electronAPI.channelSend('delete-track-send', { audio_id: button_id})
+            await window.electronAPI.channelSend('delete-track-send', { track_id: button_id})
             await window.electronAPI.channelReceive('delete-track-receive')
             location.reload()
             fetch_track_list_by_tags()
@@ -80,6 +80,7 @@ async function request_track_count() {
     try {
         const received_data = await request_data("track-count-send", "track-count-receive", {})   
         console.log("received_data", received_data)
+        return received_data
     }
     catch(error) {
         console.log("error")
@@ -310,7 +311,7 @@ class TracklistHandler {
             const li_track_name = document.createElement('li')
             li_track_name.classList.add("track-name")
             li_track_name.classList.add("tracklist-row-item")
-            li_track_name.textContent = track.alias
+            li_track_name.textContent = track.title
             ul_item.appendChild(li_track_name)
             
             const li_duration = document.createElement('li')
@@ -339,7 +340,7 @@ class TracklistHandler {
 
             const delete_button = document.createElement("button")
             delete_button.classList.add("delete_icon")
-            delete_button.id = track.audio_id
+            delete_button.id = track.track_id
             ul_item.appendChild(delete_button)
 
             this.tracklist_container.appendChild(ul_item)

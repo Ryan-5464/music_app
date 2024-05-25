@@ -1,7 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
-const { DEBUG } = require('../config.js');
 const { Logger } = require("../handlers/Logger.js")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
+const path = require('path');
+const script_name = path.basename(__filename);
+const { get_function_name } = require("../helpers/get_function_name.js")
 
 
 
@@ -13,11 +15,6 @@ async function select_untagged_tracks(db_filepath) {
 
     const LOG_ID = '283743'
 
-    if (DEBUG) {
-        logger.debug(LOG_ID, {'origin': '(select_tracks_by_tag.js > select_tracks_by_tag)'})
-        logger.debug(LOG_ID, {'args': `{'db_filepath': ${db_filepath}}`}) 
-    }
-
     let QUERY = `
         SELECT am.*
         FROM audio_metadata am
@@ -25,24 +22,20 @@ async function select_untagged_tracks(db_filepath) {
         WHERE at.audio_id IS NULL;
     `
         
-    if (DEBUG) { 
-        logger.debug(LOG_ID, {'query': QUERY})
-    }
-    
+    logger.log("debug", LOG_ID, script_name, get_function_name(), `{'query': ${QUERY}}`, "", Array.from(arguments))
+
     try {
 
         const database = new SqliteDatabaseHandler()
         await database.connect(db_filepath)
         const result = await database.download(QUERY)
 
-        if (DEBUG) {
-            logger.debug(LOG_ID, {'result': result})
-        }
+        logger.log("debug", LOG_ID, script_name, get_function_name(), `{'result': ${result}}`, "", Array.from(arguments))
         return result
     }
 
     catch(error) {
-        console.log(error.message)
+        logger.log("error", LOG_ID, script_name, get_function_name(), error.message, "", Array.from(arguments))
     }
 }
 
