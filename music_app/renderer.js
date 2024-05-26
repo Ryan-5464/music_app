@@ -369,32 +369,23 @@ download_button.addEventListener("click", download_track_from_url)
 
 const download_progress = document.getElementById("download-progress")
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 
 async function download_track_from_url() {
-
     try {
-
-        console.log("clicked download")
         const url = download_input_box.value
-        download_progress.textContent = "Downloading track..."
-        await window.electronAPI.channelSend('download-track-send', { url: url })
-        const result = await new Promise((resolve, reject) => {
-            window.electronAPI.channelReceive('download-track-receive', (result) => {
-                resolve(result)
-            })
-        }) 
-        download_progress.textContent = result;
-
-        // Pause for 3 seconds before reloading
-        await sleep(3000);
-
-        download_progress.textContent = "";
-    
+        if (url === "") {
+            download_text("Enter a URL to starting downloading")
+            await sleep(3000);
+            download_text("")
+            return
+        }
+        download_text("Downloading track...")
+        const received_data = await request_data('download-track-send', 'download-track-receive', { url: url })
+        download_text(received_data)
+        await sleep(3000)
+        download_text("")
     }
-
     catch (error) {
         console.error(error.message);
     }
@@ -534,3 +525,13 @@ class AllTracks {
 
 //const all_tracks = AllTracks()
 //all_tracks.display()
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+function download_text(text) {
+    download_progress.textContent = text
+}
