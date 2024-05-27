@@ -54,8 +54,7 @@ async function handle_delete_button(event) {
         console.log(button_id)
 
         try {
-            await window.electronAPI.channelSend('delete-track-send', { track_id: button_id})
-            await window.electronAPI.channelReceive('delete-track-receive')
+            await request_data('delete-track-send', 'delete-track-receive', { track_id: button_id})
             location.reload()
             fetch_track_list_by_tags()
         } 

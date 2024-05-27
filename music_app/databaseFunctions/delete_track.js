@@ -1,7 +1,7 @@
 const { Logger } = require("../handlers/Logger.js")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
 const { FileHandler } = require("../handlers/FileHandler.js");
-const { AUDIO_FILENAME } = require("../config.js")
+const { TRACK_FILENAME } = require("../config.js")
 const path = require('path');
 const script_name = path.basename(__filename);
 const { get_function_name } = require("../helpers/get_function_name.js")
@@ -22,7 +22,7 @@ async function delete_track(db_filepath, audio_id) {
     `;
 
     const file_handler = new FileHandler()
-    const file_path = AUDIO_FILENAME.replace("[]", audio_id);
+    const file_path = TRACK_FILENAME.replace("[]", audio_id);
     await file_handler.delete(file_path);
 
     const database = new SqliteDatabaseHandler()
