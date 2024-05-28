@@ -478,9 +478,15 @@ async function handle_pages(event) {
 async function handle_cycle_previous_page_button() {
     console.log("handle previous cycle")
     const current_page = Number(current_page_button.innerHTML)
-    previous_page_button.innerHTML = current_page - 2
-    current_page_button.innerHTML = current_page - 1
-    next_page_button.innerHTML = current_page
+    if (current_page === 2) {
+        previous_page_button.innerHTML = ""
+        cycle_previous_button.innerHTML = ""
+    }
+    else {
+        previous_page_button.innerHTML = current_page - 2
+        current_page_button.innerHTML = current_page - 1
+        next_page_button.innerHTML = current_page
+    }
     page = current_page - 1
     const tracks = await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
     await display_most_recent_tracklist(tracks)
