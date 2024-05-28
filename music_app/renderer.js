@@ -20,6 +20,7 @@ const tracklist_container = document.getElementById("tracklist-container")
 tracklist_container.addEventListener('click', handle_delete_button);
 
 
+const LIMIT = 1
 
 // async function save_tags_playlist() {
 //     let tags = tags_input_box.value;
@@ -89,6 +90,33 @@ async function request_track_count() {
 
 
 
+
+
+
+
+// async function handle_untagged_tracks_list () {
+
+//     try {
+
+//         await window.electronAPI.channelSend('untagged-tracks-send', { signal: true })
+//         const result = await new Promise((resolve, reject) => {
+//             window.electronAPI.channelReceive('untagged-tracks-receive', (result) => {
+//                 resolve(result)
+//             })
+//         }) 
+//         console.log("untagged results", result)
+//         display_untagged_tracks(result);
+//         // location.reload()
+    
+//     }
+
+//     catch (error) {
+//         console.error(error.message);
+//     }
+
+// }
+
+
 async function request_data(channel_send_name, channel_receive_name, data_to_send) {
 
     try {
@@ -118,30 +146,6 @@ async function request_data(channel_send_name, channel_receive_name, data_to_sen
 
 }
 
-
-
-
-// async function handle_untagged_tracks_list () {
-
-//     try {
-
-//         await window.electronAPI.channelSend('untagged-tracks-send', { signal: true })
-//         const result = await new Promise((resolve, reject) => {
-//             window.electronAPI.channelReceive('untagged-tracks-receive', (result) => {
-//                 resolve(result)
-//             })
-//         }) 
-//         console.log("untagged results", result)
-//         display_untagged_tracks(result);
-//         // location.reload()
-    
-//     }
-
-//     catch (error) {
-//         console.error(error.message);
-//     }
-
-// }
 
 
 
@@ -441,7 +445,6 @@ const cycle_next_button = document.getElementById("cycle-next-button")
 const page_container = document.getElementById("page-container")
 cycle_previous_button.addEventListener("click", handle_pages)
 previous_page_button.addEventListener("click", handle_pages)
-current_page_button.addEventListener("click", handle_pages)
 next_page_button.addEventListener("click", handle_pages)
 cycle_next_button.addEventListener("click", handle_pages)
 
@@ -449,14 +452,21 @@ async function handle_pages(event) {
     event.stopPropagation()
     if (event.target.tagName === 'BUTTON') {
         const button_id = event.target.id
-        const current_page = Number(current_page_button.innerHTML)
         
         if (button_id === "cycle-previous-button") {
-            await handle_cycle_previous_page_button(current_page)
+            await handle_cycle_previous_page_button()
         }
 
         if (button_id === "cycle-next-button") {
-            await handle_cycle_next_page_button(current_page)
+            await handle_cycle_next_page_button()
+        }
+
+        if (button_id === "previous-page-button") {
+            await handle_previous_page_button()
+        }
+
+        if (button_id === "next-page-button") {
+            await handle_next_page_button()
         }
 
         
@@ -465,32 +475,51 @@ async function handle_pages(event) {
 }
 
 
-async function handle_cycle_previous_page_button(current_page) {
-    console.log("handle previous")
-    console.log(current_page)
+async function handle_cycle_previous_page_button() {
+    console.log("handle previous cycle")
+    const current_page = Number(current_page_button.innerHTML)
     previous_page_button.innerHTML = current_page - 2
     current_page_button.innerHTML = current_page - 1
     next_page_button.innerHTML = current_page
+    page = current_page - 1
+    const tracks = await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
+    await display_most_recent_tracklist(tracks)
 }
 
 async function handle_previous_page_button() {
-
-}
-
-async function handle_current_page_button() {
+    console.log("handle previous button")
+    const current_page = Number(current_page_button.innerHTML)
+    previous_page_button.innerHTML = current_page - 2
+    current_page_button.innerHTML = current_page - 1
+    next_page_button.innerHTML = current_page
+    page = current_page - 1
+    const tracks = await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
+    await display_most_recent_tracklist(tracks)
 
 }
 
 async function handle_next_page_button() {
-
-}
-
-async function handle_cycle_next_page_button(current_page) {
-    console.log("handle next")
+    console.log("handle next button")
+    const current_page = Number(current_page_button.innerHTML)
     previous_page_button.innerHTML = current_page 
     current_page_button.innerHTML = current_page + 1
     next_page_button.innerHTML = current_page + 2
+    page = current_page + 1
+    const tracks =  await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
+    await display_most_recent_tracklist(tracks)
 }
+
+async function handle_cycle_next_page_button() {
+    console.log("handle next cycle")
+    const current_page = Number(current_page_button.innerHTML)
+    previous_page_button.innerHTML = current_page 
+    current_page_button.innerHTML = current_page + 1
+    next_page_button.innerHTML = current_page + 2
+    page = current_page + 1
+    const tracks =  await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
+    await display_most_recent_tracklist(tracks)
+}
+
 
 
 class AllTracks {

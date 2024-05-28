@@ -10,7 +10,7 @@ const { DB_FILEPATH } = require('./config.js');
 const { Logger } = require('./handlers/Logger.js')
 const { select_most_recent_tracks } = require('./databaseFunctions/select_most_recent_tracks.js')
 const { save_playlist } = require("./databaseFunctions/save_playlist.js")
-
+const { fetch_tracks_subset } = require("./server_logic/select_tracks_subset.js")
 
 
 const logger = new Logger()
@@ -46,6 +46,16 @@ app.whenReady().then(() => {
                 event.sender.send('download-track-receive', 'Could not download audio!')
             } else {
                 event.sender.send('download-track-receive', 'Audio downloaded successfully!');
+            }
+        })
+    })
+
+    ipcMain.on('tracks-subset-send', (event, data) => {
+        fetch_tracks_subset(DB_FILEPATH, data.page, data.limit).then((tracks) => {
+            if (!tracks) {
+                event.sender.send('tracks-subset-receive', 'Could not retrieve tracks from database!')
+            } else {
+                event.sender.send('tracks-subset-receive', tracks);
             }
         })
     })
