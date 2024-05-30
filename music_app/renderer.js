@@ -478,9 +478,10 @@ async function handle_pages(event) {
 async function handle_cycle_previous_page_button() {
     console.log("handle previous cycle")
     const current_page = Number(current_page_button.innerHTML)
+    cycle_previous_button.disabled = false
     if (current_page === 2) {
-        previous_page_button.innerHTML = ""
-        cycle_previous_button.innerHTML = ""
+        previous_page_button.innerHTML = "1"
+        cycle_previous_button.disabled = true
     }
     else {
         previous_page_button.innerHTML = current_page - 2
