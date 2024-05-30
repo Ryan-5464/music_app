@@ -47,6 +47,156 @@ function execute_onload_functions() {
 
 
 
+class ResultSet {
+    constructor (page, limit) {
+        this.page = page
+        this.limit = limit
+        this.result_set = null
+    }
+}
+
+class Track {
+    constructor (track_id, url, duration_sec, local_path, file_size_b, title, times_played, date_downloaded) {
+        this.track_id = track_id
+        this.url = url
+        this.duration_sec = duration_sec
+        this.local_path = local_path
+        this.file_size_b = file_size_b
+        this.title = title
+        this.times_played = times_played
+        this.date_downloaded = date_downloaded
+    }
+}
+
+class Channel {
+    constructor (channel_send, channel_receive) {
+        this.channel_send = channel_send
+        this.channel_receive = channel_receive
+    }
+    async send(sent_data) {
+        try {
+            await window.electronAPI.channelSend(this.channel_send, sent_data)
+            const received_data = await new Promise((resolve, reject) => {
+                window.electronAPI.channelReceive(this.channel_receive, (received_data, error) => {
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve(received_data)
+                    }
+            
+                })
+            }) 
+            return received_data
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+}
+
+class Track {
+    constructor (track_id, title, duration, tags) {
+        this.track_id = track_id
+        this.title = title
+        this.duration = duration
+        this.tags = tags
+    }
+}
+
+class TrackContainerFactory {
+    constructor () {
+        this.track_container = null
+    }
+    create_track_container(track) {
+        this.track_container = document.createElement('ul')
+        this.track_container.classList.add("tracklist-row-container")
+        this.add_track_title(track.title)
+        this.add_duration(track.duration)
+        this.add_tags(track.tags)
+        this.add_delete_button(track.track_id)
+        return this.track_container
+    }
+    add_track_title(title) {
+        const title_container = document.createElement('li')
+        title_container.classList.add("track-name")
+        title_container.classList.add("tracklist-row-item")
+        title_container.textContent = title
+        this.track_container.appendChild(title_container)
+    }
+    add_duration(duration) {
+        const duration_container = document.createElement('li')
+        duration_container.classList.add("duration")
+        duration_container.classList.add("tracklist-row-item")
+        duration_container.textContent = duration
+        this.track_container.appendChild(duration_container)
+    }
+    add_tags(tags) {
+            const tags_container = document.createElement("li")
+            tags_container.classList.add("tags")
+            tags_container.classList.add("tracklist-row-item")
+            const tags_list = document.createElement("ul")
+            tags_list.classList.add("tagslist-container")
+            for (const tag of tags) {
+                const tag_div = document.createElement("li")
+                tag_div.classList.add("tag")
+                tag_div.classList.add("tracklist-row-item")
+                tag_div.classList.add("cherry-yellow-gradient")
+                tag_div.textContent = tag
+                tags_list.appendChild(tag_div)
+            }
+            tags_container.appendChild(tags_list)
+            this.track_container.appendChild(tags_container)
+    }
+    add_delete_button(track_id) {
+        const delete_button = document.createElement("button")
+        delete_button.classList.add("delete_icon")
+        delete_button.id = track_id
+        this.track_container.appendChild(delete_button)
+    }
+}
+
+class TrackDisplay {
+    display(track_container_list) {
+        const tracklist = document.getElementById("tracklist")
+        tracklist.innerHTML = ''
+        for (const track_container in track_container_list) {
+            tracklist.appendChild(track_container)
+        }
+    }
+}
+
+const cnl = new Channel("track-set-send", "track-set-receive")
+const result_set = new ResultSet(1, 50)
+result_set = await cnl.send(result_set)
+const track_container_factory = new TrackContainerFactory()
+const track_container_list = []
+for (const result of result_set) {
+    const track = new Track(result.track_id, result.title, result.duration_sec, result.tags)
+    const track_container = track_container_factory.create_track_container(track)
+    track_container_list.push(track_container)
+
+}
+const track_display = new TrackDisplay()
+track_display.display(track_container_list)
+
+
+async function display_most_recent_tracklist(tracks) {
+    console.log("hello", tracks)
+    const tracklist_container = document.getElementById("tracklist")
+    tracklist_container.innerHTML = ''
+    
+    for (const track of tracks) {
+        let track_div = create_track_div()
+        track_div = add_track_title_to_track_div(track_div, track.title)
+        track_div = add_track_duration_to_track_div(track_div, track.duration_sec)
+        track_div = add_tags_to_track_div(track_div)
+        track_div = add_delete_button_to_track_div(track_div, track.track_id)
+        tracklist_container.appendChild(track_div, track.tags)
+    }
+
+}
+
+
+
 async function handle_delete_button(event) {
 
     if (event.target.tagName === 'BUTTON') {
