@@ -1,20 +1,3 @@
-// const download_audio_button = document.getElementById('download-audio-button');
-// const download_audio_input_box = document.getElementById("download-audio-input-box");
-// const tags_track_list = document.getElementById('tags-track-list');
-// const save_tags_playlist_button = document.getElementById('save-tags-playlist-button');
-// const tags_input_box = document.getElementById('tags-input-box');
-// const toggle_any_button = document.getElementById('toggle-any-button');
-// const toggle_all_button = document.getElementById('toggle-all-button');
-// const playlist_name_input_box = document.getElementById('playlist-name-input-box');
-// const saved_playlists_list = document.getElementById('saved-playlists-list')
-// const untagged_tracks_list = document.getElementById('untagged-tracks-list')
-
-
-// window.onload = execute_onload_functions();
-//download_audio_button.addEventListener("click", download_audio_from_url);
-//tags_input_box.addEventListener('input', fetch_track_list_by_tags);
-//toggle_any_button.addEventListener('click', toggle_tags_button);
-//toggle_all_button.addEventListener('click', toggle_tags_button);
 
 const tracklist_container = document.getElementById("tracklist-container")
 tracklist_container.addEventListener('click', handle_delete_button);
@@ -22,26 +5,10 @@ tracklist_container.addEventListener('click', handle_delete_button);
 
 const LIMIT = 1
 
-// async function save_tags_playlist() {
-//     let tags = tags_input_box.value;
-//     const any_button_active = toggle_any_button.classList.contains('active');
-//     const playlist_name = playlist_name_input_box.value;
-//     await window.electronAPI.channelSend('save-tags-playlist-send', { tags: tags, playlist_name: playlist_name});
-//     const playlists = await window.electronAPI.channelReceive('save-tags-playlist-receive');
-//     tags = tags_input_box.value.split(',').map(tag => tag.trim());
-//     const tracklist = await fetch_tags_tracklist(tags, any_button_active);
-//     console.log("tracklist", tracklist);
-//     display_tags_tracklist(tracklist);
-//     display_saved_playlists(playlists);
-
-// }
 
 execute_onload_functions()
 
 function execute_onload_functions() {
-    //fetch_track_list_by_tags('')
-    //handle_untagged_tracks_list()
-    // populate_track_list()
     display_track_count()
 }
 
@@ -56,7 +23,11 @@ class ResultSet {
 }
 
 class Track {
-    constructor (track_id, url, duration_sec, local_path, file_size_b, title, times_played, date_downloaded) {
+    constructor (
+        track_id=null, url=null, duration_sec=null, local_path=null,
+        file_size_b=null , title=null, times_played=null, date_downloaded=null,
+        tags=[]
+    ) {
         this.track_id = track_id
         this.url = url
         this.duration_sec = duration_sec
@@ -65,6 +36,7 @@ class Track {
         this.title = title
         this.times_played = times_played
         this.date_downloaded = date_downloaded
+        this.tags = tags
     }
 }
 
@@ -93,14 +65,14 @@ class Channel {
     }
 }
 
-class Track {
-    constructor (track_id, title, duration, tags) {
-        this.track_id = track_id
-        this.title = title
-        this.duration = duration
-        this.tags = tags
-    }
-}
+// class Track {
+//     constructor (track_id, title, duration, tags) {
+//         this.track_id = track_id
+//         this.title = title
+//         this.duration = duration
+//         this.tags = tags
+//     }
+// }
 
 class TrackContainerFactory {
     constructor () {
@@ -110,7 +82,7 @@ class TrackContainerFactory {
         this.track_container = document.createElement('ul')
         this.track_container.classList.add("tracklist-row-container")
         this.add_track_title(track.title)
-        this.add_duration(track.duration)
+        this.add_duration(track.duration_sec)
         this.add_tags(track.tags)
         this.add_delete_button(track.track_id)
         return this.track_container
@@ -158,43 +130,31 @@ class TrackDisplay {
     display(track_container_list) {
         const tracklist = document.getElementById("tracklist")
         tracklist.innerHTML = ''
-        for (const track_container in track_container_list) {
+        for (const track_container of track_container_list) {
             tracklist.appendChild(track_container)
         }
     }
 }
 
-const cnl = new Channel("track-set-send", "track-set-receive")
-const result_set = new ResultSet(1, 50)
-result_set = await cnl.send(result_set)
-const track_container_factory = new TrackContainerFactory()
-const track_container_list = []
-for (const result of result_set) {
-    const track = new Track(result.track_id, result.title, result.duration_sec, result.tags)
-    const track_container = track_container_factory.create_track_container(track)
-    track_container_list.push(track_container)
-
-}
-const track_display = new TrackDisplay()
-track_display.display(track_container_list)
-
-
-async function display_most_recent_tracklist(tracks) {
-    console.log("hello", tracks)
-    const tracklist_container = document.getElementById("tracklist")
-    tracklist_container.innerHTML = ''
-    
-    for (const track of tracks) {
-        let track_div = create_track_div()
-        track_div = add_track_title_to_track_div(track_div, track.title)
-        track_div = add_track_duration_to_track_div(track_div, track.duration_sec)
-        track_div = add_tags_to_track_div(track_div)
-        track_div = add_delete_button_to_track_div(track_div, track.track_id)
-        tracklist_container.appendChild(track_div, track.tags)
+async function display_tracklist(page, limit) {
+    let result_set = new ResultSet(page, limit)
+    const cnl = new Channel("track-set-send", "track-set-receive")
+    result_set = await cnl.send(result_set)
+    const track_container_factory = new TrackContainerFactory()
+    const track_container_list = []
+    for (const result of result_set.result_set) {
+        const track = new Track(        
+            result.track_id, null, result.duration_sec, null,
+            null , result.title, null, null,
+            tags=result.tags
+        )
+        console.log("trackssss", track)
+        const track_container = track_container_factory.create_track_container(track)
+        track_container_list.push(track_container)
     }
-
+    const track_display = new TrackDisplay()
+    track_display.display(track_container_list)
 }
-
 
 
 async function handle_delete_button(event) {
@@ -242,59 +202,6 @@ async function request_track_count() {
 
 
 
-
-
-// async function handle_untagged_tracks_list () {
-
-//     try {
-
-//         await window.electronAPI.channelSend('untagged-tracks-send', { signal: true })
-//         const result = await new Promise((resolve, reject) => {
-//             window.electronAPI.channelReceive('untagged-tracks-receive', (result) => {
-//                 resolve(result)
-//             })
-//         }) 
-//         console.log("untagged results", result)
-//         display_untagged_tracks(result);
-//         // location.reload()
-    
-//     }
-
-//     catch (error) {
-//         console.error(error.message);
-//     }
-
-// }
-
-
-async function request_data(channel_send_name, channel_receive_name, data_to_send) {
-
-    try {
-
-        await window.electronAPI.channelSend(channel_send_name, data_to_send)
-        
-        const received_data = await new Promise((resolve, reject) => {
-        
-            window.electronAPI.channelReceive(channel_receive_name, (received_data, error) => {
-                if (error) {
-                    reject(error)
-                } else {
-                    resolve(received_data)
-                }
-        
-            })
-        }) 
-        
-        console.log("Data retrieved successfully")
-        return received_data
-    
-    }
-
-    catch (error) {
-        console.error(error.message);
-    }
-
-}
 
 
 
@@ -425,95 +332,11 @@ async function request_data(channel_send_name, channel_receive_name, data_to_sen
 
 
 
-class TracklistHandler {
-
-    constructor (tracklist_container) {
-        this.tracklist_container = tracklist_container
-    }
-
-    async fetch_tracks(type, limit) {
-    
-        try {
-    
-            await window.electronAPI.channelSend('fetch-tracks-request', { type: type, limit: limit})
-            const tracks = await new Promise( (resolve, reject) => {
-                window.electronAPI.channelReceive('fetch-tracks-response', (tracks) => {
-                    resolve(tracks)
-                })
-                
-            })
-            console.log("tracklist", tracks)
-            return tracks
-    
-        } 
-    
-        catch (error) {
-            console.error(error.message)
-        }
-    
-    } 
-
-    async populate_track_list(type, limit) {
-        const tracks = await this.fetch_tracks(type, limit)
-        this.tracklist_container.innerHTML = ''
-        for (const track of tracks) {
-
-            const ul_item = document.createElement('ul')
-            ul_item.classList.add("tracklist-row-container")
-            
-            const li_track_name = document.createElement('li')
-            li_track_name.classList.add("track-name")
-            li_track_name.classList.add("tracklist-row-item")
-            li_track_name.textContent = track.title
-            ul_item.appendChild(li_track_name)
-            
-            const li_duration = document.createElement('li')
-            li_duration.classList.add("duration")
-            li_duration.classList.add("tracklist-row-item")
-            li_duration.textContent = track.duration_sec
-            ul_item.appendChild(li_duration)
-            const tags = document.createElement("li")
-            tags.classList.add("tags")
-            tags.classList.add("tracklist-row-item")
-
-            // const tags_list = document.createElement("ul")
-            // tags_list.classList.add("tagslist-container")
-
-            // for (const tag of track.tags) {
-            //     const li_tag = document.createElement("li")
-            //     li_tag.classList.add("tag")
-            //     li_tag.classList.add("tracklist-row-item")
-            //     li_tag.classList.add("cherry-yellow-gradient")
-            //     li_tag.textContent = tag
-            //     tags_list.appendChild(li_tag)
-            // }
-
-            // tags.appendChild(tags_list)
-            ul_item.appendChild(tags)
-
-            const delete_button = document.createElement("button")
-            delete_button.classList.add("delete_icon")
-            delete_button.id = track.track_id
-            ul_item.appendChild(delete_button)
-
-            this.tracklist_container.appendChild(ul_item)
-        }
-
-    }
-
-}
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await populate_track_list()
+    await display_tracklist(1,2)
     addActiveToggleToTracks()
 });
-
-async function populate_track_list() {
-    const tracklist_container = document.getElementById("tracklist")
-    const tracklist_handler = new TracklistHandler(tracklist_container)
-    await tracklist_handler.populate_track_list("most-recent", 20)
-}
-
 
 const download_button = document.getElementById("download-button")
 const download_input_box = document.getElementById("download-input-box")
@@ -547,12 +370,10 @@ async function download_track_from_url() {
 
 
 class Toggle {
-
     constructor (element, elements) {
         this.element = element
         this.elements = elements
     }
-
     active () {
         for (const element of this.elements) {
             if (element.classList.contains("active")) {
@@ -565,7 +386,22 @@ class Toggle {
         else {
             this.element.classList.add("active")
         }
+    }
+}
 
+class Disable {
+    constructor (element) {
+        this.element = element
+    }
+    disable () {
+        this.element.classList.remove("enabled")
+        this.element.classList.add("disabled")
+        this.element.disabled = true
+    }
+    enable () {
+        this.element.classList.remove("disabled")
+        this.element.classList.add("enabled")
+        this.element.disabled = false
     }
 }
 

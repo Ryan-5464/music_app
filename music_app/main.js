@@ -50,12 +50,13 @@ app.whenReady().then(() => {
         })
     })
 
-    ipcMain.on('tracks-subset-send', (event, data) => {
-        fetch_tracks_subset(DB_FILEPATH, data.page, data.limit).then((tracks) => {
-            if (!tracks) {
-                event.sender.send('tracks-subset-receive', 'Could not retrieve tracks from database!')
+    ipcMain.on('track-set-send', (event, result_set) => {
+        fetch_tracks_subset(DB_FILEPATH, result_set.page, result_set.limit).then((_set) => {
+            if (!_set) {
+                event.sender.send('track-set-receive', 'Could not retrieve tracks from database!')
             } else {
-                event.sender.send('tracks-subset-receive', tracks);
+                result_set.result_set = _set
+                event.sender.send('track-set-receive', result_set);
             }
         })
     })
