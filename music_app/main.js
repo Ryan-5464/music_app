@@ -11,6 +11,8 @@ const { Logger } = require('./handlers/Logger.js')
 const { select_most_recent_tracks } = require('./databaseFunctions/select_most_recent_tracks.js')
 const { save_playlist } = require("./databaseFunctions/save_playlist.js")
 const { fetch_tracks_subset } = require("./server_logic/select_tracks_subset.js")
+const { fetch_tags } = require("./databaseFunctions/fetch_tags.js")
+const { tag_track } = require("./databaseFunctions/tag_track.js")
 
 
 const logger = new Logger()
@@ -47,6 +49,19 @@ app.whenReady().then(() => {
             } else {
                 event.sender.send('download-track-receive', 'Audio downloaded successfully!');
             }
+        })
+    })
+
+    ipcMain.on('fetch-tags-send', (event, data) => {
+        fetch_tags(DB_FILEPATH, data.track_id).then((tags) => {
+            event.sender.send('fetch-tags-receive', tags)
+        })
+    })
+
+    ipcMain.on('create-tag-send', (event, data) => {
+        console.log("create_tag triggered")
+        tag_track(DB_FILEPATH, data.track_id, data.tag).then((tags) => {
+            event.sender.send('create-tag-receive', tags)
         })
     })
 

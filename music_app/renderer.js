@@ -113,7 +113,7 @@ class TrackContainerFactory {
                 tag_div.classList.add("tag")
                 tag_div.classList.add("tracklist-row-item")
                 tag_div.classList.add("cherry-yellow-gradient")
-                tag_div.textContent = tag
+                tag_div.textContent = JSON.stringify(tag.tag, null, 2)
                 tags_list.appendChild(tag_div)
             }
             tags_container.appendChild(tags_list)
@@ -374,6 +374,26 @@ async function download_track_from_url() {
 }
 
 
+class Tag {
+    constructor (elements) {
+        this.elements = elements
+    }
+    async tag_track(tag) {
+        console.log("tag track  triggered")
+        for (const element of this.elements) {
+            if (element.classList.contains("active")) {
+                console.log("active triggered")
+                const track_id = element.id
+                const channel = new Channel("create-tag-send", "create-tag-receive")
+                const reply = await channel.send({track_id: track_id, tag: tag})
+                console.log("reply ", reply)
+            }
+        }
+    }
+}
+
+
+
 
 class Toggle {
     constructor (element, elements) {
@@ -396,23 +416,42 @@ class Toggle {
     async display_taglist() {
         console.log("triggrered")
         const channel = new Channel("fetch-tags-send", "fetch-tags-receive")
-        const tags = ["tag1", "tag2"]//await channel.send(this.element.id)
+        const tags = await channel.send({track_id: this.element.id})
         const right_sidebar = document.getElementById("right-sidebar")
+        right_sidebar.innerHTML = ""
         const title = document.createElement("div")
         title.innerHTML = "Tags List"
         right_sidebar.appendChild(title)
         const tags_input = document.createElement("input")
+        tags_input.id = "tags-input-box"
         right_sidebar.appendChild(tags_input)
+        const tags_input_button = document.createElement("button")
+        tags_input_button.id = "tags-input-button"
+        tags_input_button.addEventListener("click", () => {this.add_tag()})
+        tags_input_button.textContent = "Add Tag"
+        right_sidebar.appendChild(tags_input_button)
         const tags_list = document.createElement("ul")
         right_sidebar.appendChild(tags_list)
         for (const tag of tags) {
             const li = document.createElement("li")
             const del = document.createElement("button")
-            li.innerHTML = tag
+            li.innerHTML = JSON.stringify(tag.tag, null, 2)
+            del.classList.add("delete_icon")
             li.appendChild(del)
+            li.classList.add("tag")
+            li.classList.add("tracklist-row-item")
+            li.classList.add("cherry-yellow-gradient")
             tags_list.appendChild(li)
         }
     }
+    async add_tag() {
+        console.log("add tag triggered")
+        const tags_input_box = document.getElementById("tags-input-box")
+        const tag_name = tags_input_box.value
+        const elements = document.getElementsByClassName('tracklist-row-container')
+        const tag = new Tag(elements)
+        tag.tag_track(tag_name)
+    } 
 }
 
 // class Disable {
