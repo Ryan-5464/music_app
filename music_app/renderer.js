@@ -3,7 +3,7 @@ const tracklist_container = document.getElementById("tracklist-container")
 tracklist_container.addEventListener('click', handle_delete_button);
 
 
-const LIMIT = 1
+const LIMIT = 2
 
 
 execute_onload_functions()
@@ -81,6 +81,7 @@ class TrackContainerFactory {
     create_track_container(track) {
         this.track_container = document.createElement('ul')
         this.track_container.classList.add("tracklist-row-container")
+        this.track_container.id = track.track_id
         this.add_track_title(track.title)
         this.add_duration(track.duration_sec)
         this.add_tags(track.tags)
@@ -334,9 +335,14 @@ async function request_track_count() {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await display_tracklist(1,2)
+    await display_tracklist(1,LIMIT)
     addActiveToggleToTracks()
+    add_page_buttons(LIMIT)
 });
+
+
+
+
 
 const download_button = document.getElementById("download-button")
 const download_input_box = document.getElementById("download-input-box")
@@ -375,35 +381,57 @@ class Toggle {
         this.elements = elements
     }
     active () {
+        if (this.element.classList.contains("active")) {
+            this.element.classList.remove("active")
+            return
+        }
         for (const element of this.elements) {
             if (element.classList.contains("active")) {
                 element.classList.remove("active")
             }
         }
-        if (this.element.classList.contains("active")) {
-            this.element.classList.remove("active")
-        }
-        else {
-            this.element.classList.add("active")
+        this.element.classList.add("active")
+        this.display_taglist()
+    }
+    async display_taglist() {
+        console.log("triggrered")
+        const channel = new Channel("fetch-tags-send", "fetch-tags-receive")
+        const tags = ["tag1", "tag2"]//await channel.send(this.element.id)
+        const right_sidebar = document.getElementById("right-sidebar")
+        const title = document.createElement("div")
+        title.innerHTML = "Tags List"
+        right_sidebar.appendChild(title)
+        const tags_input = document.createElement("input")
+        right_sidebar.appendChild(tags_input)
+        const tags_list = document.createElement("ul")
+        right_sidebar.appendChild(tags_list)
+        for (const tag of tags) {
+            const li = document.createElement("li")
+            const del = document.createElement("button")
+            li.innerHTML = tag
+            li.appendChild(del)
+            tags_list.appendChild(li)
         }
     }
 }
 
-class Disable {
-    constructor (element) {
-        this.element = element
-    }
-    disable () {
-        this.element.classList.remove("enabled")
-        this.element.classList.add("disabled")
-        this.element.disabled = true
-    }
-    enable () {
-        this.element.classList.remove("disabled")
-        this.element.classList.add("enabled")
-        this.element.disabled = false
-    }
-}
+// class Disable {
+//     constructor (element) {
+//         this.element = element
+//     }
+//     toggle_disable () {
+//         if (this.element.classList.contains("enabled")) {
+//             this.element.classList.remove("enabled")
+//             this.element.classList.add("disabled")
+//             this.element.disabled = true
+//         }
+//         if (this.element.classList.contains("disabled")) {
+//             this.element.classList.remove("disabled")
+//             this.element.classList.add("enabled")
+//             this.element.disabled = false
+//         }
+//     }
+// }
 
 function addActiveToggleToTracks() {
     const elements = document.getElementsByClassName('tracklist-row-container')
@@ -413,139 +441,121 @@ function addActiveToggleToTracks() {
     }
 }
 
-addActiveToggleToTracks()
 
 
 
 
 
-// -- ALL TRACKS ---
 
-
-const cycle_previous_button = document.getElementById("cycle-previous-button")
-const previous_page_button = document.getElementById("previous-page-button")
-const current_page_button = document.getElementById("current-page-button")
-const next_page_button = document.getElementById("next-page-button")
-const cycle_next_button = document.getElementById("cycle-next-button")
 
 const page_container = document.getElementById("page-container")
-cycle_previous_button.addEventListener("click", handle_pages)
-previous_page_button.addEventListener("click", handle_pages)
-next_page_button.addEventListener("click", handle_pages)
-cycle_next_button.addEventListener("click", handle_pages)
+page_container.addEventListener("click", handle_pages)
+
+
+async function add_page_buttons(limit) {
+    current_page_button.innerHTML = "1"
+    const track_count = await request_track_count()
+    const pages = track_count / limit
+    if (pages > 1) {
+        next_page_button.innerHTML = "2"
+        last_page_button.innerHTML = ">|"
+    }
+}
 
 async function handle_pages(event) {
     event.stopPropagation()
     if (event.target.tagName === 'BUTTON') {
         const button_id = event.target.id
         
-        if (button_id === "cycle-previous-button") {
-            await handle_cycle_previous_page_button()
+        if (button_id === "first-page-button") {
+            await handle_first_page_button(LIMIT)
         }
 
-        if (button_id === "cycle-next-button") {
-            await handle_cycle_next_page_button()
+        if (button_id === "last-page-button") {
+            await handle_last_page_button(LIMIT)
         }
 
         if (button_id === "previous-page-button") {
-            await handle_previous_page_button()
+            await handle_previous_page_button(LIMIT)
         }
 
         if (button_id === "next-page-button") {
-            await handle_next_page_button()
+            await handle_next_page_button(LIMIT)
         }
-
-        
-        
     }
+    addActiveToggleToTracks()
 }
 
 
-async function handle_cycle_previous_page_button() {
-    console.log("handle previous cycle")
+const first_page_button = document.getElementById("first-page-button")
+const last_page_button = document.getElementById("last-page-button")
+const previous_page_button = document.getElementById("previous-page-button")
+const next_page_button = document.getElementById("next-page-button")
+const current_page_button = document.getElementById("current-page-button")
+
+async function handle_first_page_button(limit) {
+    await display_tracklist(1,limit)
+    first_page_button.disabled = true
+    last_page_button.disabled = false
+    next_page_button.disabled = false
+    previous_page_button.disabled = true
+    first_page_button.innerHTML = ""
+    last_page_button.innerHTML = ">|"
+    next_page_button.innerHTML = "2"
+    previous_page_button.innerHTML = ""
+    current_page_button.innerHTML = "1"
+}
+
+async function handle_last_page_button(limit) {
+    const track_count = await request_track_count()
+    const page = Math.ceil(Number(track_count) / limit)
+    await display_tracklist(page,limit)
+    first_page_button.disabled = false
+    last_page_button.disabled = true
+    next_page_button.disabled = true
+    previous_page_button.disabled = false
+    previous_page_button.innerHTML = page - 1
+    first_page_button.innerHTML = "|<"
+    last_page_button.innerHTML = ""
+    next_page_button.innerHTML = ""
+    previous_page_button.innerHTML = `${page - 1}`
+    current_page_button.innerHTML = page
+}
+
+async function handle_previous_page_button(limit) {
     const current_page = Number(current_page_button.innerHTML)
-    cycle_previous_button.disabled = false
-    if (current_page === 2) {
-        previous_page_button.innerHTML = "1"
-        cycle_previous_button.disabled = true
+    const page = current_page - 1
+    if (page === 1) {
+        await handle_first_page_button(limit)
+        return
     }
     else {
+        await display_tracklist(page,limit)
         previous_page_button.innerHTML = current_page - 2
-        current_page_button.innerHTML = current_page - 1
         next_page_button.innerHTML = current_page
+        current_page_button.innerHTML = current_page - 1
     }
-    page = current_page - 1
-    const tracks = await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
-    await display_most_recent_tracklist(tracks)
 }
 
-async function handle_previous_page_button() {
-    console.log("handle previous button")
+async function handle_next_page_button(limit) {
     const current_page = Number(current_page_button.innerHTML)
-    previous_page_button.innerHTML = current_page - 2
-    current_page_button.innerHTML = current_page - 1
-    next_page_button.innerHTML = current_page
-    page = current_page - 1
-    const tracks = await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
-    await display_most_recent_tracklist(tracks)
-
-}
-
-async function handle_next_page_button() {
-    console.log("handle next button")
-    const current_page = Number(current_page_button.innerHTML)
-    previous_page_button.innerHTML = current_page 
-    current_page_button.innerHTML = current_page + 1
-    next_page_button.innerHTML = current_page + 2
-    page = current_page + 1
-    const tracks =  await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
-    await display_most_recent_tracklist(tracks)
-}
-
-async function handle_cycle_next_page_button() {
-    console.log("handle next cycle")
-    const current_page = Number(current_page_button.innerHTML)
-    previous_page_button.innerHTML = current_page 
-    current_page_button.innerHTML = current_page + 1
-    next_page_button.innerHTML = current_page + 2
-    page = current_page + 1
-    const tracks =  await request_data("tracks-subset-send", "tracks-subset-receive", {page: page, limit: LIMIT})
-    await display_most_recent_tracklist(tracks)
-}
-
-
-
-class AllTracks {
-
-    async display() {
-
-
+    const page = current_page + 1
+    const track_count = await request_track_count()
+    const last_page = Math.ceil(Number(track_count) / limit)
+    if (page === last_page) {
+        handle_last_page_button(limit)
+        return
     }
-
-    async get(limit) {
-        try {
-    
-            await window.electronAPI.channelSend('request-all-tracks', {limit: limit})
-
-            const tracks = await new Promise( (resolve, reject) => {
-                window.electronAPI.channelReceive('receive-all-tracks', (tracks) => {
-                    resolve(tracks)
-                })
-                
-            })
-            console.log("tracklist", tracks)
-            return tracks
-
-        } 
-        catch (error) {
-            console.error(error.message)
-        }
-    } 
+    else {
+        await display_tracklist(page,limit)
+        next_page_button.innerHTML = current_page + 2
+        previous_page_button.innerHTML = current_page 
+        current_page_button.innerHTML = current_page + 1
+    }
 }
 
 
-//const all_tracks = AllTracks()
-//all_tracks.display()
+
 
 
 function sleep(ms) {
