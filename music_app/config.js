@@ -11,7 +11,7 @@ const DB_FILEPATH = './database/audio_files.sqlite';
 
 const TRACK_FILENAME = "./tracks/[].mp3";
 
-const ACTIVE_LOGS = ["ALL"]
+const ACTIVE_LOGS = ["443434"]
 
 
 

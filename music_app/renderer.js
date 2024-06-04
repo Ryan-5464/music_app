@@ -437,6 +437,8 @@ class Toggle {
             const del = document.createElement("button")
             li.innerHTML = JSON.stringify(tag.tag, null, 2)
             del.classList.add("delete_icon")
+            del.id = this.element.id
+            del.addEventListener("click", this.delete_tag)
             li.appendChild(del)
             li.classList.add("tag")
             li.classList.add("tracklist-row-item")
@@ -451,7 +453,20 @@ class Toggle {
         const elements = document.getElementsByClassName('tracklist-row-container')
         const tag = new Tag(elements)
         tag.tag_track(tag_name)
+        location.reload()
+        this.display_taglist()
     } 
+    async delete_tag(event) {
+
+        const button_id = event.target.id
+        const tag = event.target.parentElement.textContent.replace(/['"]/g, '')
+        console.log("tagxxx", tag)
+        console.log(button_id)
+
+        await request_data('delete-tag-send', 'delete-tag-receive', { track_id: button_id, tag: tag})
+        // this.display_taglist()
+
+    }
 }
 
 // class Disable {
