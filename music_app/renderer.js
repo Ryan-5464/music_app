@@ -1,4 +1,3 @@
-
 const tracklist_container = document.getElementById("tracklist-container")
 tracklist_container.addEventListener('click', handle_delete_button);
 
@@ -605,3 +604,208 @@ function sleep(ms) {
 function download_text(text) {
     download_progress.textContent = text
 }
+
+
+
+class PlayerPanel {
+
+    constructor () {
+        this.panel = document.getElementById("middle-container")
+    }
+
+    addListener() {
+        const button = document.getElementById("all-tracks-option")
+        button.addEventListener("click", () => {
+            this.display()
+        })
+    }
+
+    display() {
+        this.addPlayerControls()
+        this.addTagsSearchBar()
+        this.addTrackList()
+    }
+
+    addPlayerControls() {
+
+    }
+
+    addTagsSearchBar() {
+        const parentElement = this.panel
+        const tagsSearchBar = new TagsSearchBar(parentElement)
+        tagsSearchBar.display()
+    }
+
+    addTrackList() {
+        const parentElement = this.panel
+        const trackListPanel = new TrackListPanel(parentElement)
+        trackListPanel.display()
+    }
+
+}
+
+class TagsSearchBar {
+
+    constructor (parentElement) {
+        this.parentElement = parentElement
+    }
+
+    display() {
+        this.createContainer()
+        this.addSearchBar()
+    }
+
+    createContainer() {
+        const container = document.createElement("div")
+        container.id = "tags-search-bar-container"
+        this.parentElement.appendChild(container)
+    }
+
+    addSearchBar() {
+        const searchBar = document.createElement("input")
+        searchBar.id = "tags-search-bar"
+        this.parentElement.appendChild(searchBar)
+    }
+
+
+}
+
+class DownloadPanel {
+
+}
+
+class TagPanel {
+
+}
+
+class TrackListPanel {
+
+    constructor (parentElement) {
+        this.parentElement = parentElement
+        this.container = null
+    }
+
+    async display() {
+        this.parentElement.innerHTML = ''
+        this.addTrackListPanelToParent()
+        console.log("XXX triggered")
+        const tracks = await this.fetchTracks()
+        console.log("XXX tracks", tracks)
+        this.addTracks(tracks)
+    }
+
+    addTrackListPanelToParent() {
+        this.container = document.createElement("div")
+        this.container.id = "tracklist-panel"
+        this.parentElement.appendChild(this.container)
+    }
+
+    addTracks(tracks) {
+        const trackFactory = new TrackFactory()
+        for (_track of tracks) {
+            const track = trackFactory.createTrack(_track.track_id, _track.title, _track.duration, _track.tags)
+            this.container.appendChild(track)
+        }
+    }
+
+    async fetchTracks() {
+        const channel = new Channel("fetch-tracks--send", "fetch-tracks--receive")
+        const tracks = await channel.send({})
+        console.log("4646", tracks)
+        return tracks
+    }
+}
+
+class TrackFactory {
+
+    constructor () {
+        this.container = null
+    }
+
+    createTrack(trackId, title, duration, tags) {
+        this.createTrackContainer(trackId)
+        this.addTitle(trackId, title)
+        this.addDuration(trackId, duration)
+        this.addTagList(trackId, tags)
+        return container
+    }
+
+    createTrackContainer(trackId) {
+        this.container = null
+        this.container = document.createElement('ul')
+        this.container.setAttribute("data-track-id", trackId)  
+        this.container.classList.add("player-track-container")
+    }
+
+    addTitle(trackId, _title) {
+        const title = document.createElement('li')
+        title.setAttribute("data-track-id", trackId) 
+        title.classList.add("player-track-title")
+        title.textContent = _title
+        this.container.appendChild(title)
+    }
+
+    addDuration(trackId, _duration) {
+        const duration = document.createElement('li')
+        duration.setAttribute("data-track-id", trackId) 
+        duration.classList.add("player-track-duration")
+        duration.textContent = _duration
+        this.container.appendChild(duration)
+    }
+
+    addTagList(trackId, tags) {
+        const tagList = document.createElement('ul')
+        this.container.setAttribute("data-track-id", trackId) 
+        tagList.classList.add("player-track-tags-list")
+        const tagFactory = new TagFactory()
+        for (const _tag of tags) {
+            const tag = tagFactory.createTag(trackId, _tag)
+            tagList.appendChild(tag)
+        }
+    }
+
+}
+
+class TagFactory {
+
+    constructor () {
+        this.container = null
+    }
+
+    createTag(trackId, tag) {
+        this.createTagContainer(trackId)
+        this.addTag(tag)
+        this.addDeleteButton(trackId)
+        return container
+    }
+    
+    createTagContainer(trackId) {
+        this.container = null
+        this.container = document.createElement('ul')
+        this.container.setAttribute("data-track-id", trackId) 
+        this.container.classList.add("player-track-tag-container")
+    }
+
+    addTag(trackId, tag) {
+        const tagName = document.createElement('li')
+        tagName.setAttribute("data-track-id", trackId)
+        tagName.classList.add("player-track-tag-name")
+        tagName.textContent = JSON.stringify(tag, null, 2).replace('"', '')
+        this.container.appendChild(tagName)
+    }
+
+    addDeleteButton(trackId) {
+        const deleteButton = document.createElement("button")
+        deleteButton.setAttribute("data-track-id", trackId)
+        deleteButton.classList.add("player-track-tag-delete-button")
+        this.container.appendChild(deleteButton)
+    }
+
+}
+
+//////////////////////////////////////////////////////////////////
+
+
+
+const playerPanel = new PlayerPanel()
+playerPanel.addListener()

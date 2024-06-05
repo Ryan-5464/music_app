@@ -13,6 +13,7 @@ const { save_playlist } = require("./databaseFunctions/save_playlist.js")
 const { fetch_tracks_subset } = require("./server_logic/select_tracks_subset.js")
 const { fetch_tags } = require("./databaseFunctions/fetch_tags.js")
 const { tag_track } = require("./databaseFunctions/tag_track.js")
+const {fetch_tracks } = require("./databaseFunctions/fetch_tracks.js")
 
 
 const logger = new Logger()
@@ -49,6 +50,13 @@ app.whenReady().then(() => {
             } else {
                 event.sender.send('download-track-receive', 'Audio downloaded successfully!');
             }
+        })
+    })
+
+    ipcMain.on('fetch-tracks--send', (event, data) => {
+        console.log("XXY")
+        fetch_tracks(DB_FILEPATH).then((tracks) => {
+            event.sender.send('fetch-tracks--receive', tracks)
         })
     })
 
