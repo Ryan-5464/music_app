@@ -14,19 +14,28 @@ async function fetch_tracks(db_filepath) {
 
     const LOG_ID = '474799'
 
-    const QUERY = `
+    let QUERY = `
         SELECT * FROM tracks;
     `
-    console.log("XXX")
     const database = new SqliteDatabaseHandler()
     await database.connect(db_filepath)
-    await database.download(QUERY)
+    const tracks = await database.download(QUERY)
+
+    QUERY = `
+        SELECT tag FROM tags 
+        WHERE track_id = ?;
+    `
+
+    
+    for (const _track of tracks) {
+        const values = [_track.track_id]
+        _track.tags = await database.download(QUERY, values) 
+    }
     await database.disconnect()
-
+    console.log("XYXY", tracks)
     logger.log("info", LOG_ID, script_name, get_function_name(), 'Track deleted successfully', "", Array.from(arguments))
-
+    return tracks
 }
-
 
 
 module.exports = { fetch_tracks }

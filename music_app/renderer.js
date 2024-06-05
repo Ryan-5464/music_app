@@ -436,6 +436,8 @@ class Toggle {
             const del = document.createElement("button")
             li.innerHTML = JSON.stringify(tag.tag, null, 2)
             del.classList.add("delete_icon")
+            del.id = this.element.id
+            del.addEventListener("click", this.delete_tag)
             li.appendChild(del)
             li.classList.add("tag")
             li.classList.add("tracklist-row-item")
@@ -450,7 +452,20 @@ class Toggle {
         const elements = document.getElementsByClassName('tracklist-row-container')
         const tag = new Tag(elements)
         tag.tag_track(tag_name)
+        location.reload()
+        this.display_taglist()
     } 
+    async delete_tag(event) {
+
+        const button_id = event.target.id
+        const tag = event.target.parentElement.textContent.replace(/['"]/g, '')
+        console.log("tagxxx", tag)
+        console.log(button_id)
+
+        await request_data('delete-tag-send', 'delete-tag-receive', { track_id: button_id, tag: tag})
+        // this.display_taglist()
+
+    }
 }
 
 // class Disable {
@@ -621,9 +636,9 @@ class PlayerPanel {
     }
 
     display() {
-        this.addPlayerControls()
-        this.addTagsSearchBar()
         this.addTrackList()
+        this.addTagsSearchBar()
+        this.addPlayerControls()
     }
 
     addPlayerControls() {
@@ -664,11 +679,36 @@ class TagsSearchBar {
     addSearchBar() {
         const searchBar = document.createElement("input")
         searchBar.id = "tags-search-bar"
+        searchBar.addEventListener("input", () => {
+            this.fetchTracksByTag()
+        })
         this.parentElement.appendChild(searchBar)
+    }
+
+    async fetchTracksByTag() {
+        const tagsSearchBar = document.getElementById("tags-search-bar")
+        const tags = tagsSearchBar.value.split(',').map(tag => tag.trim())
+        console.log(tags)
     }
 
 
 }
+
+
+
+// async function fetch_track_list_by_tags() {
+//     try {
+//         const tags = tags_input_box.value.split(',').map(tag => tag.trim());
+//         const any_button_active = toggle_any_button.classList.contains('active');
+//         const tracklist = await fetch_tags_tracklist(tags, any_button_active);
+//         console.log("tracklist", tracklist);
+//         display_tags_tracklist(tracklist);
+//     }
+//     catch (error) {
+//         console.error(error.message);
+//     }
+// }
+
 
 class DownloadPanel {
 
@@ -702,8 +742,8 @@ class TrackListPanel {
 
     addTracks(tracks) {
         const trackFactory = new TrackFactory()
-        for (_track of tracks) {
-            const track = trackFactory.createTrack(_track.track_id, _track.title, _track.duration, _track.tags)
+        for (const _track of tracks) {
+            const track = trackFactory.createTrack(_track.track_id, _track.title, _track.duration_sec, _track.tags)
             this.container.appendChild(track)
         }
     }
@@ -727,7 +767,7 @@ class TrackFactory {
         this.addTitle(trackId, title)
         this.addDuration(trackId, duration)
         this.addTagList(trackId, tags)
-        return container
+        return this.container
     }
 
     createTrackContainer(trackId) {
@@ -758,10 +798,13 @@ class TrackFactory {
         this.container.setAttribute("data-track-id", trackId) 
         tagList.classList.add("player-track-tags-list")
         const tagFactory = new TagFactory()
+        console.log("taga", tags)
         for (const _tag of tags) {
-            const tag = tagFactory.createTag(trackId, _tag)
+            const tag = tagFactory.createTag(trackId, _tag.tag)
             tagList.appendChild(tag)
         }
+        this.container.appendChild(tagList)
+
     }
 
 }
@@ -774,9 +817,9 @@ class TagFactory {
 
     createTag(trackId, tag) {
         this.createTagContainer(trackId)
-        this.addTag(tag)
+        this.addTag(trackId, tag)
         this.addDeleteButton(trackId)
-        return container
+        return this.container
     }
     
     createTagContainer(trackId) {
@@ -790,7 +833,10 @@ class TagFactory {
         const tagName = document.createElement('li')
         tagName.setAttribute("data-track-id", trackId)
         tagName.classList.add("player-track-tag-name")
-        tagName.textContent = JSON.stringify(tag, null, 2).replace('"', '')
+        if (tag !== undefined) {
+            tagName.textContent = JSON.stringify(tag, null, 2).replace(/['"]/g, '')
+
+        }
         this.container.appendChild(tagName)
     }
 

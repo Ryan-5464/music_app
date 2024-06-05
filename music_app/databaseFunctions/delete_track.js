@@ -12,8 +12,8 @@ const logger = new Logger()
 
 
 
-async function delete_track(db_filepath, audio_id) {
 
+async function delete_track(db_filepath, audio_id) {
     const LOG_ID = '273783'
 
     const QUERY = `
