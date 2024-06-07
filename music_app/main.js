@@ -15,9 +15,12 @@ const { fetch_tags } = require("./databaseFunctions/fetch_tags.js")
 const { tag_track } = require("./databaseFunctions/tag_track.js")
 const {fetch_tracks } = require("./databaseFunctions/fetch_tracks.js")
 const { delete_tag } = require("./databaseFunctions/delete_tag.js")
+const { TrackTagFilter } = require("./databaseFunctions/fetch_tracks_by_tag.js")
+const sound = require('sound-play')
 
+const filePath = path.join(__dirname, "./tracks/2bPYEk_FGr0.mp3")
+console.log(filePath)
 const logger = new Logger()
-
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -36,7 +39,7 @@ const createWindow = () => {
 
 
 app.whenReady().then(() => {
-
+    
 
     const LOG_ID = '382938'
     
@@ -53,10 +56,24 @@ app.whenReady().then(() => {
         })
     })
 
+    ipcMain.on('play-track--send', (event, data) => {
+        sound.play(filePath)
+        event.sender.send('play-track--receive', 'Playing audio.')
+    })
+
+
     ipcMain.on('fetch-tracks--send', (event, data) => {
-        console.log("XXY")
         fetch_tracks(DB_FILEPATH).then((tracks) => {
             event.sender.send('fetch-tracks--receive', tracks)
+        })
+    })
+
+    ipcMain.on('fetch-tracks-by-tag--send', (event, data) => {
+        console.log("virebvirbauv")
+        const trackTagFilter = new TrackTagFilter()
+        trackTagFilter.fetchTracksByTag(DB_FILEPATH, data.tags, data.anyButtonActive).then((tracks) => {
+            console.log("TRATTERATV", tracks)
+            event.sender.send('fetch-tracks-by-tag--receive', tracks)
         })
     })
 
@@ -67,14 +84,12 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('create-tag-send', (event, data) => {
-        console.log("create_tag triggered")
         tag_track(DB_FILEPATH, data.track_id, data.tag).then((tags) => {
             event.sender.send('create-tag-receive', tags)
         })
     })
 
     ipcMain.on('delete-tag-send', (event, data) => {
-        console.log("delete_tag triggered")
         delete_tag(DB_FILEPATH, data.track_id, data.tag).then(() => {
             event.sender.send('delete-tag-receive', "")
         })
@@ -95,8 +110,6 @@ app.whenReady().then(() => {
     ipcMain.on('track-count-send', (event, data) => {
         fetch_track_count(DB_FILEPATH)
             .then((track_count) => {
-                console.log("test")
-                console.log(track_count)
                 event.sender.send('track-count-receive', track_count);
             })
             .catch((error) => {
@@ -107,15 +120,12 @@ app.whenReady().then(() => {
 
     ipcMain.on('persistent-to-main', (event, data) => {
         select_tracks_by_tag(DB_FILEPATH, data.tags, data.any_button_active).then((result) => {
-            console.log('result', result);
             event.sender.send('persistent-from-main', result);
         });
     });
 
 
     ipcMain.on('delete-track-send', (event, data) => {
-        console.log("hello")
-
         delete_track(DB_FILEPATH, data.track_id).then((result) => {
             console.log(`Track with id ${data.track_id} deleted.`)
             event.sender.send('delete-track-receive', result);
@@ -144,8 +154,6 @@ app.whenReady().then(() => {
         if (data.type === "most-recent") {
 
             select_most_recent_tracks(DB_FILEPATH, data.limit).then((result) => {
-                console.log(`Most recent tracks.`)
-                console.log(result)
                 event.sender.send('fetch-tracks-response', result)
             });
         }

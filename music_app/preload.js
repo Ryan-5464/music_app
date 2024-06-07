@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('versions', {
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
   // we can also expose variables, not just functions
+
 });
 
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -14,5 +15,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     channelReceive: (channel, func) => {
         ipcRenderer.on(channel, (event, ...args) => func(...args));
-    }
+    },
+    removeListener: (channel, func) => ipcRenderer.removeListener(channel, func)
 });

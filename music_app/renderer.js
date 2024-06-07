@@ -40,26 +40,37 @@ class Track {
 }
 
 class Channel {
-    constructor (channel_send, channel_receive) {
-        this.channel_send = channel_send
-        this.channel_receive = channel_receive
+    constructor(channel_send, channel_receive) {
+        this.channel_send = channel_send;
+        this.channel_receive = channel_receive;
+        this.listener = null;
     }
+
     async send(sent_data) {
+
         try {
-            await window.electronAPI.channelSend(this.channel_send, sent_data)
+            await window.electronAPI.channelSend(this.channel_send, sent_data);
             const received_data = await new Promise((resolve, reject) => {
-                window.electronAPI.channelReceive(this.channel_receive, (received_data, error) => {
+                this.listener = (received_data, error) => {
                     if (error) {
                         reject(error)
                     } else {
                         resolve(received_data)
                     }
-            
-                })
-            }) 
+                };
+                window.electronAPI.channelReceive(this.channel_receive, this.listener);
+            })
+            this.close()
             return received_data
         } catch (error) {
-            console.error(error.message);
+            console.error(error.message)
+        }
+    }
+
+    close() {
+        if (this.listener) {
+            window.electronAPI.removeListener(this.channel_receive, this.listener)
+            this.listener = null
         }
     }
 }
@@ -631,15 +642,19 @@ class PlayerPanel {
     addListener() {
         const button = document.getElementById("all-tracks-option")
         button.addEventListener("click", () => {
-            this.panel.innerHTML = ''
             this.display()
         })
     }
 
     display() {
-        this.addTrackList()
+        this.resetPanel()
         this.addTagsSearchBar()
+        this.addTrackList()
         this.addPlayerControls()
+    }
+
+    resetPanel() {
+        this.panel.innerHTML = ''
     }
 
     addPlayerControls() {
@@ -662,13 +677,15 @@ class PlayerPanel {
 
 class TagsSearchBar {
 
-    constructor (parentElement) {
-        this.parentElement = parentElement
+    constructor(parentElement) {
+        this.parentElement = parentElement;
+        this.channel = new Channel("fetch-tracks-by-tag--send", "fetch-tracks-by-tag--receive")
     }
 
     display() {
         this.createContainer()
         this.addSearchBar()
+        this.addSearchTypeButtons()
     }
 
     createContainer() {
@@ -678,33 +695,70 @@ class TagsSearchBar {
     }
 
     addSearchBar() {
-        const searchBar = document.createElement("input")
-        searchBar.id = "tags-search-bar"
-        searchBar.addEventListener("input", () => {
-            const tracks = this.fetchTracksByTag()
-            const trackListPanel = new TrackListPanel(this.parentElement)
-            trackListPanel.display()
-        })
+        const searchBar = document.createElement("input");
+        searchBar.id = "tags-search-bar";
+        searchBar.addEventListener("input", async () => {
+            await this.displayTracks()
+        });
         this.parentElement.appendChild(searchBar)
     }
 
-    async fetchTracksByTag() {
-        const tagsSearchBar = document.getElementById("tags-search-bar")
-        const tags = tagsSearchBar.value.split(',').map(tag => tag.trim())
-        const channel = new Channel("fetch-tracks-by-tag-send", "fetch-tracks-by-tag-receive")
-        const tracks = await channel.send({tags: tags})
-        return tracks
+    async displayTracks() {
+        const tracks = await this.fetchTracksByTag(this.channel)
+        const trackListPanel = new TrackListPanel(this.parentElement)
+        trackListPanel.resetPanel()
+        trackListPanel.addTrackListPanelToParent()
+        trackListPanel.addTracks(tracks)
     }
 
-    addTracks(tracks) {
-        const trackFactory = new TrackFactory()
-        for (const _track of tracks) {
-            const track = trackFactory.createTrack(_track.track_id, _track.title, _track.duration_sec, _track.tags)
-            this.container.appendChild(track)
+    addSearchTypeButtons() {
+        const anyButton = document.createElement("button")
+        anyButton.id = "tags-search-bar-any-button"
+        anyButton.textContent = "Any"
+        anyButton.addEventListener("click", () => {
+            this.toggleActive(anyButton, allButton)
+        })
+        
+        const allButton = document.createElement("button")
+        allButton.id = "tags-search-bar-all-button"
+        allButton.textContent = "All"
+        allButton.classList.add("active")
+        allButton.addEventListener("click", () => {
+            this.toggleActive(anyButton, allButton)
+        })
+
+        this.parentElement.appendChild(anyButton) 
+        this.parentElement.appendChild(allButton)
+    }
+
+    toggleActive(buttonA, buttonB) {
+        if (buttonA.classList.contains("active")) {
+            buttonA.classList.remove("active")
+            buttonB.classList.add("active")
+            this.displayTracks()
+        } 
+        else {
+            buttonB.classList.remove("active")
+            buttonA.classList.add("active")
+            this.displayTracks()
         }
     }
 
-
+    async fetchTracksByTag(channel) {
+        console.log("239g23f93b2qf")
+        const tagsSearchBar = document.getElementById("tags-search-bar")
+        const tags = tagsSearchBar.value.split(',').map(tag => tag.trim())
+        console.log("bfeiuwbfiew", tags)
+        const anyButton = document.getElementById("tags-search-bar-any-button")
+        let tracks = []
+        if (anyButton.classList.contains("active")) {
+            tracks = await channel.send({ tags: tags, anyButtonActive: true })
+        }
+        else {
+            tracks = await channel.send({ tags: tags, anyButtonActive: false })
+        }
+        return tracks
+    }
 }
 
 
@@ -739,6 +793,7 @@ class TrackListPanel {
     }
 
     async display() {
+        this.resetPanel()
         this.addTrackListPanelToParent()
         console.log("XXX triggered")
         const tracks = await this.fetchTracks()
@@ -749,7 +804,15 @@ class TrackListPanel {
     addTrackListPanelToParent() {
         this.container = document.createElement("div")
         this.container.id = "tracklist-panel"
-        this.parentElement.appendChild(this.container)
+        const tagsSearchBar = document.getElementById("tags-search-bar")
+        this.parentElement.insertBefore(this.container, tagsSearchBar)
+    }
+
+    resetPanel() {
+        const trackListPanel = document.getElementById("tracklist-panel")
+        if (trackListPanel) {
+            trackListPanel.remove()
+        }
     }
 
     addTracks(tracks) {
@@ -763,7 +826,6 @@ class TrackListPanel {
     async fetchTracks() {
         const channel = new Channel("fetch-tracks--send", "fetch-tracks--receive")
         const tracks = await channel.send({})
-        console.log("4646", tracks)
         return tracks
     }
 }
@@ -867,3 +929,24 @@ class TagFactory {
 
 const playerPanel = new PlayerPanel()
 playerPanel.addListener()
+
+
+const audioElement = document.getElementById('myAudio');
+
+// Function to play the audio
+function playAudio() {
+    const channel = new Channel("play-track--send", "play-track--receive")
+    const confirm = channel.send({})
+    console.log(confirm)
+}
+
+// Function to pause the audio
+function pauseAudio() {
+    audioElement.pause();
+}
+
+// Function to stop the audio (pause and reset the time)
+function stopAudio() {
+    audioElement.pause();
+    audioElement.currentTime = 0;
+}
