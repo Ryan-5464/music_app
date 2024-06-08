@@ -9,6 +9,19 @@
     <link rel="stylesheet" href="./css/classes.css">
     <link rel="stylesheet" href="./css/ids.css">
     <title>Music Player</title>
+    <style>
+        /* Add your CSS styles here */
+        #progressContainer {
+            width: 100%;
+            background-color: #ddd;
+            cursor: pointer;
+        }
+        #progressBar {
+            width: 0;
+            height: 10px;
+            background-color: #4caf50;
+        }
+    </style>
 </head>
 
 <body>
@@ -85,6 +98,9 @@
             <button id="playButton">Play</button>
             <button onclick="pauseAudio()">Pause</button>
             <button onclick="stopAudio()">Stop</button>
+            <div id="progressContainer">
+                <div id="progressBar"></div>
+            </div>
         </div>
 
 

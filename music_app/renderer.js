@@ -965,4 +965,21 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error playing song:', error);
       }
     });
-  });
+    const audio = document.getElementById('myAudio');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+
+    // Update the progress bar as the audio plays
+    audio.addEventListener('timeupdate', () => {
+        const percentage = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.width = `${percentage}%`;
+    });
+
+    // Seek to a different part of the audio when clicking on the progress bar
+    progressContainer.addEventListener('click', (e) => {
+        const rect = progressContainer.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const newTime = (offsetX / rect.width) * audio.duration;
+        audio.currentTime = newTime;
+    });
+});
