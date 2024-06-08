@@ -1,6 +1,6 @@
 const fs = require('fs');
 const sqlite3 = require('sqlite3').verbose();
-const { DB_FILEPATH } = require('./config.js');
+const config = require('./config.json');
 
 
 
@@ -21,7 +21,7 @@ async function database() {
 
 function connectToDb() {
     return new Promise((resolve, reject) => {
-        let db = new sqlite3.Database(DB_FILEPATH, (err) => {
+        let db = new sqlite3.Database(config.DB_FILEPATH, (err) => {
             if (err) {
                 reject(err);
             };
@@ -163,7 +163,7 @@ async function selectTracksByTag(tagsList) {
     `;
     console.log("query", QUERY);
     try {
-        const db = new sqlite3.Database(DB_FILEPATH);
+        const db = new sqlite3.Database(config.DB_FILEPATH);
         const result = await executeQuery2(db, QUERY);
         console.log("result1", result);
         return result;
@@ -182,7 +182,7 @@ async function selectPlaylists() {
     `;
     console.log("query", QUERY);
     try {
-        const db = new sqlite3.Database(DB_FILEPATH);
+        const db = new sqlite3.Database(config.DB_FILEPATH);
         const result = await executeQuery2(db, QUERY);
         console.log("result1", result);
         return result;

@@ -7,7 +7,7 @@ const script_name = path.basename(__filename);
 const { get_function_name } = require("../helpers/get_function_name.js")
 var ytdl = require('ytdl-core');
 const fs = require('fs');
-const { TRACK_FILENAME } = require("../config.js")
+const config = require("../config.json")
 
 
 const logger = new Logger() 
@@ -88,7 +88,7 @@ class AudioDownloader {
                 "track_id": info.videoDetails.videoId,
                 "url": url,
                 "duration_sec": info.videoDetails.lengthSeconds,
-                "local_path": TRACK_FILENAME.replace("[]", info.videoDetails.videoId),
+                "local_path": config.TRACK_FILENAME.replace("[]", info.videoDetails.videoId),
                 "title": info.videoDetails.title 
             }
 

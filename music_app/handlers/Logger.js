@@ -1,5 +1,4 @@
-const { ACTIVE_LOGS, LOG_LEVEL }  = require("../config.js")
-
+const config = require('../config.json');
 
 
 // Usage = logger.log(LOG_ID, script_name, get_function_name(), 'Connected to database', this.name, Array.from(arguments))
@@ -9,29 +8,29 @@ class Logger {
 
     log(level, log_id, filename, func, message, cls=null, args=null) {
     
-        if (!ACTIVE_LOGS.includes("ALL") && !ACTIVE_LOGS.includes(log_id)) {
+        if (!config.ACTIVE_LOGS.includes("ALL") && !config.ACTIVE_LOGS.includes(log_id)) {
             return
         }
     
-        if (LOG_LEVEL === 0 && level === "debug") {
+        if (config.LOG_LEVEL === 0 && level === "debug") {
             const log_message = this.prepare_log("DEBUG", log_id, filename, func, message, cls, args)
             console.debug(log_message)
             return
         }
 
-        if (LOG_LEVEL < 2 && level === "info") {
+        if (config.LOG_LEVEL < 2 && level === "info") {
             const log_message = this.prepare_log("INFO", log_id, filename, func, message, cls, args)
             console.info(log_message)
             return
         }
 
-        if (LOG_LEVEL < 3 && level === "warning") {
+        if (config.LOG_LEVEL < 3 && level === "warning") {
             const log_message = this.prepare_log("WARNING", log_id, filename, func, message, cls, args)
             console.warn(log_message)
             return
         }
         
-        if (LOG_LEVEL < 4 && level === "error") {
+        if (config.LOG_LEVEL < 4 && level === "error") {
             const log_message = this.prepare_log("ERROR", log_id, filename, func, message, cls, args)
             console.error(log_message)
             return

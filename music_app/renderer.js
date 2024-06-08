@@ -934,10 +934,11 @@ playerPanel.addListener()
 const audioElement = document.getElementById('myAudio');
 
 // Function to play the audio
-function playAudio() {
+async function playAudio() {
+    
     const channel = new Channel("play-track--send", "play-track--receive")
-    const confirm = channel.send({})
-    console.log(confirm)
+    const dataurl = await channel.send({trackId: "2bPYEk_FGr0"})
+    return dataurl
 }
 
 // Function to pause the audio
@@ -950,3 +951,18 @@ function stopAudio() {
     audioElement.pause();
     audioElement.currentTime = 0;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const audioElement = document.getElementById('myAudio');
+    const playButton = document.getElementById('playButton');
+  
+    playButton.addEventListener('click', async () => {
+      try {
+        const dataurl = await playAudio()
+        audioElement.src = dataurl;
+        audioElement.play();
+      } catch (error) {
+        console.error('Error playing song:', error);
+      }
+    });
+  });
