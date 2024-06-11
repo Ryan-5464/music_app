@@ -1,3 +1,20 @@
+import { Track } from "./rdr/track.js"
+import { CentreDisplayController } from "./rdr/centreDisplayController.js"
+import { LeftSiderbar } from "./rdr/leftSidebar.js"
+import { Body } from "./body.js"
+
+
+
+const body = new Body()
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.appendChild(body.makeElement())
+})
+
+
+
+
 const tracklist_container = document.getElementById("tracklist-container")
 tracklist_container.addEventListener('click', handle_delete_button);
 
