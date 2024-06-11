@@ -1,14 +1,14 @@
-class Body {
+class Main {
 
     makeElement() {
-        const bodyElement = document.createElement("div")
-        bodyElement.id = "body-element"
-        bodyElement.appendChild(this.addHeaderElement())
-        bodyElement.appendChild(this.addLeftSidebarElement())
-        bodyElement.appendChild(this.addCentreContainerElement())
-        bodyElement.appendChild(this.addRightSidebarElement())
-        bodyElement.appendChild(this.addFooterElement())
-        return bodyElement
+        const mainElement = document.createElement("div")
+        mainElement.id = "main-element"
+        mainElement.appendChild(this.addHeaderElement())
+        mainElement.appendChild(this.addLeftSidebarElement())
+        mainElement.appendChild(this.addCentreContainerElement())
+        mainElement.appendChild(this.addRightSidebarElement())
+        mainElement.appendChild(this.addFooterElement())
+        return mainElement
     }
 
     addHeaderElement() {
