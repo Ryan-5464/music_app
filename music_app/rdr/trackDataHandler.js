@@ -1,9 +1,5 @@
-import { Channel } from "./Channel.js";
 
-
-
-
-export class TrackListData {
+class TrackDataHandler {
     
     constructor () {
         this.fetchByTagChannel = new Channel("fetch-tracks-by-tag--send", "fetch-tracks-by-tag--receive")
@@ -19,8 +15,8 @@ export class TrackListData {
         return trackByTag
     }
 
-    async fetchAllTracks() {
-        const allTracks = await this.fetchAllChannel.send({})
+    async fetchAllTracks(page, limit) {
+        const allTracks = await this.fetchAllChannel.send({page: page, limit: limit})
         return allTracks
     }
 

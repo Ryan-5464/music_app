@@ -80,6 +80,16 @@ app.whenReady().then(() => {
         })
     })
 
+    ipcMain.on('fetch-all-tracks--send', (event, data) => {
+        fetch_tracks(config.DB_FILEPATH).then((tracks) => {
+            const start_index = (data.page - 1) * data.limit
+            const end_index = Math.min(start_index + data.limit, tracks.length)
+            const resultSet = tracks.slice(start_index, end_index)
+            console.log(resultSet)
+            event.sender.send('fetch-all-tracks--receive', resultSet)
+        })
+    })
+
     ipcMain.on('fetch-tracks-by-tag--send', (event, data) => {
         console.log("virebvirbauv")
         const trackTagFilter = new TrackTagFilter()

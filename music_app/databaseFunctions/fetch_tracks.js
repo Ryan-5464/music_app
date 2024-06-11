@@ -32,7 +32,6 @@ async function fetch_tracks(db_filepath) {
         _track.tags = await database.download(QUERY, values) 
     }
     await database.disconnect()
-    logger.log("info", LOG_ID, script_name, get_function_name(), 'Track deleted successfully', "", Array.from(arguments))
     return tracks
 }
 

@@ -1,5 +1,5 @@
-//import { TrackDataHandler } from "./trackDataHandler.js"
-//import { TrackElement } from "./TrackElement.js"
+//import { TrackDataHandler } from "./rdr/trackDataHandler.js"
+//import { TrackElement } from "./rdr/TrackElement.js"
 
 
 class CentreContainerHandler {
@@ -37,13 +37,14 @@ class CentreContainerHandler {
         return downloadBarElement
     }
 
-    addTracksToTrackList(page=1, limit=10) {
+    async addTracksToTrackList(page=1, limit=10) {
         const trackDataHandler = new TrackDataHandler()
-        const trackData = trackDataHandler.fetchTracks(page, limit)
+        const trackData = await trackDataHandler.fetchAllTracks(page, limit)
+        console.log("trackdata", trackData)
         const trackListElement = document.getElementById("track-list-element")
-        for (track of trackData) {
-            const trackElement = new TrackElement()
-            const element = trackElement.makeAllTracksElement(track)
+        for (const track of trackData) {
+            const trackElementFactory = new TrackElementFactory()
+            const element = trackElementFactory.makeAllTracksElement(track)
             trackListElement.appendChild(element)
         }
     }
