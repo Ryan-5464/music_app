@@ -1,44 +1,51 @@
 class Main {
 
     makeElement() {
-        const mainElement = document.createElement("div")
-        mainElement.id = "main-element"
-        mainElement.appendChild(this.addHeaderElement())
-        mainElement.appendChild(this.addLeftSidebarElement())
-        mainElement.appendChild(this.addCentreContainerElement())
-        mainElement.appendChild(this.addRightSidebarElement())
-        mainElement.appendChild(this.addFooterElement())
-        return mainElement
+        const element = document.createElement("div")
+        element.id = "main-element"
+        element.appendChild(this.addHeaderElement())
+        element.appendChild(this.addLeftSidebarElement())
+        element.appendChild(this.addTrackListElement())
+        element.appendChild(this.addTrackListFooterElement())
+        element.appendChild(this.addRightSidebarElement())
+        element.appendChild(this.addFooterElement())
+        return element
     }
 
     addHeaderElement() {
-        const headerElement = document.createElement("div")
-        headerElement.id = "header-element"
-        return headerElement
+        const element = document.createElement("div")
+        element.id = "header-element"
+        return element
     }
 
     addLeftSidebarElement() {
-        const leftSidebarElement = document.createElement("div")
-        leftSidebarElement.id = "left-sidebar-element"
-        return leftSidebarElement
+        const element = document.createElement("div")
+        element.id = "left-sidebar-element"
+        return element
     }
 
-    addCentreContainerElement() {
-        const centreContainerElement = document.createElement("div")
-        centreContainerElement.id = "centre-container-element"
-        return centreContainerElement
+    addTrackListElement() {
+        const element = document.createElement("div")
+        element.id = "track-list-element"
+        return element
+    }
+
+    addTrackListFooterElement() {
+        const element = document.createElement("div")
+        element.id = "track-list-footer-element"
+        return element
     }
 
     addRightSidebarElement() {
-        const rightSidebarElement = document.createElement("div")
-        rightSidebarElement.id = "right-sidebar-element"
-        return rightSidebarElement
+        const element = document.createElement("div")
+        element.id = "right-sidebar-element"
+        return element
     }
 
     addFooterElement() {
-        const footerElement = document.createElement("div")
-        footerElement.id = "footer-element"
-        return footerElement
+        const element = document.createElement("div")
+        element.id = "footer-element"
+        return element
     }
 
 }

@@ -1,12 +1,12 @@
-class LeftSidebarHandler {
+class LeftSidebar {
 
     loadContent() {
-        const leftSidebarElement = document.getElementById("left-sidebar-element")
-        leftSidebarElement.appendChild(this.addDownloadButton())
-        leftSidebarElement.appendChild(this.addPlaylistsButton())
-        leftSidebarElement.appendChild(this.addTagFilterButton())
-        leftSidebarElement.appendChild(this.addAllTracksButton())
-        leftSidebarElement.appendChild(this.addRecentlyDeletedButton())
+        const element = document.getElementById("left-sidebar-element")
+        element.appendChild(this.addDownloadButton())
+        element.appendChild(this.addPlaylistsButton())
+        element.appendChild(this.addTagFilterButton())
+        element.appendChild(this.addAllTracksButton())
+        element.appendChild(this.addRecentlyDeletedButton())
     }
 
     addDownloadButton() {

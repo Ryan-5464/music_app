@@ -5,7 +5,7 @@
 class ContentLoader {
 
     loadContentDomLoaded() {
-        new LeftSidebarHandler().loadContent()
-        new CentreContainerHandler().loadContent()
+        new LeftSidebar().loadContent()
+        new TrackList().loadContent()
     }
 }
