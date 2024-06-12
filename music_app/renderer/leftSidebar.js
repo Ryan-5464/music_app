@@ -5,7 +5,7 @@ class LeftSidebar {
         element.appendChild(this.addDownloadButton())
         element.appendChild(this.addPlaylistsButton())
         element.appendChild(this.addTagFilterButton())
-        element.appendChild(this.addAllTracksButton())
+        element.appendChild(this.addSearchButton())
         element.appendChild(this.addRecentlyDeletedButton())
     }
 
@@ -30,17 +30,17 @@ class LeftSidebar {
         return button
     }
 
-    addAllTracksButton() {
+    addSearchButton() {
         const button = document.createElement("button")
-        button.id = "left-sidebar-all-tracks-button"
-        button.textContent = "All Tracks"
+        button.id = "left-sidebar-search-button"
+        button.textContent = "Search"
         return button
     }
 
     addRecentlyDeletedButton() {
         const button = document.createElement("button")
         button.id = "left-sidebar-recently-deleted-button"
-        button.textContent = "Delete Tracks"
+        button.textContent = "Recently Deleted"
         return button
     }
 

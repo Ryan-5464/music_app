@@ -3,7 +3,7 @@ class TrackEventHandler {
     addTrackEventListeners() {
         const trackElements = document.getElementsByClassName("track")
         for (const trackElement of trackElements) {
-            trackElement.addEventListener("click", this.toggleActive())
+            trackElement.addEventListener("click", this.toggleActive)
         }
     }
 

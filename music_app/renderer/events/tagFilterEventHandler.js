@@ -17,6 +17,7 @@ class TagFilterEventHandler {
         const tags = tagString.split(',').map(tag => tag.trim())
         const anyButton = document.getElementById("tag-filter-any-button")
         const anyButtonActive = anyButton.classList.contains("active")
+        console.log("tags", tags, "anybuttonactive", anyButtonActive)
         const tracks = await this.channel.send({tags: tags, anyButtonActive: anyButtonActive})
         const trackList = new TrackList()
         trackList.loadTracks(tracks)

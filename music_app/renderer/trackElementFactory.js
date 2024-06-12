@@ -2,9 +2,9 @@ class TrackElementFactory {
 
     makeAllTracksElement(trackData) {
         const element = document.createElement("div")
-        element.setAttribute("data-track-id", trackData.trackId)
+        element.setAttribute("data-track-id", trackData.track_id)
         element.classList.add("track")
-        element.appendChild(this.addPlayButton(trackData.trackId))
+        element.appendChild(this.addPlayButton(trackData.track_id))
         element.appendChild(this.addTrackTitle(trackData.title))
         element.appendChild(this.addTrackDuration(trackData.duration))
         return element
@@ -12,7 +12,7 @@ class TrackElementFactory {
 
     makeElement() {
         const div = document.createElement("div")
-        div.setAttribute("data-track-id", this.trackData.trackId)
+        div.setAttribute("data-track-id", this.trackData.track_id)
         div.classList.add("track")
         div.appendChild(this.addPlayButton())
         div.appendChild(this.addTrackTitle())

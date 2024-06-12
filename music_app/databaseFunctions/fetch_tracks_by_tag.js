@@ -59,7 +59,7 @@ async function fetch_tracks_by_tag(db_filepath, tags_list, any_button_active) {
         `
     }
 
-    if (tags.length === 2) {
+    if (tags.length === 2 || tags.length === 1) {
 
         QUERY = `
             SELECT * FROM tracks;
@@ -96,20 +96,28 @@ class TrackTagFilter {
         await this.database.connect(dbPath)
         console.log("EIEIEIE", tagsList)
         let tracks = null
-        if (anyButtonActive) {
-            tracks = await this.fetchTracksAnyTagFilter(tagsList)
-        }
-        else if (tagsList.length === 1 && tagsList[0] === '') {
+        if (tagsList.length === 1) {    
             console.log("testetst")
             tracks = await this.fetchTracksNoTagFilter()
+            tracks = await this.fetchTags(tracks)
+            await this.database.disconnect()
+            console.log("class tracks", tracks)
+            return tracks
+        }
+        if (anyButtonActive) {
+            tracks = await this.fetchTracksAnyTagFilter(tagsList)
+            tracks = await this.fetchTags(tracks)
+            await this.database.disconnect()
+            console.log("class tracks", tracks)
+            return tracks
         }
         else {
             tracks = await this.fetchTracksAllTagFilter(tagsList)
+            tracks = await this.fetchTags(tracks)
+            await this.database.disconnect()
+            console.log("class tracks", tracks)
+            return tracks
         }
-        console.log("class tracks", tracks)
-        tracks = await this.fetchTags(tracks)
-        await this.database.disconnect()
-        return tracks
     }
     
     convertTagListToString(tagsList) {
@@ -144,17 +152,17 @@ class TrackTagFilter {
         const n = tagsList.length
         const tagString = this.convertTagListToString(tagsList)
         const QUERY = `   
-        SELECT DISTINCT tracks.id, tracks.track_id, tracks.url, tracks.duration_sec, 
-        tracks.local_path, tracks.file_size_b, tracks.title, 
-        tracks.times_played, tracks.date_downloaded
-        FROM tracks
-        WHERE tracks.track_id IN (
-            SELECT track_id
-            FROM tags
-            WHERE tag IN (${tagString})
-            GROUP BY track_id
-            HAVING COUNT(DISTINCT tag) = ${n}
-        );
+            SELECT DISTINCT tracks.id, tracks.track_id, tracks.url, tracks.duration_sec, 
+            tracks.local_path, tracks.file_size_b, tracks.title, 
+            tracks.times_played, tracks.date_downloaded
+            FROM tracks
+            WHERE tracks.track_id IN (
+                SELECT track_id
+                FROM tags
+                WHERE tag IN (${tagString})
+                GROUP BY track_id
+                HAVING COUNT(DISTINCT tag) = ${n}
+            );
         `
         const tracks = await this.database.download(QUERY)
         return tracks
@@ -170,8 +178,8 @@ class TrackTagFilter {
 
     async fetchTags(tracks) {
         const QUERY = `
-        SELECT tag FROM tags 
-        WHERE track_id = ?
+            SELECT tag FROM tags 
+            WHERE track_id = ?
         `
         for (const _track of tracks) {
             console.log("_track", _track)

@@ -23,6 +23,14 @@ class TrackListFooter {
         subElement.appendChild(this.addTagFilter())
     }
 
+    loadSearchFilter() {
+        this.removeSubElement()
+        const element = document.getElementById("track-list-footer-element")
+        element.appendChild(this.addSubElement())
+        const subElement = document.getElementById("track-list-footer-sub-element")
+        subElement.appendChild(this.addSearchFilter())
+    }
+
     addSubElement() {
         const element = document.createElement("div")
         element.id = "track-list-footer-sub-element"
@@ -46,6 +54,12 @@ class TrackListFooter {
     addTagFilter() {
         const tagFilter = new TagFilter()
         const element = tagFilter.makeElement()
+        return element
+    }
+
+    addSearchFilter() {
+        const searchFilter = new SearchFilter()
+        const element = searchFilter.makeElement()
         return element
     }
 

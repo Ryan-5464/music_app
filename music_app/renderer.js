@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const leftSidebarDownloadButton = document.getElementById("left-sidebar-download-button")
     const leftSidebarTagFilterButton = document.getElementById("left-sidebar-tag-filter-button")
+    const leftSidebarSearchButton = document.getElementById("left-sidebar-search-button")
+    const leftSidebarRecentlyDeletedButton = document.getElementById("left-sidebar-recently-deleted-button")
+
 
     leftSidebarDownloadButton.addEventListener("click", () => {
         const trackListFooter = new TrackListFooter()
@@ -31,6 +34,19 @@ document.addEventListener("DOMContentLoaded", () => {
         tagFilterEventHandler.addTagFilterEventListener()
         tagFilterEventHandler.addAnyButtonEventListener()
         tagFilterEventHandler.addAllButtonEventListener()
+    })
+
+    leftSidebarSearchButton.addEventListener("click", () => {
+        const trackListFooter = new TrackListFooter()
+        const searchFilterEventHandler = new SearchFilterEventHandler()
+        trackListFooter.loadSearchFilter()
+        searchFilterEventHandler.addSearchFilterEventListener()
+        searchFilterEventHandler.addByTitleButtonEventListener()
+        searchFilterEventHandler.addByArtistButtonEventListener()
+    })
+
+    leftSidebarRecentlyDeletedButton.addEventListener("click", () => {
+
     })
 })
 
