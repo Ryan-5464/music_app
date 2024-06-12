@@ -1,0 +1,64 @@
+//import { TrackDataHandler } from "./rdr/trackDataHandler.js"
+//import { TrackElement } from "./rdr/TrackElement.js"
+
+
+class TrackList {
+
+    constructor() {
+        this.trackEventHandler = new TrackEventHandler()
+    }
+
+    loadContent() {
+        const element = document.getElementById("track-list-element")
+        element.appendChild(this.addSubElement())
+        const subElement = document.getElementById("track-list-sub-element")
+        subElement.appendChild(this.addTrackList())
+        this.addTracksToTrackList()
+    }
+
+    loadTracks(tracks) {
+        this.removeSubElement()
+        const element = document.getElementById("track-list-element")
+        element.appendChild(this.addSubElement())
+        const subElement = document.getElementById("track-list-sub-element")
+        subElement.appendChild(this.addTrackList())
+        this.addTracks(tracks)
+    }
+
+    addSubElement() {
+        const element = document.createElement("div")
+        element.id = "track-list-sub-element"
+        return element
+    }
+
+    removeSubElement() {
+        const element = document.getElementById("track-list-sub-element")
+        if (!element) {
+            return
+        }
+        element.remove() 
+    }
+
+    addTrackList() {
+        const element = document.createElement("div")
+        element.id = "track-list"
+        return element
+    }
+
+    async addTracksToTrackList(page=1, limit=10) {
+        const trackDataHandler = new TrackDataHandler()
+        const tracks = await trackDataHandler.fetchAllTracks(page, limit)
+        this.addTracks(tracks)
+    }
+
+    addTracks(tracks) {
+        const trackListElement = document.getElementById("track-list")
+        for (const track of tracks) {
+            const trackElementFactory = new TrackElementFactory()
+            const element = trackElementFactory.makeAllTracksElement(track)
+            trackListElement.appendChild(element)
+        }
+        this.trackEventHandler.addTrackEventListeners()
+    }
+
+}
