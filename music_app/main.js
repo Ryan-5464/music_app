@@ -22,8 +22,6 @@ const logger = new Logger()
 
 
 
-const { MpvLinuxInstaller } = require("./system/mpvLinuxInstaller.js")
-const { AudioPlayer } = require("./system/playAudio.js")
 const { fetchTrackSource } = require("./server_logic/convertSong.js")
 
 
@@ -53,12 +51,12 @@ app.whenReady().then(() => {
     initialize_database(config.DB_FILEPATH)
 
 
-    ipcMain.on('download-track-send', (event, data) => {
+    ipcMain.on('download-track--send', (event, data) => {
         download_audio(config.DB_FILEPATH, data.url).then((success) => {
             if (!success) {
-                event.sender.send('download-track-receive', 'Could not download audio!')
+                event.sender.send('download-track--receive', 'Could not download audio!')
             } else {
-                event.sender.send('download-track-receive', 'Audio downloaded successfully!');
+                event.sender.send('download-track--receive', 'Audio downloaded successfully!');
             }
         })
     })

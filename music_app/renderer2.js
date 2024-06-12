@@ -1,6 +1,6 @@
-import { Track } from "./rdr/trackElementFactory.js"
-import { CentreDisplayController } from "./rdr/centreDisplayController.js"
-import { LeftSiderbar } from "./rdr/leftSidebar.js"
+import { Track } from "./renderer/trackElementHandler.js"
+import { CentreDisplayController } from "./renderer/centreDisplayController.js"
+import { LeftSiderbar } from "./renderer/leftSidebar.js"
 import { Body } from "./body.js"
 
 
