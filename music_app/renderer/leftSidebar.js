@@ -12,6 +12,7 @@ class LeftSidebar {
     addDownloadButton() {
         const button = document.createElement("button")
         button.id = "left-sidebar-download-button"
+        button.classList.add("menu-button")
         button.textContent = "Download"
         return button
     }
@@ -19,6 +20,7 @@ class LeftSidebar {
     addPlaylistsButton() {
         const button = document.createElement("button")
         button.id = "left-sidebar-playlists-button"
+        button.classList.add("menu-button")
         button.textContent = "Playlists"
         return button
     }
@@ -26,6 +28,7 @@ class LeftSidebar {
     addTagFilterButton() {
         const button = document.createElement("button")
         button.id = "left-sidebar-tag-filter-button"
+        button.classList.add("menu-button")
         button.textContent = "Tag Filter"
         return button
     }
@@ -33,6 +36,7 @@ class LeftSidebar {
     addSearchButton() {
         const button = document.createElement("button")
         button.id = "left-sidebar-search-button"
+        button.classList.add("menu-button")
         button.textContent = "Search"
         return button
     }
@@ -40,6 +44,7 @@ class LeftSidebar {
     addRecentlyDeletedButton() {
         const button = document.createElement("button")
         button.id = "left-sidebar-recently-deleted-button"
+        button.classList.add("menu-button")
         button.textContent = "Recently Deleted"
         return button
     }
