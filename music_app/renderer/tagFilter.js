@@ -13,6 +13,7 @@ class TagFilter {
     addFilterInput() {
         const element = document.createElement("input")
         element.id = "tag-filter-input"
+        element.classList.add("input-bar")
         element.classList.add("input-box")
         return element
     }
@@ -35,6 +36,7 @@ class TagFilter {
     addTagFilterText() {
         const element = document.createElement("div")
         element.id = "tag-filter-text"
+        element.classList.add("message")
         element.textContent = "Spaces are allowed. Seperate tags by comma."
         return element
     }

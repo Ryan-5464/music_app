@@ -12,6 +12,7 @@ class DownloadBar {
     addInputBox() {
         const input = document.createElement("input")
         input.id = "download-bar-input"
+        input.classList.add("input-bar")
         input.placeholder = "Enter a valid Youtube URL."
         return input
     }
@@ -23,12 +24,14 @@ class DownloadBar {
         return button
         }
         
-        addDownloadMessage() {
-            const element = document.createElement("div")
-            element.id = "download-message"
-            return element
-        }
-            
+    addDownloadMessage() {
+        const element = document.createElement("div")
+        element.id = "download-message"
+        element.classList.add("message")
+        element.textContent = ""
+        return element
+    }
+        
 }
             
             

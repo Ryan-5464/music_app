@@ -8,6 +8,7 @@ class Player {
         subElement.appendChild(this.addPlayButton())
         subElement.appendChild(this.addPauseButton())
         subElement.appendChild(this.addStopButton())
+        subElement.appendChild(this.addProgressBar())
     }
 
     addSubElement() {
@@ -32,22 +33,31 @@ class Player {
 
     addPlayButton() {
         const element = document.createElement("button")
-        element.classList.add("player-play-button")
+        element.id = "player-play-button"
         element.textContent = "Play"
         return element
     }
 
     addPauseButton() {
         const element = document.createElement("button")
-        element.classList.add("player-pause-button")
+        element.id = "player-pause-button"
         element.textContent = "Pause"
         return element
     }
 
     addStopButton() {
         const element = document.createElement("button")
-        element.classList.add("player-stop-button")
+        element.id = "player-stop-button"
         element.textContent = "Stop"
+        return element
+    }
+    
+    addProgressBar() {
+        const element = document.createElement("div")
+        element.id = "progress-bar"
+        const subElement = document.createElement("div")
+        subElement.id = "current-progress"
+        element.appendChild(subElement)
         return element
     }
 

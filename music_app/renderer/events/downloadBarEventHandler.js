@@ -19,6 +19,8 @@ class DownloadBarEventHandler {
         const downloadMessage = await this.channel.send({url: downloadUrl})
         const downloadMessageElement = document.getElementById("download-message")
         downloadMessageElement.textContent = downloadMessage
+        const tracklist = new TrackList()
+        tracklist.loadAllTracks()
     }
 
 }

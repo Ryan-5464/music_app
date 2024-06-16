@@ -12,6 +12,7 @@ class TrackList {
         const element = document.getElementById("track-list-element")
         element.appendChild(this.addSubElement())
         const subElement = document.getElementById("track-list-sub-element")
+        subElement.appendChild(this.addTrackListTitle())
         subElement.appendChild(this.addTrackList())
         this.addTracksToTrackList()
     }
@@ -21,8 +22,19 @@ class TrackList {
         const element = document.getElementById("track-list-element")
         element.appendChild(this.addSubElement())
         const subElement = document.getElementById("track-list-sub-element")
+        subElement.appendChild(this.addTrackListTitle())
         subElement.appendChild(this.addTrackList())
         this.addTracks(tracks)
+    }
+
+    loadAllTracks() {
+        this.removeSubElement()
+        const element = document.getElementById("track-list-element")
+        element.appendChild(this.addSubElement())
+        const subElement = document.getElementById("track-list-sub-element")
+        subElement.appendChild(this.addTrackListTitle())
+        subElement.appendChild(this.addTrackList())
+        this.addTracksToTrackList()
     }
 
     addSubElement() {
@@ -37,6 +49,13 @@ class TrackList {
             return
         }
         element.remove() 
+    }
+
+    addTrackListTitle() {
+        const element = document.createElement("div")
+        element.id = "track-list-title"
+        element.textContent = "Track List"
+        return element
     }
 
     addTrackList() {
