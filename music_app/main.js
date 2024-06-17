@@ -16,7 +16,7 @@ const { tag_track } = require("./databaseFunctions/tag_track.js")
 const {fetch_tracks } = require("./databaseFunctions/fetch_tracks.js")
 const { delete_tag } = require("./databaseFunctions/delete_tag.js")
 const { TrackTagFilter } = require("./databaseFunctions/fetch_tracks_by_tag.js")
-
+const {fetchTrackByTrackId } = require("./databaseFunctions/fetchTracksByTrackId.js")
 
 const logger = new Logger()
 
@@ -49,6 +49,11 @@ app.whenReady().then(() => {
     
     initialize_database(config.DB_FILEPATH)
 
+    ipcMain.on('fetch-track-by-trackid--send', (event, data) => {
+        fetchTrackByTrackId(config.DB_FILEPATH, data.trackId).then((track) => {
+            event.sender.send('fetch-track-by-trackid--receive', track)
+        })
+    })
 
     ipcMain.on('download-track--send', (event, data) => {
         download_audio(config.DB_FILEPATH, data.url).then((success) => {

@@ -277,6 +277,30 @@
     border-radius: 5px;
 }
 
+#tag-input-bar {
+    height: 40px;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#add-tag-input {
+    padding: 5px 15px 5px 10px;
+    width: 60%;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+}
+
 
 
 
