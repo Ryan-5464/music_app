@@ -1,3 +1,169 @@
+.menu-button {
+    width: 100%;
+    height: 40px;
+    border-style: none;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    font-size: 1em;
+    background-color: rgba(0,0,0,0);
+}
+
+.menu-button:hover {
+    background-color: var(--hover-color);
+    color: #000000;
+}
+
+.menu-button:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+.active-menu { 
+    background-color: var(--active-color);
+    color: #000000; 
+}
+
+.frosted-glass {
+    backdrop-filter: blur(10px); /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(10px); /* Frosted glass effect for Safari */
+}
+
+.track {
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    font-size: 0.8em;
+}
+
+.track:hover {
+    background-color: var(--hover-color);
+    color: #000000;
+}
+
+.track:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+.active-track { 
+    background-color: var(--active-color);
+    color: #000000; 
+}
+
+.input-bar {
+    padding: 5px 15px 5px 10px;
+    width: 30vw;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+}
+
+.message {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    font-size: 0.8em;
+}
+
+.square-button {
+    padding: 5px 10px 5px 10px;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+}
+
+.left-rounded-button {
+    padding: 5px 10px 5px 10px;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    border-radius: 15px 0px 0px 15px;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+}
+
+.right-rounded-button {
+    padding: 5px 10px 5px 10px;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    border-radius: 0px 15px 15px 0px;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+}
+
+.square-button:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+.left-rounded-button:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+.right-rounded-button:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .button-background-color {
     background: rgb(0, 255, 248);
     background: linear-gradient(135deg, rgba(0, 255, 248, 1) 0%, rgba(255, 0, 95, 1) 69%);
@@ -141,9 +307,9 @@
     width: 30px;
     height: 30px;
     border-radius: 15px;
-    background-image: url('../images/delete_icon.png');
     background-size:cover;
     border-style: none;
+    background-image: url('../images/delete_icon.png');
 }
 
 .delete_icon:hover {

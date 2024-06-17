@@ -1,5 +1,5 @@
 const fs = require('fs')
-//const dataurl = require('dataurl')
+const dataurl = require('dataurl')
 const config = require("../config.json")
 
 
@@ -15,7 +15,7 @@ async function fetchTrackSource(filePath) {
                 resolve(data);
             });
         });
-        const result = "" //dataurl.convert({ data, mimetype: 'audio/mp3' });
+        const result = dataurl.convert({ data, mimetype: 'audio/mp3' });
         return result;
     } catch (error) {
         console.log(error.message);

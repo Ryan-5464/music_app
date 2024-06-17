@@ -4,9 +4,21 @@
     --light-charcoal-background: rgb(40,40,40);
     --color-gradient-1: linear-gradient(45deg, rgba(198,52,255,1) 0%, rgba(0,255,252,1) 100%);
     --border-width: 1px;
-    --border-color: white;
+    --border-color: #5dd9ff;
     --border-style: solid;
+    --border-radius: 15px;
     --font-color: white;
     --delete-icon: url('../images/delete-icon.png');
     --base-font-size: 1em;
+    --menu-button-gradient: linear-gradient(90deg, rgba(255,74,93,1) 13%, rgba(255,212,218,1) 100%);
+    --main-background-color: #362f49;
+    --main-background-color-2: #512d94;
+    --active-color: rgb(255, 85, 150);
+    --hover-color: white;
+    --font-family: "Urbanist", sans-serif;
+    --font-optical-sizing: auto;
+    --font-weight-400: 400;
+    --font-weight-200: 200;
+    --font-style: normal;
+    --background-transition: background-color 0.3s ease-in-out;
 }

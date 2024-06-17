@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     body.appendChild(main.makeElement())
     contentLoader.loadContentDomLoaded()
 
+    const leftSidebarEventHandler = new LeftSidebarEventHandler()
+    leftSidebarEventHandler.addLeftSidebarEventListeners()
 
 
     const leftSidebarDownloadButton = document.getElementById("left-sidebar-download-button")
@@ -48,6 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
     leftSidebarRecentlyDeletedButton.addEventListener("click", () => {
 
     })
+
+    const playerEventHandler = new PlayerEventHandler()
+    playerEventHandler.addUpdateProgressBarEventListener()
+    playerEventHandler.addPlayButtonEventListener()
+    playerEventHandler.addJumpToEventListener()
+
 })
 
 

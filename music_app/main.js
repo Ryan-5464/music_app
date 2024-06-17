@@ -28,10 +28,9 @@ const { fetchTrackSource } = require("./server_logic/convertSong.js")
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 1200,
-        height: 1000,
-        minWidth: 1200,
-        minHeight: 1000,
+        width: 1000,
+        height: 650,
+        resizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         }

@@ -23,6 +23,7 @@ class PlayerEventHandler {
 
     handleJumpTo(event) {
         const audioElement = document.getElementById("audio-element")
+        const progressBar = document.getElementById("progress-bar")
         const rect = progressBar.getBoundingClientRect()
         const offsetX = event.clientX - rect.left
         const newTime = (offsetX / rect.width) * audioElement.duration

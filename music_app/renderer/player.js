@@ -8,6 +8,8 @@ class Player {
         subElement.appendChild(this.addPlayButton())
         subElement.appendChild(this.addPauseButton())
         subElement.appendChild(this.addStopButton())
+        subElement.appendChild(this.addRepeatButton())
+        subElement.appendChild(this.addShuffleButton())
         subElement.appendChild(this.addProgressBar())
     }
 
@@ -35,6 +37,7 @@ class Player {
         const element = document.createElement("button")
         element.id = "player-play-button"
         element.textContent = "Play"
+        element.classList.add("left-rounded-button")
         return element
     }
 
@@ -42,6 +45,7 @@ class Player {
         const element = document.createElement("button")
         element.id = "player-pause-button"
         element.textContent = "Pause"
+        element.classList.add("square-button")
         return element
     }
 
@@ -49,6 +53,23 @@ class Player {
         const element = document.createElement("button")
         element.id = "player-stop-button"
         element.textContent = "Stop"
+        element.classList.add("square-button")
+        return element
+    }
+
+    addRepeatButton() {
+        const element = document.createElement("button")
+        element.id = "player-repeat-button"
+        element.textContent = "Repeat"
+        element.classList.add("square-button")
+        return element
+    }
+
+    addShuffleButton() {
+        const element = document.createElement("button")
+        element.id = "player-shuffle-button"
+        element.textContent = "Shuffle"
+        element.classList.add("right-rounded-button")
         return element
     }
     
