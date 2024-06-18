@@ -49,9 +49,9 @@ app.whenReady().then(() => {
     
     initialize_database(config.DB_FILEPATH)
 
-    ipcMain.on('fetch-track-by-trackid--send', (event, data) => {
+    ipcMain.on('get-track-by-id--send', (event, data) => {
         fetchTrackByTrackId(config.DB_FILEPATH, data.trackId).then((track) => {
-            event.sender.send('fetch-track-by-trackid--receive', track)
+            event.sender.send('get-track-by-id--receive', track)
         })
     })
 
@@ -107,15 +107,21 @@ app.whenReady().then(() => {
         })
     })
 
-    ipcMain.on('create-tag-send', (event, data) => {
-        tag_track(config.DB_FILEPATH, data.track_id, data.tag).then((tags) => {
-            event.sender.send('create-tag-receive', tags)
+    ipcMain.on('add-tag--send', (event, data) => {
+        tag_track(config.DB_FILEPATH, data.trackId, data.tag).then((tags) => {
+            event.sender.send('add-tag--receive', tags)
         })
     })
 
-    ipcMain.on('delete-tag-send', (event, data) => {
-        delete_tag(config.DB_FILEPATH, data.track_id, data.tag).then(() => {
-            event.sender.send('delete-tag-receive', "")
+    ipcMain.on('delete-tag--send', (event, data) => {
+        delete_tag(config.DB_FILEPATH, data.trackId, data.tag).then(() => {
+            event.sender.send('delete-tag--receive', "")
+        })
+    })
+
+    ipcMain.on('get-tags--send', (event, data) => {
+        getTags(config.DB_FILEPATH, data.trackId).then((tags) => {
+            event.sender.send('get-tags--receive', tags)
         })
     })
 

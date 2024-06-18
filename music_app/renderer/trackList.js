@@ -54,6 +54,7 @@ class TrackList {
     addTrackListTitle() {
         const element = document.createElement("div")
         element.id = "track-list-title"
+        element.classList.add("title")
         element.textContent = "Track List"
         return element
     }

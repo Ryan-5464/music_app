@@ -116,9 +116,10 @@
 }
 
 .right-rounded-button {
-    padding: 5px 10px 5px 10px;
+    padding: 5px 15px 5px 10px;
     background: #27262b;
     border-style: solid;
+    height: var(--button-height);
     border-color: var(--border-color);
     border-width: var(--border-width);
     border-radius: 0px 15px 15px 0px;
@@ -128,6 +129,7 @@
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
     color: var(--font-color);
+    font-size: 0.8em;
 }
 
 .square-button:hover {
@@ -145,8 +147,38 @@
     color: #000000;
 }
 
+.title { 
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    font-size: 1.3em;
+    padding: 0px 0px 10px 20px;
+}
 
+.tag {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 15.5vw;
+}
 
+.tag-name {
+    width: 100px;
+    padding: 5px 10px 5px 10px;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    font-size: 0.8em;
+}
 
 
 
@@ -262,13 +294,6 @@
     justify-content: space-evenly;
 }
 
-.tag {
-    border-radius: 20px;
-    padding: 5px 10px 5px 10px;
-    margin:0px 5px 0px 5px;
-    background-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 3px 5px rgb(0, 0, 0);
-}
 
 
 .horizontal-line {

@@ -1,10 +1,14 @@
 class TagList {
 
+    constructor() {
+        this.rightSidebarEventHandler = new RightSidebarEventHandler()
+    }
+
     loadTags(track) {
         const element = document.createElement("div")
         element.id = "tag-list"
         for (const tagName in track.tags) {
-            element.appendChild(this.createTag(tagName, track.trackId))
+            element.appendChild(this.createTag(tagName, track.track_id))
         }
         return element        
     }
@@ -20,7 +24,7 @@ class TagList {
 
     addTagName(tagName) {
         const element = document.createElement("div")
-        element.id = "tag-name"
+        element.classList.add("tag-name")
         element.textContent = tagName
         return element
     }
@@ -28,8 +32,9 @@ class TagList {
     addDeleteButton(trackId) {
         const element = document.createElement("button")
         element.setAttribute("data-track-id", trackId)
-        element.textContent = "Delete"
-        element.classList.add("square-button")
+        element.textContent = "Del"
+        element.classList.add("right-rounded-button")
+        this.rightSidebarEventHandler.addDeleteTagEventListener(element)
         return element
     }
 }

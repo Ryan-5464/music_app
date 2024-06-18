@@ -21,4 +21,5 @@
     --font-weight-200: 200;
     --font-style: normal;
     --background-transition: background-color 0.3s ease-in-out;
+    --button-height: 28px;
 }
