@@ -4,7 +4,8 @@
 
 class TrackList {
 
-    constructor() {
+    constructor(channels) {
+        this.channels = channels
         this.trackEventHandler = new TrackEventHandler()
     }
 
@@ -78,7 +79,8 @@ class TrackList {
             const element = trackElementFactory.makeAllTracksElement(track)
             trackListElement.appendChild(element)
         }
-        this.trackEventHandler.addTrackEventListeners()
+        const rightSidebarController = new RightSidebarController(this.channels)
+        rightSidebarController.addTrackEventListener()
     }
 
 }

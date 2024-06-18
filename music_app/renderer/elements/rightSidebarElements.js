@@ -1,4 +1,4 @@
-export class RightSidebarElements {
+class RightSidebarElements {
 
     constructor() {
         this.tagListTitleElement = new TagListTitleElement()

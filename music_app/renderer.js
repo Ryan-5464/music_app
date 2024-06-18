@@ -10,7 +10,9 @@ const contentLoader = new ContentLoader()
 document.addEventListener("DOMContentLoaded", () => {
     const body = document.getElementById("body")
     body.appendChild(main.makeElement())
-    contentLoader.loadContentDomLoaded()
+    const channels = new Channels()
+    contentLoader.loadContentDomLoaded(channels)
+
 
     const leftSidebarEventHandler = new LeftSidebarEventHandler()
     leftSidebarEventHandler.addLeftSidebarEventListeners()
@@ -20,6 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const leftSidebarTagFilterButton = document.getElementById("left-sidebar-tag-filter-button")
     const leftSidebarSearchButton = document.getElementById("left-sidebar-search-button")
     const leftSidebarRecentlyDeletedButton = document.getElementById("left-sidebar-recently-deleted-button")
+
+
 
 
     leftSidebarDownloadButton.addEventListener("click", () => {

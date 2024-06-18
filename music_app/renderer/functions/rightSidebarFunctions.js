@@ -1,4 +1,4 @@
-export class RightSidebarFunctions {
+class RightSidebarFunctions {
 
     constructor() {
 

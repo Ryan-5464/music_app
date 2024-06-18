@@ -4,7 +4,6 @@ class TrackEventHandler {
     constructor() {
         this.channel = new Channel("fetch-track-by-trackid--send", "fetch-track-by-trackid--receive")
         this.toggleActive = this.toggleActive.bind(this)
-        this.rightSidebar = new RightSidebar()
     }
 
     addTrackEventListeners() {
@@ -22,9 +21,5 @@ class TrackEventHandler {
             }
         }
         event.target.classList.add("active-track")
-        const trackId = event.target.getAttribute("data-track-id")
-        const track = await this.channel.send({trackId: trackId})
-        console.log("rightsidebar track", track)
-        this.rightSidebar.loadSidebar(track)
     }
 }

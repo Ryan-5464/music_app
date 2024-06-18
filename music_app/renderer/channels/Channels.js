@@ -1,7 +1,4 @@
-import Channel from "../channel.js"
-
-
-export class Channels {
+class Channels {
 
     constructor() {
         this.getTrackByIdChannel = new Channel("get-track-by-id--send", "get-track-by-id--receive")

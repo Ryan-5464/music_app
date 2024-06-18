@@ -1,15 +1,9 @@
-import { TagListElement } from "../elements/tagListElement"
-import { RightSidebarFunctions } from "../functions/rightSidebarFunctions"
-
-
-
-export class RightSidebarController {
+class RightSidebarController {
 
     constructor(channels) {
         this.channels = channels 
         this.rightSidebarElements = new RightSidebarElements()
         this.rightSidebarFunctions = new RightSidebarFunctions()
-        this.rightSidebarEvents = new this.rightSidebarEvents()
     }
 
     async renderContent() {
@@ -18,8 +12,20 @@ export class RightSidebarController {
         this.rightSidebarElements.load(trackId, tags)
     }
 
+    addTrackEventListener() {
+        const trackList = document.getElementById("track-list")
+        trackList.addEventListener("click", (event) => {
+            if (!event.target.classList.contains("track")) {
+                return
+            }
+            this.renderContent()
+            this.addEventListeners()
+        })
+    }
+
     addEventListeners() {
         this.addAddTagButtonEventListener()
+        this.addDeleteTagEventListener()
     }
 
     addAddTagButtonEventListener() {
@@ -49,16 +55,6 @@ export class RightSidebarController {
         const tagName = event.target.getAttribute("data-tag-name")
         await this.channels.deleteTagChannel.send({trackId: trackId, tagName: tagName})
         this.renderContent()
-    }
-
-    addTrackEventListener() {
-        const trackList = document.getElementById("track-list")
-        trackList.addEventListener("click", (event) => {
-            if (!event.target.classList.contains("track")) {
-                return
-            }
-            this.renderContent()
-        })
     }
 
 }

@@ -4,9 +4,9 @@
 
 class ContentLoader {
 
-    loadContentDomLoaded() {
+    loadContentDomLoaded(channels) {
         new LeftSidebar().loadContent()
-        new TrackList().loadContent()
+        new TrackList(channels).loadContent()
         new TrackListFooter().loadContent()
         new Player().loadContent()
         this.addEventListeners()
