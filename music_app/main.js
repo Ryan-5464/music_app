@@ -11,7 +11,7 @@ const { Logger } = require('./handlers/Logger.js')
 const { select_most_recent_tracks } = require('./databaseFunctions/select_most_recent_tracks.js')
 const { save_playlist } = require("./databaseFunctions/save_playlist.js")
 const { fetch_tracks_subset } = require("./server_logic/select_tracks_subset.js")
-const { fetch_tags } = require("./databaseFunctions/fetch_tags.js")
+const { getTags } = require("./databaseFunctions/getTags.js")
 const { tag_track } = require("./databaseFunctions/tag_track.js")
 const {fetch_tracks } = require("./databaseFunctions/fetch_tracks.js")
 const { delete_tag } = require("./databaseFunctions/delete_tag.js")
@@ -108,13 +108,14 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('add-tag--send', (event, data) => {
-        tag_track(config.DB_FILEPATH, data.trackId, data.tag).then((tags) => {
+        tag_track(config.DB_FILEPATH, data.trackId, data.tagName).then((tags) => {
             event.sender.send('add-tag--receive', tags)
         })
     })
 
     ipcMain.on('delete-tag--send', (event, data) => {
-        delete_tag(config.DB_FILEPATH, data.trackId, data.tag).then(() => {
+        console.log("trig")
+        delete_tag(config.DB_FILEPATH, data.trackId, data.tagName).then(() => {
             event.sender.send('delete-tag--receive', "")
         })
     })

@@ -3,7 +3,7 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 
 
 
-async function fetch_tags(db_path, track_id) {
+async function getTags(db_path, track_id) {
     const QUERY = `
         SELECT tag FROM tags 
         WHERE track_id = ?;
@@ -15,4 +15,4 @@ async function fetch_tags(db_path, track_id) {
     return tags
 }
 
-module.exports = { fetch_tags }
+module.exports = { getTags }

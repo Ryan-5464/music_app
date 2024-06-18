@@ -6,7 +6,7 @@ const { get_function_name } = require("../helpers/get_function_name.js")
 
 
 
-async function delete_tag(db_path, track_id, tag) {
+async function delete_tag(dbPath, trackId, tagName) {
     
     try {
         const logger = new Logger()
@@ -16,9 +16,9 @@ async function delete_tag(db_path, track_id, tag) {
             DELETE FROM tags 
             WHERE track_id = ? AND tag = ?;
         `
-        const values = [track_id, tag]
+        const values = [trackId, tagName]
         const database = new SqliteDatabaseHandler()
-        await database.connect(db_path)
+        await database.connect(dbPath)
         await database.upload(QUERY, values) 
 
         logger.log("info", LOG_ID, script_name, get_function_name(), 'Tag deleted successfully', "", Array.from(arguments))

@@ -79,6 +79,7 @@ class TrackList {
             const element = trackElementFactory.makeAllTracksElement(track)
             trackListElement.appendChild(element)
         }
+        this.trackEventHandler.addTrackEventListeners()
         const rightSidebarController = new RightSidebarController(this.channels)
         rightSidebarController.addTrackEventListener()
     }
