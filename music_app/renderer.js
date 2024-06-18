@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
     contentLoader.loadContentDomLoaded(channels)
 
 
-    const leftSidebarEventHandler = new LeftSidebarEventHandler()
-    leftSidebarEventHandler.addLeftSidebarEventListeners()
+    const leftSidebarController = new LeftSidebarController()
+    leftSidebarController.renderContent()
 
 
     const leftSidebarDownloadButton = document.getElementById("left-sidebar-download-button")
