@@ -5,17 +5,75 @@ class LeftSidebarController {
         this.leftSidebarElements = new LeftSidebarElements()
         this.leftSidebarFunctions = new LeftSidebarFunctions()
         this.leftSidebarEvents = new LeftSidebarEvents()
+        this.trackListFooterElements = new TrackListFooterElements()
+        this.trackListFooterController = new TrackListFooterController(channels)
+        this.handleDownloadButton = this.handleDownloadButton.bind(this)
+        this.handlePlaylistsButton = this.handlePlaylistsButton.bind(this)
+        this.handleTagFilterButton = this.handleTagFilterButton.bind(this)
+        this.handleSearchButton = this.handleSearchButton.bind(this)
+        this.handleRecentlyDeletedButton = this.handleRecentlyDeletedButton.bind(this)
     }
 
-    async renderContent() {
+    renderContent() {
         this.leftSidebarElements.load()
         this.addEventListeners()
     }
 
     addEventListeners() {
+        console.log("hello")
         this.leftSidebarEvents.addToggleActiveMenuEventListeners()
+        this.addDownloadButtonListener()
+        this.addPlaylistsButtonListener()
+        this.addTagFilterButtonListener()
+        this.addSearchButtonListener()
+        this.addRecentlyDeletedButtonListener()
     }
 
+    addDownloadButtonListener() {
+        const downloadButton = document.getElementById("left-sidebar-download-button")
+        downloadButton.addEventListener("click", this.handleDownloadButton)
+    }
+
+    handleDownloadButton() {
+        this.trackListFooterElements.loadDownloadBar()
+        this.trackListFooterController.addDownloadBarEventListeners()
+    }
+
+    addPlaylistsButtonListener() {
+        // Not implemented
+    }
+
+    handlePlaylistsButton() {
+        //Not implemented
+    }
+
+    addTagFilterButtonListener() {
+        const tagFilterButton = document.getElementById("left-sidebar-tag-filter-button")
+        tagFilterButton.addEventListener("click", this.handleTagFilterButton)
+    }
+
+    handleTagFilterButton() {
+        this.trackListFooterElements.loadTagFilter()
+        this.trackListFooterController.addTagFilterEventListeners()
+    }
+
+    addSearchButtonListener() {
+        const searchFilterButton = document.getElementById("left-sidebar-search-button")
+        searchFilterButton.addEventListener("click", this.handleSearchButton)
+    }
+
+    handleSearchButton() {
+        this.trackListFooterElements.loadSearchFilter()
+        this.trackListFooterController.addSearchFilterEventListeners()
+    }
+
+    addRecentlyDeletedButtonListener() {
+        // Not implemented
+    }
+
+    handleRecentlyDeletedButton() {
+        // Not implemented
+    }
 }
 
 class LeftSidebarEvents {
