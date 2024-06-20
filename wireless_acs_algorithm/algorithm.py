@@ -1,22 +1,4 @@
 
-kwargs = {
-    "busy_time": 0,
-    "rx_time": 0,
-    "active_time": 0,
-    "tx_time": 0,
-    "channel_nf": 0,
-    "band_min_nf": 0,
-    "busy_time_unavailable": False
-}
-
-
-
-# Noise Factors
-
-
-
-
-
 # Ratio of observed busy time compared over time spend on channel
 def calc_busy_ratio(busy_time, rx_time, active_time, tx_time, busy_time_unavailable): 
     if busy_time_unavailable:
