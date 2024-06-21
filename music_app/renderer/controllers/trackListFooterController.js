@@ -39,6 +39,7 @@ class TrackListFooterController {
         const anyButton = document.getElementById("tag-filter-any-button")
         const anyButtonActive = anyButton.classList.contains("active")
         const tracks = await this.channels.tagFilterChannel.send({tags: tags, anyButtonActive: anyButtonActive})
+        console.log("triggered")
         this.trackListController.renderTracks(tracks)
     }
 

@@ -26,6 +26,7 @@ class PlayerController {
         this.addNextTrackEventListener()
         this.addActiveToggleEventListenerToPlayerRepeatButton()
         this.addActiveToggleEventListenerToPlayerShuffleButton()
+        this.addVolumeSliderEventListener()
     }
 
     addUpdateProgressBarEventListener() {
@@ -197,6 +198,17 @@ class PlayerController {
 
     }
 
+    addVolumeSliderEventListener() {
+        const volumeElement = document.getElementById("player-volume-slider")
+        volumeElement.addEventListener('input', this.handleVolumeSlider)
+    }
+    
+    handleVolumeSlider() {
+        const audioElement = document.getElementById("audio-element")
+        const volumeElement = document.getElementById("player-volume-slider")
+        audioElement.volume = volumeElement.value
+    }
+
 
 }
 
@@ -212,6 +224,7 @@ class PlayerElements {
         subElement.appendChild(this.addStopButton())
         subElement.appendChild(this.addRepeatButton())
         subElement.appendChild(this.addShuffleButton())
+        subElement.appendChild(this.addVolumeSlider())
         subElement.appendChild(this.addProgressBar())
     }
 
@@ -274,6 +287,17 @@ class PlayerElements {
         element.classList.add("right-rounded-button")
         return element
     }
+
+    addVolumeSlider() {
+        const element = document.createElement("input")
+        element.id = "player-volume-slider"
+        element.type = "range"
+        element.min = "0"
+        element.max = "1"
+        element.step = "0.01"
+        element.value = "1"
+        return element
+    }
     
     addProgressBar() {
         const element = document.createElement("div")
@@ -283,6 +307,7 @@ class PlayerElements {
         element.appendChild(subElement)
         return element
     }
+
 
 }
 
