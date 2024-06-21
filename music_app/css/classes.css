@@ -59,6 +59,11 @@
     color: #000000; 
 }
 
+.active {
+    background-color: var(--active-color) !important;
+    color: #000000 !important;    
+}
+
 .input-bar {
     padding: 5px 15px 5px 10px;
     width: 30vw;
@@ -72,6 +77,10 @@
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
     color: var(--font-color);
+}
+
+.input-bar:hover {
+    border-color: #ffffff
 }
 
 .message {
@@ -97,6 +106,7 @@
     font-optical-sizing: var(--font-optical-sizing);
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
+    font-size: 0.8em;
     color: var(--font-color);
 }
 
@@ -132,6 +142,23 @@
     font-size: 0.8em;
 }
 
+.circle-button {
+    /* padding: 5px 10px 5px 10px; */
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    font-size: 0.8em;
+    border-radius: 30px;
+    color: var(--font-color);
+}
+
+
 .square-button:hover {
     background: #ffffff;
     color: #000000;
@@ -147,6 +174,32 @@
     color: #000000;
 }
 
+.circle-button:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+.square-button:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+.left-rounded-button:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+.right-rounded-button:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+.circle-button:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+
 .title { 
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
@@ -161,7 +214,20 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 15.5vw;
+    width: 20vw;
+    padding: 2px 20px 2px 10px;
+    box-sizing: border-box;
+    color: #ffffff; 
+}
+
+.tag:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+.tag:active {
+    background-color: var(--active-color);
+    color: #000000;
 }
 
 .tag-name {
@@ -171,7 +237,6 @@
     font-optical-sizing: var(--font-optical-sizing);
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
-    color: var(--font-color);
     font-size: 0.8em;
 }
 
@@ -234,13 +299,6 @@
     margin-right: 10px;
 }
 
-.tracklist-row-container.active {
-    background-color: rgba(255, 255, 255, 0.582);
-    transition: background-color 0.3s;
-    border-radius: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
-}
 
 .tagslist-container {
     display: flex;
@@ -424,4 +482,23 @@
     padding: 25px;
     background-color: var(--dark-charcoal-background);
     border-style: none;
+}
+
+.delete-tag-button {
+    background: none;
+    color: white;
+    border-style: none;
+    padding: 5px 10px 5px 10px;
+    border-radius: 15px;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+}
+
+.delete-tag-button:hover {
+    background: red;
+    border-radius: 15px;
+    padding: 5px 10px 5px 10px;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
 }

@@ -2,11 +2,11 @@ class TrackListFooterController {
 
     constructor(channels) {
         this.channels = channels
+        this.trackListController = new TrackListController(channels)
         this.handleDownload = this.handleDownload.bind(this)
         this.handleTagFilter = this.handleTagFilter.bind(this)
         this.handleSearchFilter = this.handleSearchFilter.bind(this)
     }
-    // tag filter lsiteners etc
 
     addDownloadBarEventListeners() {
         const button = document.getElementById("download-bar-button")
@@ -19,31 +19,33 @@ class TrackListFooterController {
         const downloadMessage = await this.channels.downloadTrackChannel.send({url: downloadUrl})
         const downloadMessageElement = document.getElementById("download-message")
         downloadMessageElement.textContent = downloadMessage
-        //const tracklist = new TrackList()
-        //tracklist.loadAllTracks()
+        this.trackListController.renderAllTracks()
     }
 
     addTagFilterEventListeners() {
         const input = document.getElementById("tag-filter-input")
         input.addEventListener("input", this.handleTagFilter)
-        this.addAllButtonEventListener()
+        this.addAnyButtonEventListener()
         this.addAllButtonEventListener()
     }
 
     async handleTagFilter() {
         const input = document.getElementById("tag-filter-input")
-        const tagString = input.value
+        let tagString = input.value
+        // if (!tagString.includes(",")) {
+        //     tagString = tagString + ","
+        // }
         const tags = tagString.split(',').map(tag => tag.trim())
         const anyButton = document.getElementById("tag-filter-any-button")
         const anyButtonActive = anyButton.classList.contains("active")
         const tracks = await this.channels.tagFilterChannel.send({tags: tags, anyButtonActive: anyButtonActive})
-        //const trackList = new TrackList()
-        //trackList.loadTracks(tracks)
+        this.trackListController.renderTracks(tracks)
     }
 
     addAnyButtonEventListener() {
         const anyButton = document.getElementById("tag-filter-any-button")
-        anyButton.addEventListener("click", () => {
+        anyButton.addEventListener("click", async () => {
+            console.log("any")
             const anyButton = document.getElementById("tag-filter-any-button")
             const allButton = document.getElementById("tag-filter-all-button")
             if (anyButton.classList.contains("active")) {
@@ -51,13 +53,14 @@ class TrackListFooterController {
             }
             allButton.classList.remove("active")
             anyButton.classList.add("active")
-            this.handleTagFilter()
+            await this.handleTagFilter()
         })
     }
 
     addAllButtonEventListener() {
         const allButton = document.getElementById("tag-filter-all-button")
-        allButton.addEventListener("click", () => {
+        allButton.addEventListener("click", async () => {
+            console.log("all")
             const anyButton = document.getElementById("tag-filter-any-button")
             const allButton = document.getElementById("tag-filter-all-button")
             if (allButton.classList.contains("active")) {
@@ -65,7 +68,7 @@ class TrackListFooterController {
             }
             anyButton.classList.remove("active")
             allButton.classList.add("active")
-            this.handleTagFilter()
+            await this.handleTagFilter()
         })
     }
 
@@ -80,8 +83,7 @@ class TrackListFooterController {
         const byTitleButton = document.getElementById("search-filter-bytitle-button")
         const byTitleButtonActive = byTitleButton.classList.contains("active")
         const tracks = await this.channels.searchFilterChannel.send({searchString: searchString, byTitleButtonActive: byTitleButtonActive})
-        //const trackList = new TrackList()
-        //trackList.loadTracks(tracks)
+        this.trackListController.renderTracks(tracks)
     }
 
     addByTitleButtonEventListener() {
@@ -123,7 +125,12 @@ class TrackListFooterElements {
 
     load() {
         this.loadDownloadBar()
-    }                                                                      
+    }    
+    
+    loadBlank() {
+        const element = document.getElementById("track-list-footer-element")
+        element.innerHTML = ""
+    }
     
     loadDownloadBar() {
         const element = document.getElementById("track-list-footer-element")
@@ -245,6 +252,7 @@ class TagFilterElement {
         element.appendChild(this.addFilterInput())
         element.appendChild(this.addAnyButton())
         element.appendChild(this.addAllButton())
+        element.appendChild(this.addSaveAsPlaylistButton())
         element.appendChild(this.addTagFilterText())
         return element
     }
@@ -269,6 +277,13 @@ class TagFilterElement {
         const element = document.createElement("button")
         element.id = "tag-filter-all-button"
         element.textContent = "All of"
+        return element
+    }
+
+    addSaveAsPlaylistButton() {
+        const element = document.createElement("button")
+        element.id = "tag-filter-save-as-playlist-button"
+        element.textContent = "Save as playlist"
         return element
     }
 

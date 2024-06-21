@@ -40,11 +40,12 @@ class LeftSidebarController {
     }
 
     addPlaylistsButtonListener() {
-        // Not implemented
+        const playlistsButton = document.getElementById("left-sidebar-playlists-button")
+        playlistsButton.addEventListener("click", this.handlePlaylistsButton)
     }
 
     handlePlaylistsButton() {
-        //Not implemented
+        this.trackListFooterElements.loadBlank()
     }
 
     addTagFilterButtonListener() {
@@ -68,11 +69,12 @@ class LeftSidebarController {
     }
 
     addRecentlyDeletedButtonListener() {
-        // Not implemented
+        const recentlyDeletedButton = document.getElementById("left-sidebar-recently-deleted-button")
+        recentlyDeletedButton.addEventListener("click", this.handleRecentlyDeletedButton)
     }
 
     handleRecentlyDeletedButton() {
-        // Not implemented
+        this.trackListFooterElements.loadBlank()
     }
 }
 

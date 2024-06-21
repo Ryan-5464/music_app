@@ -197,13 +197,38 @@
     color: #000000;
 }
 
+#tag-filter-save-as-playlist-button:hover {
+    background: #ffffff;
+    color: #000000;
+}
+
+#tag-filter-save-as-playlist-button:active {
+    background-color: var(--active-color);
+    color: #000000;
+}
+
+#tag-filter-save-as-playlist-button {
+    padding: 5px 15px 5px 10px;
+    background: #27262b;
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    box-sizing: border-box;
+    border-radius: 0px 15px 15px 0px;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+}
+
+
 #tag-filter-all-button {
     padding: 5px 15px 5px 10px;
     background: #27262b;
     border-style: solid;
     border-color: var(--border-color);
     border-width: var(--border-width);
-    border-radius: 0px 15px 15px 0px;
     box-sizing: border-box;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
@@ -273,13 +298,15 @@
     border-radius: 5px;
 }
 
-#tag-input-bar {
+#tag-bar-element {
     height: 40px;
-    width: 16vw;
+    width: 20vw;
+    padding: 0px 20px 0px 20px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
 }
 
 #add-tag-input {
@@ -297,7 +324,12 @@
     color: var(--font-color);
 }
 
-#tag-list-element {
+#add-tag-input:hover {
+    border-color: #ffffff;
+}
+
+
+#tag-list {
     margin-top: 15px;
     display: flex;
     flex-direction: column;
@@ -305,7 +337,13 @@
     align-items: center;
 }
 
+#tag-list-title {
+    margin-top: 20px;
+}
 
+#tag-bar-element {
+    margin-bottom: 100px;
+}
 
 
 

@@ -127,8 +127,8 @@ class TagBarElement {
         const element = document.createElement("div")
         element.id = "add-tag-button"
         element.setAttribute("data-track-id", trackId)
-        element.classList.add("right-rounded-button")
-        element.textContent = "Add"
+        element.classList.add("circle-button")
+        element.textContent = "+"
         return element
     }
 
@@ -167,8 +167,7 @@ class TagListElement {
         element.setAttribute("data-track-id", trackId)
         element.setAttribute("data-tag-name", tagName)
         element.classList.add("delete-tag-button")
-        element.textContent = "Del"
-        element.classList.add("right-rounded-button")
+        element.textContent = "-"
         return element
     }
 }

@@ -16,6 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const leftSidebarController = new LeftSidebarController(channels)
     leftSidebarController.renderContent()
 
+    const trackListController = new TrackListController(channels)
+    trackListController.renderAllTracks()
+
+    const playerController = new PlayerController(channels)
+    playerController.renderContent()
+
 
     // const leftSidebarDownloadButton = document.getElementById("left-sidebar-download-button")
     // const leftSidebarTagFilterButton = document.getElementById("left-sidebar-tag-filter-button")
@@ -54,10 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // })
 
-    const playerEventHandler = new PlayerEventHandler()
-    playerEventHandler.addUpdateProgressBarEventListener()
-    playerEventHandler.addPlayButtonEventListener()
-    playerEventHandler.addJumpToEventListener()
+    // const playerEventHandler = new PlayerEventHandler()
+    // playerEventHandler.addUpdateProgressBarEventListener()
+    // playerEventHandler.addPlayButtonEventListener()
+    // playerEventHandler.addJumpToEventListener()
 
 })
 
