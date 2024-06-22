@@ -11,5 +11,6 @@ class Channels {
         this.searchFilterChannel = new Channel("fetch-tracks-by-search--send", "fetch-tracks-by-search--receive")
         this.getAllTracksChannel = new Channel("fetch-all-tracks--send", "fetch-all-tracks--receive")
         this.playTrackChannel = new Channel("play-track--send", "play-track--receive")
+        this.deleteTrackChannel = new Channel("delete-track--send", "delete-track--receive")
     }
 }

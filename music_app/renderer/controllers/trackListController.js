@@ -102,6 +102,7 @@ class TrackElement {
         element.classList.add("track")
         element.appendChild(this.addTrackTitle(track.title))
         element.appendChild(this.addTrackDuration(track.duration_sec))
+        element.appendChild(this.addDeleteButton(track.track_id))
         return element
     }
 
