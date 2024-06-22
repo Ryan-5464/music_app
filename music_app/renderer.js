@@ -1,22 +1,25 @@
 
 
-
-const main = new Main()
+// const main = new Main()
 
 
 document.addEventListener("DOMContentLoaded", () => {
     const body = document.getElementById("body")
-    body.appendChild(main.makeElement())
-    const channels = new Channels()
+    // body.appendChild(main.makeElement())
 
-    const leftSidebarController = new LeftSidebarController(channels)
-    leftSidebarController.renderContent()
+    // const channels = new Channels()
 
-    const trackListController = new TrackListController(channels)
-    trackListController.renderAllTracks()
+    const navigationBarHTML = new NavigationBarHTML()
+    navigationBarHTML.addToParent(body)
 
-    const playerController = new PlayerController(channels)
-    playerController.renderContent()
+    // const leftSidebarController = new LeftSidebarController(channels)
+    // leftSidebarController.renderContent()
+
+    // const trackListController = new TrackListController(channels)
+    // trackListController.renderAllTracks()
+
+    // const playerController = new PlayerController(channels)
+    // playerController.renderContent()
 
 })
 
