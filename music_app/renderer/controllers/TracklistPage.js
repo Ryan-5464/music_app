@@ -20,6 +20,7 @@ class TracklistPage {
     addContainer() {
         const container = document.createElement("div")
         container.id = "tracklist-container"
+        container.classList.add("slide-fade-in")
         return container
     }
 
@@ -28,6 +29,7 @@ class TracklistPage {
     addTitle() {
         const title = document.createElement("div")
         title.id = "tracklist-title"
+        title.classList.add("title")
         title.textContent = "Now Playing"
         return title
     }
@@ -80,11 +82,28 @@ class TrackElement {
     }
 
     addDeleteButton(trackId) {
-        const element = document.createElement("button")
-        element.setAttribute("data-track-id", trackId)
-        element.classList.add("delete-track-button")
-        element.textContent = "Del"
-        return element
+        const container = document.createElement("div")
+        container.classList.add("delete-button-container")
+        const button = createButton(null, ["track-delete-button"], {"data-track-id": trackId}, "./images/delete-32.png", 18, 18)
+        const confirm = createButton(null, ["track-delete-button", "hide"], {"data-track-id": trackId}, "./images/checkmark-32.png", 18, 18)
+        const cancel = createButton(null, ["track-delete-button", "hide"], {"data-track-id": trackId}, "./images/delete-2-32.png", 18, 18)
+        button.addEventListener("click", () => {
+            button.classList.add("hide")
+            confirm.classList.remove("hide")
+            cancel.classList.remove("hide")
+        })
+        confirm.addEventListener("click", () => {
+            console.log("CONFIRM DELETE NOT IMPLEMENTED")
+        })
+        cancel.addEventListener("click", () => {
+            confirm.classList.add("hide")
+            cancel.classList.add("hide")
+            button.classList.remove("hide")
+        })
+        container.appendChild(button)
+        container.appendChild(confirm)
+        container.appendChild(cancel)
+        return container
     }
 
 }
@@ -153,3 +172,33 @@ class TrackDuration {
     }
 
 }
+
+
+class TrackEvents {
+
+
+    addEventListeners() {
+
+    }
+
+    confirmDeleteTrack() {
+        const elements = document.getElementsByClassName("delete-button-container")
+        for (const element of elements) {
+            element.addEventListener("click", () => {
+                element.innerHTML = ''
+                const button = document.createElement("button")
+                button.setAttribute("data-track-id", trackId)
+                button.classList.add("track-delete-button")
+                const icon = document.createElement("img")
+                icon.src = "./images/delete-32.png"
+                icon.style.cssText = "width: 18px; height: 18px;"
+                button.appendChild(icon)
+                container.appendChild(button)
+            })
+        }
+    }
+
+
+}
+
+

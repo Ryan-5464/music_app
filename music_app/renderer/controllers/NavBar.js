@@ -49,7 +49,7 @@ class NavBar {
 
 
     addTrackListButton() {
-        const button = this.addNavButton("tracklist", "./images/list-5-32.png")
+        const button = this.addNavButton("tracklist", "./images/list-2-32.png")
         button.addEventListener("click", () => {
             const element = document.getElementById("content-container")
             element.innerHTML = ''
@@ -81,7 +81,7 @@ class NavBar {
 
 
     addRestoreButton() {
-        return this.addNavButton("restore", "./images/search-4-32.png")
+        return this.addNavButton("restore", "./images/recycle-sign-32.png")
     }
 
 
@@ -103,9 +103,11 @@ class NavBarEvents {
             if (button.classList.contains("nav-active-button")) {
                 button.classList.remove("nav-active-button")
                 tracklistContainer.classList.add("hidden")
+                tracklistContainer.classList.remove("slide-fade-in")
             } else {
                 button.classList.add("nav-active-button")
                 tracklistContainer.classList.remove("hidden")
+                tracklistContainer.classList.add("slide-fade-in")
             }
 
         })

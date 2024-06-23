@@ -15,12 +15,12 @@ const { fetchTrackSource } = require("./server_logic/convertSong.js")
 
 const createWindow = () => {
     const win = new BrowserWindow({
-        width: 1000,
-        height: 650,
-        resizable: false,
+        width: 1200,
+        height: 700,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
-        }
+        },
+        resizable: false,
     })
 
     win.loadFile('index.html')
