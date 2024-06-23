@@ -27,18 +27,6 @@ class HTMLElement {
 
 
 
-    addStyles(styles = {}) {
-        const pairs = Object.entries(styles)
-        let cssString = ''
-        pairs.forEach(([key, value]) => {
-            cssString += `${key}: ${value}; `
-        })
-        cssString = cssString.trim()
-        this.element.style.cssText = cssString
-    }
-
-
-
     addAttributes(attributes = {}) {
         const pairs = Object.entries(attributes)
         pairs.forEach(([key, value]) => {
@@ -80,16 +68,6 @@ class HTMLElement {
         for (const cls in classes) {
             this.element.classList.remove(cls)
         }
-    }
-
-
-
-    removeStyles(styleKeys = []) {
-        const styleToRemove = {};
-        styleKeys.forEach(key => {
-            styleToRemove[key] = '';
-        });
-        this.addStyles(styleToRemove);
     }
 
 

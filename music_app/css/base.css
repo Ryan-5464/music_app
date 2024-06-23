@@ -3,6 +3,7 @@ html {
 }
 
 body {
+    width: 100vw;
     height: 100vh;
     /* background-image: url('../images/app_background.jpg'); */
     background-color: var(--main-background-color);
@@ -11,9 +12,28 @@ body {
     background-position: center;
     margin: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Ensure the video stays in the background */
+}
 
-
+#bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    background-size: cover;
+}
