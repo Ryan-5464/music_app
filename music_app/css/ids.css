@@ -635,6 +635,40 @@
 
 
 
+#player-container {
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+#player-button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+#player-progress-bar {
+    height: 8px;
+    width: 500px;
+    padding: 2px;
+    background-color: var(--main-background-color-2);
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    border-radius: 5px;
+}
+
+
+
+#player-current-progress {
+    height: 8px;
+    background-color: var(--active-color);
+    border-radius: 5px;
+}
+
+
 #tracklist {
     flex: 1;
     height: 400px;

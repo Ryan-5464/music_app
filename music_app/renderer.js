@@ -15,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const homePage = new HomePage()
     contentContainer.appendChild(homePage.create())
 
+    const player = new Player()
+    contentContainer.appendChild(player.create())
+
 })
 
 

@@ -552,6 +552,28 @@
     border-color: rgb(247, 244, 244);
 }
 
+
+.player-button {
+    height: 40px;
+    width: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0);
+    border-style: none;
+}
+
+.player-button:hover {
+    background-color: rgb(49, 49, 49);
+}
+
+.player-button:active {
+    background-color: rgb(243, 122, 122);
+    border-style: solid;
+    border-width: 0px 5px 0px 0px;
+    border-color: rgb(247, 244, 244);
+}
+
 .fade-in-element {
     opacity: 0; /* Initially transparent */
     transition: opacity 2s; /* Transition effect */
