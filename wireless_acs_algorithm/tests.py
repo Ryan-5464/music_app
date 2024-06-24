@@ -9,6 +9,7 @@ def test_calc_SCIF(expected_result, busy_time, rx_time, active_time, tx_time, bu
     print("scif", scif)
     print("expected", expected_result)
     assert scif == expected_result
+    print("PASS")
 
 
 
@@ -19,6 +20,7 @@ def test_calc_CCIF(expected_result, busy_time, rx_time, active_time, tx_time, bu
     print("ccif", ccif)
     print("expected", expected_result)
     assert ccif == expected_result
+    print("PASS")
 
 
 
@@ -27,5 +29,6 @@ def test_calc_CCIFZ(expected_result, channel_nf):
     print("ccifz", ccifz)
     print("expected", expected_result)
     assert ccifz == expected_result
+    print("PASS")
 
 
