@@ -1,0 +1,143 @@
+#player-container {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    width: 500px;
+}
+
+
+
+#player-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 40px;
+    width: 520px;
+    border-radius: 30px;
+    box-shadow: 0px 0 30px rgba(0, 0, 0, 0.5);
+}
+
+
+
+/* #player-progress-bar {
+    height: 8px;
+    width: 520px;
+    padding: 2px;
+    margin-bottom: 15px;
+    background-color: var(--main-background-color-2);
+    border-style: solid;
+    border-color: var(--border-color);
+    border-width: var(--border-width);
+    border-radius: 5px;
+}
+
+
+
+#player-current-progress {
+    height: 8px;
+    background-color: var(--active-color);
+    border-radius: 5px;
+} */
+#player-progress-bar {
+    height: 8px;
+    width: 520px;
+    margin-bottom: 15px;
+    background-color: rgb(61, 61, 61); /* Change to dark blue */
+    border-style: none;
+    border-radius: 5px;
+    box-shadow: 0 0 5 2px black; /* Add white glow */
+}
+
+#player-current-progress {
+    height: 8px;
+    background-color: rgb(252, 253, 253); /* Change to light blue */
+    border-radius: 5px;
+    box-shadow: 0 0 10px 2px white; /* Add white glow */
+    position: relative;
+}
+
+#player-current-progress::after {
+    content: '';
+    position: absolute;
+    right: 0; /* Position the circle at the end of the progress */
+    top: 50%;
+    transform: translate(50%, -50%);
+    width: 16px;
+    height: 16px;
+    background-color: rgb(253, 253, 253); /* Circle color to light blue */
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px white; /* Add white glow to the circle */
+}
+
+.player-button {
+    height: 40px;
+    width: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0);
+    border-style: none;
+}
+
+.player-button:hover {
+    background-color: rgb(49, 49, 49);
+}
+
+.player-button:active {
+    background-color: rgb(243, 122, 122);
+    border-style: solid;
+    border-width: 0px 5px 0px 0px;
+    border-color: rgb(247, 244, 244);
+}
+
+
+#player-volume-slider {
+    margin-left: 20px;
+}
+
+
+.player-fade-in {
+    position: relative;
+    animation: slide-in 1.25s cubic-bezier(.09,.4,.22,1), fade-in 1.25s cubic-bezier(.36,.02,.94,.42); 
+    animation-fill-mode: forwards;
+}
+@keyframes slide-in {
+    from {
+        bottom: -15%; 
+    }
+    to {
+        bottom: 0; 
+    }
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+.player-fade-out {
+    position: absolute;
+    animation: slide-out 1.25s cubic-bezier(.87,.19,.71,.75), fade-out 1.25s cubic-bezier(.43,.61,.72,1); 
+    animation-fill-mode: forwards;
+}
+@keyframes slide-out {
+    from {
+        bottom: 0; 
+    }
+    to {
+        bottom: -15%; 
+    }
+}
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

@@ -553,35 +553,14 @@
 }
 
 
-.player-button {
-    height: 40px;
-    width: 55px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0,0,0,0);
-    border-style: none;
-}
-
-.player-button:hover {
-    background-color: rgb(49, 49, 49);
-}
-
-.player-button:active {
+.nav-active-button {
     background-color: rgb(243, 122, 122);
     border-style: solid;
     border-width: 0px 5px 0px 0px;
     border-color: rgb(247, 244, 244);
 }
 
-.fade-in-element {
-    opacity: 0; /* Initially transparent */
-    transition: opacity 2s; /* Transition effect */
-}
 
-.fade-in-element.visible {
-    opacity: 1; /* Fully opaque */
-}
 
 
 .track-delete-button {
@@ -668,6 +647,33 @@
 }
 
 .hide {
-    display: none;
+    display: none !important;
 }
 
+
+
+
+
+.fade-in-element {
+    animation: fade-in 1.25s cubic-bezier(.36,.02,.94,.42); 
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-out-element {
+    animation: fade-out 1.25s cubic-bezier(.36,.02,.94,.42); 
+}
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

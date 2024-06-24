@@ -1,9 +1,10 @@
-class TracklistPage {
+class Tracklist {
 
 
 
     constructor(tracks) {
-        this.tracks = tracks
+        this.tracks = [{track_id: "test1", duration_sec: 300, title: "test title 1"},{track_id: "test2", duration_sec: 200, title: "test title 2"}]
+        // this.tracks = tracks
     }
 
 
@@ -20,7 +21,7 @@ class TracklistPage {
     addContainer() {
         const container = document.createElement("div")
         container.id = "tracklist-container"
-        container.classList.add("slide-fade-in")
+        container.classList.add("hide")
         return container
     }
 

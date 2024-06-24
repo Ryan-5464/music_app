@@ -1,0 +1,73 @@
+#tracklist {
+    /* flex: 1; */
+    height: 400px;
+    width: 650px;
+    margin: 25px 0px 25px 0;
+    border-radius: 10px;
+    border-style: none;
+    overflow-y: auto;
+    padding: 10px 0px 25px 0px;
+}
+
+
+
+#tracklist-container {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translate(-50%);
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 650px;
+    border-style: none;
+    box-sizing: border-box;
+}
+
+
+
+.tracklist-fade-in {
+    position: fixed;
+    animation: slide-in 1s cubic-bezier(.09,.4,.22,1), fade-in 1s cubic-bezier(.36,.02,.94,.42); 
+    animation-fill-mode: forwards;
+}
+@keyframes slide-in {
+    from {
+        top: 0; 
+    }
+    to {
+        top: 50px; 
+    }
+}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+
+.tracklist-fade-out {
+    position: fixed;
+    animation: slide-out 1s cubic-bezier(.87,.19,.71,.75), fade-out 1s cubic-bezier(.43,.61,.72,1); 
+    animation-fill-mode: forwards;
+}
+@keyframes slide-out {
+    from {
+        top: 50px; 
+    }
+    to {
+        top: 0; 
+    }
+}
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

@@ -8,15 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const navBar = new NavBar()
     body.appendChild(navBar.create())
     
-    const contentContainer = document.createElement("div")
-    contentContainer.id = "content-container"
-    body.appendChild(contentContainer)
-
     const homePage = new HomePage()
-    contentContainer.appendChild(homePage.create())
+    body.appendChild(homePage.create())
+
+    const tracklist = new Tracklist()
+    body.appendChild(tracklist.create())
 
     const player = new Player()
-    contentContainer.appendChild(player.create())
+    body.appendChild(player.create())
 
 })
 

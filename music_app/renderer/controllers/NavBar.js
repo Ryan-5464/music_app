@@ -9,6 +9,7 @@ class NavBar {
         container.appendChild(this.addTagButton())
         container.appendChild(this.addSearchButton())
         container.appendChild(this.addRestoreButton())
+        container.appendChild(this.addPlayerButton())
         return container
     }
 
@@ -51,11 +52,22 @@ class NavBar {
     addTrackListButton() {
         const button = this.addNavButton("tracklist", "./images/list-2-32.png")
         button.addEventListener("click", () => {
-            const element = document.getElementById("content-container")
-            element.innerHTML = ''
-            const tracks = [{track_id: "test1", duration_sec: 300, title: "test title 1"},{track_id: "test2", duration_sec: 200, title: "test title 2"}]
-            const tracklistPage = new TracklistPage(tracks)
-            element.appendChild(tracklistPage.create())
+            const homePageTitle = document.getElementById("home-page-title")
+            if (homePageTitle.classList.contains("fade-in-element")) {
+                homePageTitle.classList.remove("fade-in-element")
+                homePageTitle.classList.add("fade-out-element")
+            }
+            const tracklistContainer = document.getElementById("tracklist-container")
+            tracklistContainer.classList.remove("hide")
+            if (button.classList.contains("nav-active-button")) {
+                button.classList.remove("nav-active-button")
+                tracklistContainer.classList.remove("tracklist-fade-in")
+                tracklistContainer.classList.add("tracklist-fade-out")
+            } else {
+                button.classList.add("nav-active-button")
+                tracklistContainer.classList.remove("tracklist-fade-out")
+                tracklistContainer.classList.add("tracklist-fade-in")
+            }
         })
         return button
     }
@@ -85,6 +97,26 @@ class NavBar {
     }
 
 
+
+    addPlayerButton() {
+        const button = this.addNavButton("player", "./images/play-32.png")
+        button.addEventListener("click", () => {
+            const playerContainer = document.getElementById("player-container")
+            if (playerContainer.classList.contains("hide")) {
+                playerContainer.classList.remove("hide")
+            }
+            if (button.classList.contains("nav-active-button")) {
+                playerContainer.classList.remove("player-fade-in")
+                playerContainer.classList.add("player-fade-out")
+                button.classList.remove("nav-active-button")
+            } else {
+                playerContainer.classList.add("player-fade-in")
+                playerContainer.classList.remove("player-fade-out")
+                button.classList.add("nav-active-button")
+            }
+        })
+        return button
+    }
 
 }
 
