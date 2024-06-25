@@ -13,7 +13,6 @@ class Player {
     addContainer() {
         const container = document.createElement("div")
         container.id = "player-container"
-        container.classList.add("hide")
         return container
     }
 

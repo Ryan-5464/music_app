@@ -1,0 +1,119 @@
+
+
+@keyframes slide-up-in {
+    from {
+        top: var(--start-top);
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: calc(var(--start-top) - 50px); 
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+}
+@keyframes slide-up-out {
+    from {
+        top: calc(var(--start-top) + 50px);
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: var(--start-top); 
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+@keyframes slide-down-in {
+    from {
+        top: var(--start-top);
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: calc(var(--start-top) + 50px); 
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+}
+@keyframes slide-down-out {
+    from {
+        top: calc(var(--start-top) - 50px);
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: var(--start-top); 
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes slide-left-in {
+    from {
+        top: var(--start-top);
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: var(--start-top); 
+        left: calc(var(--start-left) - 50px);
+        transform: translate(-50%, -50%);
+    }
+}
+@keyframes slide-left-out {
+    from {
+        top: var(--start-top);
+        left: calc(var(--start-left) + 50px);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: var(--start-top); 
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes slide-right-in {
+    from {
+        top: var(--start-top);
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: var(--start-top); 
+        left: calc(var(--start-left) + 50px);
+        transform: translate(-50%, -50%);
+    }
+}
+@keyframes slide-right-out {
+    from {
+        top: var(--start-top);
+        left: calc(var(--start-left) - 50px);
+        transform: translate(-50%, -50%);
+    }
+    to {
+        top: var(--start-top); 
+        left: var(--start-left);
+        transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

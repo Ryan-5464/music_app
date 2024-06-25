@@ -37,3 +37,34 @@ body {
     z-index: -1;
     background-size: cover;
 }
+
+
+
+#home-page-title {
+    position: fixed;
+    --start-top: 50%;
+    --start-left: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size:75px;
+    color: white;
+    font-family: var(--font-family);
+    font-weight: var(--font-weight);
+    white-space: nowrap;
+}
+
+
+
+
+
+.home-title-display {
+    animation: fade-in 1s linear forwards; 
+}
+
+
+
+
+.home-title-hide {
+    animation: fade-out 1s linear forwards; 
+}

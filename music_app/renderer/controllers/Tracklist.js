@@ -3,7 +3,47 @@ class Tracklist {
 
 
     constructor(tracks) {
-        this.tracks = [{track_id: "test1", duration_sec: 300, title: "test title 1"},{track_id: "test2", duration_sec: 200, title: "test title 2"}]
+        this.tracks = [
+            {
+                track_id: "test1", duration_sec: 300, title: "test title 1"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },
+            {
+                track_id: "test2", duration_sec: 200, title: "test title 2"
+            },            
+        ]
         // this.tracks = tracks
     }
 
@@ -21,7 +61,6 @@ class Tracklist {
     addContainer() {
         const container = document.createElement("div")
         container.id = "tracklist-container"
-        container.classList.add("hide")
         return container
     }
 
@@ -62,6 +101,7 @@ class TrackElement {
         element.classList.add("track")
         element.appendChild(this.addTrackTitle(track.title))
         element.appendChild(this.addTrackDuration(track.duration_sec))
+        element.appendChild(this.addTagButton(track.track_id))
         element.appendChild(this.addDeleteButton(track.track_id))
         return element
     }
@@ -80,6 +120,12 @@ class TrackElement {
         const trackDuration = new TrackDuration()
         trackDuration.makeElement(duration)
         return trackDuration.element
+    }
+
+    addTagButton(trackId) {
+        const button = createButton(null, ["track-tag-button"], {"data-track-id": trackId}, "./images/tag-5-32.png", 18, 18)
+        button.classList.add("track-tag-button")
+        return button
     }
 
     addDeleteButton(trackId) {

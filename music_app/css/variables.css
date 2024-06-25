@@ -26,4 +26,6 @@
 
     --nav-background-color: #1b1b1b;
     --home-icon: url('../images/home-7-128.png');
+    --cubic-bezier-slide-in: cubic-bezier(.17,.67,.51,1.01);
+    --cubic-bezier-slide-out: cubic-bezier(.43,.24,.79,.48);
 }
