@@ -42,6 +42,8 @@ app.whenReady().then(() => {
         download_audio(config.DB_FILEPATH, data.url).then((success) => {
             if (!success) {
                 event.sender.send('download-track--receive', 'Could not download audio!')
+            } else if (success === 1) {
+                event.sender.send('download-track--receive', 'Track already exists!');
             } else {
                 event.sender.send('download-track--receive', 'Audio downloaded successfully!');
             }
@@ -93,8 +95,9 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('delete-track--send', (event, data) => {
-        delete_track(config.DB_FILEPATH, data.track_id).then((result) => {
-            console.log(`Track with id ${data.track_id} deleted.`)
+        console.log("delete track id", data.trackId)
+        delete_track(config.DB_FILEPATH, data.trackId).then((result) => {
+            console.log(`Track with id ${data.trackId} deleted.`)
             event.sender.send('delete-track--receive', result);
         });
     });

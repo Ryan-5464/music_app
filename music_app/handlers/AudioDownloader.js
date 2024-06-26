@@ -23,7 +23,7 @@ class AudioDownloader {
         const audio_exists = await this.check_if_audio_exists(db_filepath, url);
         if (audio_exists) {
             logger.log("error", LOGID, script_name, get_function_name(), 'Failed to download track', this.name, Array.from(arguments))
-            return null;
+            return 1;
         }   
     
         const metadata = await this.request_tracks(url);

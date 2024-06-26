@@ -25,7 +25,7 @@ async function download_audio(db_filepath, url) {
         return
     }
 
-    return true
+    return success
 }
 
 

@@ -1,53 +1,11 @@
-.menu-button {
-    width: 100%;
-    height: 40px;
-    border-style: none;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-    font-size: 1em;
-    background-color: rgba(0,0,0,0);
-}
 
-.menu-button:hover {
-    background-color: var(--hover-color);
-    color: #000000;
-}
-
-.menu-button:active {
-    background-color: var(--active-color);
-    color: #000000;
-}
-
-.active-menu { 
-    background-color: var(--active-color);
-    color: #000000; 
-}
 
 .frosted-glass {
     backdrop-filter: blur(10px); /* Frosted glass effect */
     -webkit-backdrop-filter: blur(10px); /* Frosted glass effect for Safari */
 }
 
-.track {
-    color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    font-size: 0.8em;
-}
 
-.track:hover {
-    background-color: var(--hover-color);
-    color: #000000;
-}
 
 .track:active {
     background-color: var(--active-color);
@@ -64,36 +22,9 @@
     color: #000000 !important;    
 }
 
-.input-bar {
-    padding: 5px 15px 5px 10px;
-    width: 30vw;
-    background: #27262b;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-    box-sizing: border-box;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-}
 
-.input-bar:hover {
-    border-color: #ffffff
-}
 
-.message {
-    margin-top: 5px;
-    display: flex;
-    justify-content: center;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-    font-size: 0.8em;
-}
+
 
 .square-button {
     padding: 5px 10px 5px 10px;
@@ -546,3 +477,22 @@
 
 
 
+.input-bar {
+    padding: 5px 15px 5px 10px;
+    width: 500px;
+    background: rgba(0,0,0,0.7);
+    border-style: none;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;    
+}
+
+
+.input-bar:hover {
+    box-shadow: 10px 0px 20px rgba(255, 255, 255, 1);
+}
