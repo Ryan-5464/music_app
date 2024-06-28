@@ -34,6 +34,7 @@ export class Tracklist {
     addContainer() {
         const container = document.createElement("div")
         container.id = "tracklist-container"
+        container.classList.add("tracklist-display")
         return container
     }
 

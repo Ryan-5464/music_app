@@ -27,6 +27,7 @@ export class DownloadBar {
     addContainer() {
         const container = document.createElement("div")
         container.id = "download-container"
+        container.classList.add("download-container-display")
         return container
     }
 

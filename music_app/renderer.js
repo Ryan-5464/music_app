@@ -15,9 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const navBar = new NavBar()
     body.appendChild(navBar.create())
     
-    const homePage = new HomePage()
-    body.appendChild(homePage.create())
-
     const tracklist = new Tracklist(dataController)
     body.appendChild(tracklist.create())
 

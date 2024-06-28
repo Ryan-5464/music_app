@@ -75,10 +75,17 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size:48px;
-    color: white;
+    color: rgb(193, 214, 252);
     font-family: var(--font-family);
     font-weight: var(--font-weight);
     white-space: nowrap;
+    border-style: none;
+    background: rgba(0,0,0,0);
+}
+
+
+#home-enter-button:hover {
+    color: white;
 }
 
 

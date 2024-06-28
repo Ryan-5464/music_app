@@ -13,6 +13,7 @@ class Player {
     addContainer() {
         const container = document.createElement("div")
         container.id = "player-container"
+        container.classList.add("player-display")
         return container
     }
 
