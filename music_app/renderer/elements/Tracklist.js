@@ -1,5 +1,8 @@
-class Tracklist {
+import { TaglistController } from "./Taglist.js"
 
+
+
+export class Tracklist {
 
 
     constructor(dataController) {
@@ -10,7 +13,7 @@ class Tracklist {
 
     create() {
         const container = this.addContainer()
-        container.appendChild(this.addTitle())
+        // container.appendChild(this.addTitle())
         container.appendChild(this.addTracklist())
         return container
     }
@@ -36,13 +39,13 @@ class Tracklist {
 
 
 
-    addTitle() {
-        const title = document.createElement("div")
-        title.id = "tracklist-title"
-        title.classList.add("title")
-        title.textContent = "Now Playing"
-        return title
-    }
+    // addTitle() {
+    //     const title = document.createElement("div")
+    //     title.id = "tracklist-title"
+    //     title.classList.add("title")
+    //     title.textContent = "Now Playing"
+    //     return title
+    // }
 
 
 
@@ -114,6 +117,18 @@ class Tracklist {
 
     addTagButton(trackId) {
         const button = createButton(null, ["track-tag-button"], {"data-track-id": trackId}, "./images/tag-5-32.png", 18, 18)
+        button.addEventListener("click", async () => {
+            const body = document.getElementById("body")
+            const taglistContainer = document.getElementById("taglist-container")
+            if (taglistContainer) {
+                taglistContainer.classList.add("taglist-hide")
+                taglistContainer.classList.remove("taglist-display")
+                taglistContainer.addEventListener("animationend", () => {
+                    taglistContainer.remove()
+                }, { once: true })
+            }
+            body.appendChild(await TaglistController.loadTaglist(trackId))
+        })
         return button
     }
 

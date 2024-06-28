@@ -1,0 +1,78 @@
+#taglist-container {
+    position: fixed;
+    --start-top: 300px;
+    --start-left: 1250px;
+    transform: translate(-50%, -50%);
+    width: 340px;
+    height: 400px;
+    border-style: none;
+    border-radius: 30px;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+
+}
+
+.taglist-display {
+    animation: taglist-slide-left-in 1s var(--cubic-bezier-slide-in), fade-in 1s linear; 
+    animation-fill-mode: forwards;
+}
+
+
+
+
+.taglist-hide {
+    animation: taglist-slide-left-out 1s var(--cubic-bezier-slide-out), fade-out 1s linear; 
+    animation-fill-mode: forwards;
+}
+
+
+#taglist-create-tag-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.taglist {
+    width: 300px;
+    height: 300px;
+    border-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+#create-tag-input {
+    width: 200px;
+}
+
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    background: var(--color-gradient-1);
+}
+
+
+.delete-tag-button {
+    background-color: rgba(0,0,0,0);
+    border-style: none;
+}
+
+
+.tag-name {
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    font-size: 1em;
+    color: white; 
+}
+

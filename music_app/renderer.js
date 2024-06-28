@@ -1,10 +1,14 @@
+import { Tracklist } from  "./renderer/elements/Tracklist.js"
+import { DownloadBar } from "./renderer/elements/DownloadBar.js"
 
+
+
+export const channels = new Channels()
+export const dataController = new DataController(channels)
 
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    const channels = new Channels()
-    const dataController = new DataController(channels)
     await dataController.updateTrackDataNoFilter()
     
     const body = document.getElementById("body")

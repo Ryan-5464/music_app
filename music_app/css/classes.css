@@ -141,35 +141,7 @@
     padding: 0px 0px 10px 20px;
 }
 
-.tag {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 20vw;
-    padding: 2px 20px 2px 10px;
-    box-sizing: border-box;
-    color: #ffffff; 
-}
 
-.tag:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-.tag:active {
-    background-color: var(--active-color);
-    color: #000000;
-}
-
-.tag-name {
-    width: 100px;
-    padding: 5px 10px 5px 10px;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    font-size: 0.8em;
-}
 
 
 
@@ -231,13 +203,6 @@
 }
 
 
-.tagslist-container {
-    display: flex;
-    justify-content: flex-start;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
 
 
 
@@ -268,15 +233,6 @@
     justify-content:space-evenly;
 }
 
-.tags {
-    display: flex;
-    overflow: hidden; /* Hide overflow text */
-    white-space: nowrap; /* Prevent text from wrapping to the next line */
-    text-overflow: ellipsis;
-    padding-right: 20px;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
 
 
 
@@ -415,26 +371,6 @@
     border-style: none;
 }
 
-.delete-tag-button {
-    background: none;
-    color: white;
-    border-style: none;
-    padding: 5px 10px 5px 10px;
-    border-radius: 15px;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-}
-
-.delete-tag-button:hover {
-    background: red;
-    border-radius: 15px;
-    padding: 5px 10px 5px 10px;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-}
-
-
 
 
 
@@ -479,7 +415,6 @@
 
 .input-bar {
     padding: 5px 15px 5px 10px;
-    width: 500px;
     background: rgba(0,0,0,0.7);
     border-style: none;
     box-sizing: border-box;

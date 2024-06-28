@@ -24,3 +24,12 @@ function createButton(id=null, classes=[], attributes={}, imgSrc=null, width=nul
 
     return button
 }
+
+
+
+// function getActiveTrackId() {
+//     const elements = document.getElementsByClassName("active-track")
+//     const activeTrack = elements[0]
+//     const activeTrackId = activeTrack.getAttribute("data-track-id")
+//     return activeTrackId
+// }

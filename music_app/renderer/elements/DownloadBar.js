@@ -1,4 +1,8 @@
-class DownloadBar {
+import { Tracklist } from "./Tracklist.js"
+
+
+
+export class DownloadBar {
 
 
 
