@@ -1,4 +1,4 @@
-import { Tracklist } from "./Tracklist.js"
+import { Tracklist } from "../components/Track.js"
 
 
 
@@ -65,7 +65,7 @@ export class DownloadBar {
         const element = document.createElement("div")
         element.id = "download-bar-message"
         element.classList.add("message")
-        element.textContent = "Test"
+        element.textContent = ""
         return element
     }
    

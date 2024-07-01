@@ -19,10 +19,20 @@ function createButton(id=null, classes=[], attributes={}, imgSrc=null, width=nul
         const icon = document.createElement("img")
         icon.src = imgSrc
         icon.style.cssText = `width: ${width}px; height: ${height}px;`
+        icon.style.pointerEvents = "none"
         button.appendChild(icon)
     }
 
     return button
+}
+
+
+
+function createHorizontalLine(id) {
+    const horizontalLine = document.createElement("div")
+    horizontalLine.id = id
+    horizontalLine.classList.add("glowing-horizontal-line")
+    return horizontalLine
 }
 
 

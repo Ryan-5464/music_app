@@ -14,8 +14,8 @@
 
 #tracklist-container {
     position: fixed;
-    --start-top: 300px;
-    --start-left: 600px;
+    --start-top: 200px;
+    --start-left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
@@ -28,6 +28,18 @@
     /* border-radius: 30px;
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.5); */
 }
+
+
+
+#tracklist-title {
+    position: relative;
+    font-size: 2em;
+    display: flex;
+    justify-content: flex-start;
+    height: 60px;
+    padding-top: 20px;
+}
+
 
 
 
@@ -57,12 +69,16 @@
 }
 
 
+.track-info-container {
+    display:flex;
+    flex-direction: row;
+}
 
 .track {
     color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
+    /* justify-content: space-between; */
     padding: 5px 20px 5px 20px;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
@@ -74,11 +90,11 @@
 
 
 
-.track:hover {
+.track-open-taglist {
     color: #ffffff;
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; */
     padding: 5px 20px 5px 20px;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
@@ -90,6 +106,7 @@
     backdrop-filter: blur(20px);
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
 }
+
 
 
 
@@ -117,6 +134,7 @@
 .track-title {
     position: relative;
     left: 50px;
+    width: 600px;
 } 
 
 
@@ -152,17 +170,36 @@
 }
 
 
-.track-delete-button {
+.track-button {
     height: 20px;
     width: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: rgba(0,0,0,0);
     border-style: none;
 }
 
 
+.save-tag-button {
+    margin: 20px 20px 0px 20px;
+
+}
 
 
+.modal {
+    display: inline-flex; 
+    justify-content:center;
+    align-items:center;
+    position: fixed; 
+    z-index: 1; 
+    left: 50px;
+    top: -20px;
+    width: 300px; 
+    height: 50px; 
+    border-radius: 25px;
+    overflow: auto; 
+    background: linear-gradient(142deg, rgba(4,19,113,1) 0%, rgba(251,4,54,1) 70%, rgba(255,253,102,1) 100%);
+}
 
+
+#tag-name-input {
+    margin-right: 10px;
+}

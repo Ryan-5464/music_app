@@ -1,15 +1,20 @@
 #taglist-container {
-    position: fixed;
-    --start-top: 300px;
-    --start-left: 1250px;
-    transform: translate(-50%, -50%);
-    width: 250px;
-    height: 400px;
+    position: relative;
+    --start-top: 0;
+    --start-left: 0;
     border-style: none;
-    border-radius: 30px;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
-
 }
+
+
+#taglist-title {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+
 
 .taglist-display {
     animation: taglist-slide-left-in 1s var(--cubic-bezier-slide-in), fade-in 1s linear; 
@@ -33,12 +38,10 @@
 }
 
 
-.taglist {
-    width: 300px;
-    height: 300px;
+#taglist {
     border-style: none;
-    display: flex;
-    flex-wrap: wrap;
+    /* display: flex;
+    flex-wrap: wrap; */
 }
 
 

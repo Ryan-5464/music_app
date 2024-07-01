@@ -1,6 +1,6 @@
-import { Tracklist } from  "./renderer/elements/Tracklist.js"
+import { Tracklist } from  "./renderer/components/Track.js"
 import { DownloadBar } from "./renderer/elements/DownloadBar.js"
-
+import { Player } from "./renderer/elements/Player.js"
 
 
 export const channels = new Channels()
@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const navBar = new NavBar()
     body.appendChild(navBar.create())
     
-    const tracklist = new Tracklist(dataController)
-    body.appendChild(tracklist.create())
+    body.appendChild(Tracklist.create())
 
     const downloadBar = new DownloadBar(channels, dataController)
     body.appendChild(downloadBar.create())

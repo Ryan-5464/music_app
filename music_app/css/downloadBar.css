@@ -1,7 +1,7 @@
 
 #download-container {
     position: fixed;
-    --start-top: 0px;
+    --start-top: 700px;
     --start-left: 50%;
     transform: translate(-50%, -50%);
     width: 650px;

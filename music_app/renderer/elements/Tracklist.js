@@ -1,249 +1,153 @@
-import { TaglistController } from "./Taglist.js"
+// import { TaglistController } from "./Taglist.js"
+// import { Track } from "../components/Track.js"
+// import { TaglistElements, DeleteButtonElement } from "../components/Track.js"
+// import { dataController } from "../../renderer.js"
 
 
 
-export class Tracklist {
+// export class Tracklist {
 
 
-    constructor(dataController) {
-        this.dataController = dataController
-    }
-
-
-
-    create() {
-        const container = this.addContainer()
-        // container.appendChild(this.addTitle())
-        container.appendChild(this.addTracklist())
-        return container
-    }
+//     static create() {
+//         const container = Tracklist._addContainer()
+//         container.appendChild(Tracklist._addTitle())
+//         container.appendChild(Tracklist._addTracklist())
+//         return container
+//     }
 
 
 
-    reloadTracklist() {
-        const container = document.getElementById("tracklist-container")
-        const tracklist = document.getElementById("tracklist")
-        if (tracklist) {
-            container.removeChild(tracklist)
-        }
-        container.appendChild(this.addTracklist())
-    }
+//     static _reloadTracklist() {
+//         const container = document.getElementById("tracklist-container")
+//         const tracklist = document.getElementById("tracklist")
+//         if (tracklist) {
+//             container.removeChild(tracklist)
+//         }
+//         container.appendChild(this.addTracklist())
+//     }
 
 
 
-    addContainer() {
-        const container = document.createElement("div")
-        container.id = "tracklist-container"
-        container.classList.add("tracklist-display")
-        return container
-    }
+//     static _addContainer() {
+//         const container = document.createElement("div")
+//         container.id = "tracklist-container"
+//         container.classList.add("tracklist-display")
+//         return container
+//     }
 
 
 
-    // addTitle() {
-    //     const title = document.createElement("div")
-    //     title.id = "tracklist-title"
-    //     title.classList.add("title")
-    //     title.textContent = "Now Playing"
-    //     return title
-    // }
+//     static _addTitle() {
+//         const title = document.createElement("div")
+//         title.id = "tracklist-title"
+//         title.classList.add("title")
+//         title.textContent = "Playlist"
+//         return title
+//     }
 
 
-
-    addTracklist() {
-        const tracklist = document.createElement("div")
-        tracklist.id = "tracklist"
-        console.log("reload", this.dataController.trackData)
-        for (const track of this.dataController.trackData) {
-            tracklist.appendChild(this.createTrack(track))
-        }
-        return tracklist       
-    }
-
-
-    createTrack(track) {
-        const element = document.createElement("div")
-        element.setAttribute("data-track-id", track.track_id)
-        element.classList.add("track")
-        element.appendChild(this.addPlayButton(track.track_id))
-        element.appendChild(this.addTrackTitle(track.title))
-        element.appendChild(this.addTrackDuration(track.duration_sec))
-        element.appendChild(this.addTagButton(track.track_id))
-        element.appendChild(this.addDeleteButton(track.track_id))
-        return element
-    }
-
-
-
-    addPlayButton(trackId) {
-        const button = createButton(null, ["track-play-button"], {"data-track-id": trackId}, "./images/play-32.png", 15, 15)
-        button.addEventListener("click", async () => {
-            const playButtons = document.getElementsByClassName("track-play-button")
-            if (button.classList.contains("now-playing")) {
-                return
-            } else {
-                for (const playButton of playButtons) {
-                    playButton.classList.remove("now-playing")
-                    playButton.parentElement.classList.remove("track-now-playing")
-                }
-                button.classList.add("now-playing")
-                button.parentElement.classList.add("track-now-playing")
-            }
-            const audioElement = document.getElementById("audio-element")
-            audioElement.src = await this.dataController.fetchAudioSource(trackId) 
-            audioElement.play()
-        })
-        return button
-    }
-
-
-
-    addTrackTitle(title) {
-        const element = document.createElement("div")
-        element.classList.add("track-title")
-        element.textContent = title
-        element.style.pointerEvents = 'none'
-        return element
-    }
-
-
-
-    addTrackDuration(duration) {
-        const trackDuration = new TrackDuration()
-        trackDuration.makeElement(duration)
-        return trackDuration.element
-    }
-
-
-
-    addTagButton(trackId) {
-        const button = createButton(null, ["track-tag-button"], {"data-track-id": trackId}, "./images/tag-5-32.png", 18, 18)
-        button.addEventListener("click", async () => {
-            const body = document.getElementById("body")
-            const taglistContainer = document.getElementById("taglist-container")
-            if (taglistContainer) {
-                taglistContainer.classList.add("taglist-hide")
-                taglistContainer.classList.remove("taglist-display")
-                taglistContainer.addEventListener("animationend", () => {
-                    taglistContainer.remove()
-                }, { once: true })
-            }
-            body.appendChild(await TaglistController.loadTaglist(trackId))
-        })
-        return button
-    }
-
-
-
-    addDeleteButton(trackId) {
-        const container = document.createElement("div")
-        container.classList.add("delete-button-container")
-        const button = createButton(null, ["track-delete-button"], {"data-track-id": trackId}, "./images/delete-32.png", 18, 18)
-        const confirm = createButton(null, ["track-delete-button", "hide"], {"data-track-id": trackId}, "./images/checkmark-32.png", 18, 18)
-        const cancel = createButton(null, ["track-delete-button", "hide"], {"data-track-id": trackId}, "./images/delete-2-32.png", 18, 18)
-        button.addEventListener("click", () => {
-            button.classList.add("hide")
-            confirm.classList.remove("hide")
-            cancel.classList.remove("hide")
-        })
-        confirm.addEventListener("click", async () => {
-            const trackId = confirm.getAttribute("data-track-id")
-            await this.dataController.deleteTrack(trackId)
-            await this.dataController.updateTrackDataNoFilter()
-            this.reloadTracklist()
-        })
-        cancel.addEventListener("click", () => {
-            confirm.classList.add("hide")
-            cancel.classList.add("hide")
-            button.classList.remove("hide")
-        })
-        container.appendChild(button)
-        container.appendChild(confirm)
-        container.appendChild(cancel)
-        return container
-    }
-
-
-
-}
-
-
-
-
-class TrackDuration {
-
-
-
-    constructor() {
-        this.element = null
-    }
     
+//     static _addTracklist() {
+//         const tracklist = document.createElement("div")
+//         tracklist.id = "tracklist"
+
+//         tracklist.addEventListener("click", async (event) => {
+//             if (event.target.tagName !== "BUTTON") {
+//                 return
+//             }
+//             if (event.target.classList.contains("track-tag-button")) {
+//                 return await TracklistEvents.handleTrackTagButton(event)
+//             }
+//             if (event.target.classList.contains("track-play-button")) {
+//                 return await TracklistEvents.handleTrackPlayButton(event)
+//             }
+//             if (event.target.classList.contains("track-delete-button")) {
+//                 return await TracklistEvents.handleTrackDeleteButton(event)
+//             }
+//             if (event.target.classList.contains("confirm-delete-button")) {
+//                 return await TracklistEvents.handleTrackConfirmButton(event)
+//             }
+//             if (event.target.classList.contains("cancel-delete-button")) {
+//                 return await TracklistEvents.handleTrackCancelButton(event)
+//             }
+//         })
+        
+//         for (const track of dataController.trackData) {
+//             tracklist.appendChild(Track.create(track))
+//         }
+//         return tracklist       
+//     }
 
 
-    makeElement(trackDuration) {
-        const element = document.createElement("div")
-        element.classList.add("track-duration")
-        element.textContent = this.format(trackDuration)
-        element.style.pointerEvents = 'none'
-        this.element = element
-    }
-
-
-
-    format(trackDuration) {
-        let x = {hours: 0, minutes: 0, seconds: 0, remainingDuration: trackDuration}
-        if (trackDuration > 3600) {
-            let x = this.hours(x)
-            x = this.minutes(x)
-            x = this.seconds(x)
-            return `${x.hours}:${x.minutes}:${x.seconds}`
-        } else {
-            x = this.minutes(x)
-            x = this.seconds(x)
-            return `${x.minutes}:${x.seconds}`
-        }
-    }
-
-
-
-    hours(x) {
-        x.hours = Math.floor(x.remainingDuration / 3600)
-        x.remainingDuration = x.remainingDuration - (3600 * x.hours)
-        if (x.hours < 10) {
-            x.hours = `0${x.hours}`
-        } else {
-            x.hours = `${x.hours}`
-        }
-        return x
-    }
+// }
 
 
 
-    minutes(x) {
-        x.minutes = Math.floor(x.remainingDuration / 60)
-        x.remainingDuration = x.remainingDuration - (60 * x.minutes)
-        if (x.minutes < 10) {
-            x.minutes = `0${x.minutes}`
-        } else {
-            x.minutes = `${x.minutes}`
-        }
-        return x
-    }
+// class TracklistEvents {
 
+//     static async handleTrackTagButton(event) {
+//         const button = event.target
+//         const trackId = button.getAttribute("data-track-id")
+//         const taglistContainer = document.getElementById(`taglist-container-${trackId}`)
+//         if (taglistContainer) {
+//             taglistContainer.remove()
+//             return
+//         }
+//         const taglist = await TaglistElements.create(trackId)
+//         const track = document.getElementById(`track-${trackId}`)
+//         track.appendChild(taglist)
+//     }
 
+//     static async handleTrackPlayButton(event) {
+//         const button = event.target
+//         const audioElement = document.getElementById("audio-element")
+//         const trackId = button.getAttribute("data-track-id")
+//         if (button.classList.contains("now-playing")) {
+//             audioElement.src = await dataController.fetchAudioSource(trackId) 
+//             audioElement.play()
+//             return
+//         } else {
+//             const playButtons = document.getElementsByClassName("track-play-button")
+//             for (const playButton of playButtons) {
+//                 playButton.classList.remove("now-playing")
+//                 playButton.parentElement.classList.remove("track-now-playing")
+//             }
+//             button.classList.add("now-playing")
+//             button.parentElement.classList.add("track-now-playing")
+//         }
+//         audioElement.src = await dataController.fetchAudioSource(trackId) 
+//         audioElement.play()
+//     }
 
-    seconds(x) {
-        x.seconds = x.remainingDuration
-        if (x.seconds < 10) {
-            x.seconds = `0${x.seconds}`
-        } else {
-            x.seconds = `${x.seconds}`
-        }
-        return x
-    }
+//     static async handleTrackDeleteButton(event) {
+//         const button = event.target
+//         const trackId = button.getAttribute("data-track-id")
+//         const deleteButtonContainer = document.getElementById(`delete-button-container-${trackId}`)
+//         const confirm = createButton(`confirm-delete-button-${trackId}`, ["confirm-delete-button"], {"data-track-id": trackId}, "./images/checkmark-32.png", 18, 18)
+//         const cancel = createButton(`cancel-delete-button-${trackId}`, ["cancel-delete-button"], {"data-track-id": trackId}, "./images/delete-2-32.png", 18, 18)
+//         console.log("before", deleteButtonContainer, confirm, cancel)
+//         deleteButtonContainer.appendChild(confirm)
+//         deleteButtonContainer.appendChild(cancel)
+//         console.log("after", deleteButtonContainer)
+//         button.remove()
+//     }
 
+//     static async handleTrackConfirmButton(event) {
+//         const confirm = event.target
+//         const trackId = confirm.getAttribute("data-track-id")
+//         await dataController.deleteTrack(trackId)
+//         await dataController.updateTrackDataNoFilter()
+//         const track = document.getElementById(`track-${trackId}`)
+//         track.remove()
+//     }
 
+//     static async handleTrackCancelButton(event) {
+//         const cancel = event.target
+//         const trackId = cancel.getAttribute("data-track-id")
+//         const trackInfoContainer = document.getElementById(`track-info-container-${trackId}`)
+//         const deleteButtonContainer = document.getElementById(`delete-button-container-${trackId}`)
+//         deleteButtonContainer.remove()
+//         trackInfoContainer.appendChild(DeleteButtonElement.create(trackId))
+//     }
 
-}
-
-
+// }
