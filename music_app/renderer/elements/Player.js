@@ -44,6 +44,19 @@ export class Player {
             const currentProgress = document.getElementById("player-current-progress")
             currentProgress.style.width = `${progressPercent}%`
         })
+        element.addEventListener("ended", async () => {
+            const repeatButton = document.getElementById("player-repeat-button")
+            const shuffleButton = document.getElementById("player-shuffle-button")
+            if (repeatButton.classList.contains("active")) {
+                await PlayerEvents.handleRepeatTrack()
+            }
+            else if (shuffleButton.classList.contains("active")) {
+                await PlayerEvents.handleShuffleTrack()
+            } 
+            else {
+                await PlayerEvents.handlePlayNextTrack()
+            }
+        })
         return element
     }
 
@@ -84,6 +97,8 @@ export class Player {
             const audioElement = document.getElementById("audio-element")
             audioElement.pause()
             audioElement.currentTime = 0
+            const pauseButton = document.getElementById("player-pause-button")
+            pauseButton.children[0].src = "./images/play-32.png"
         })
         return button
     }
@@ -135,6 +150,26 @@ export class Player {
 
 class PlayerEvents {
 
+    static async handleRepeatTrack() {
+        const audioElement = document.getElementById("audio-element")
+        await audioElement.play()
+    }
+
+    static async handleShuffleTrack() {
+        const tracks = document.getElementsByClassName("track")
+        for (const track of tracks) {
+            if (track.classList.contains("track-now-playing")) {
+                track.classList.remove("track-now-playing")
+            }        
+        }
+        const shuffleInt = PlayerFunctions.getRandomInt(0, tracks.length-1)
+        console.log("shuffleInt", shuffleInt)
+        const track = tracks[shuffleInt]
+        const trackId = track.getAttribute("data-track-id")
+        track.classList.add("track-now-playing")
+        PlayerEvents.playTrack(trackId)
+    }
+
     static async handlePreviousButton() {
         const tracks = document.getElementsByClassName("track")
         let i = 0
@@ -155,12 +190,15 @@ class PlayerEvents {
             track = tracks[i-1]
         }
         const trackId = track.getAttribute("data-track-id")
-        const audioSource = await PlayerEvents.getAudioSource(trackId)
-        await PlayerEvents.stopTrack()
-        await PlayerEvents.playTrack(audioSource)
+        PlayerEvents.playTrack(trackId)
     }
 
     static async handleNextButton() {
+        const trackId = PlayerEvents.handlePlayNextTrack()
+        PlayerEvents.playTrack(trackId)
+    }
+
+    static async handlePlayNextTrack() {
         const tracks = document.getElementsByClassName("track")
         let i = 0
         for (const track of tracks) {
@@ -180,9 +218,7 @@ class PlayerEvents {
             track = tracks[i]
         }
         const trackId = track.getAttribute("data-track-id")
-        const audioSource = await PlayerEvents.getAudioSource(trackId)
-        await PlayerEvents.stopTrack()
-        await PlayerEvents.playTrack(audioSource)
+        PlayerEvents.playTrack(trackId)
     }
 
     static handleRepeatButton() {
@@ -211,12 +247,9 @@ class PlayerEvents {
         element.classList.add("active")
     }
 
-    static async getAudioSource(trackId) {
+    static async playTrack(trackId) {
         const source = await channels.playTrackChannel.send({trackId: trackId})
-        return source
-    }
-
-    static async playTrack(source) {
+        await PlayerEvents.stopTrack()
         const audioElement = document.getElementById("audio-element")
         audioElement.src = source
         await audioElement.play()
@@ -226,5 +259,13 @@ class PlayerEvents {
         const audioElement = document.getElementById("audio-element")
         await audioElement.pause()
         audioElement.currentTime = 0
+    }
+}
+
+
+class PlayerFunctions {
+
+    static getRandomInt(x, y) {
+        return Math.floor(Math.random() * (y - x + 1)) + x;
     }
 }
