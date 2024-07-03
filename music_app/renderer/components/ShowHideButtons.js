@@ -119,7 +119,81 @@ function toggleVisibility(button, element) {
 
 
 
+// function showHideAll() {
+//     const showHideButtons = document.getElementsByClassName("sh-btn")
+//     const containers = document.getElementsByClassName("element-container")
+//     const button = document.getElementById("show-hide-button")
+//     if (button.classList.contains("sh-active")) {
+//         for (const btn of showHideButtons) {
+//             btn.classList.remove("visible")
+//             btn.classList.add("hidden")
+//         }
+//         for (const container of containers) {
+//             container.classList.remove("visible")
+//             container.classList.add("hidden")
+//         }
+//     } else {
+//         for (const btn of showHideButtons) {
+//             btn.classList.remove("hidden")
+//             btn.classList.add("visible")
+//         }
+//         for (const container of containers) {
+//             container.classList.remove("hidden")
+//             container.classList.add("visible")
+//         }
+//     }
+// }
+
+
 function showHideAll() {
+    const button = document.getElementById("show-hide-button")
+    if (button.classList.contains("sh-active")) {
+        hide()
+    } else {
+        show()
+    }
+}
+
+
+function show() {
+    const showHideButtons = document.getElementsByClassName("sh-btn")
+    const containers = document.getElementsByClassName("element-container")
+    const downloadButton = document.getElementById("sh-download-button")
+    const tagFilterButton = document.getElementById("sh-tag-button")
+    const searchFilterButton = document.getElementById("sh-search-button")
+    const button = document.getElementById("show-hide-button")
+    if (button.classList.contains("sh-active")) {
+        for (const btn of showHideButtons) {
+            btn.classList.remove("visible")
+            btn.classList.add("hidden")
+        }
+        for (const container of containers) {
+            container.classList.remove("visible")
+            container.classList.add("hidden")
+        }
+    } else {
+        for (const btn of showHideButtons) {
+            btn.classList.remove("hidden")
+            btn.classList.add("visible")
+        }
+        for (const container of containers) {
+            if (container.id === "download-container" && !downloadButton.classList.contains("sh-active")) {
+                continue
+            }
+            if (container.id === "tag-filter-container" && !tagFilterButton.classList.contains("sh-active")) {
+                continue
+            }
+            if (container.id === "search-filter-container" && !searchFilterButton.classList.contains("sh-active")) {
+                continue
+            }
+            container.classList.remove("hidden")
+            container.classList.add("visible")
+        }
+    }
+}
+
+
+function hide() {
     const showHideButtons = document.getElementsByClassName("sh-btn")
     const containers = document.getElementsByClassName("element-container")
     const button = document.getElementById("show-hide-button")

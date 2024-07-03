@@ -8,8 +8,6 @@ export class SearchFilterElement {
     static create() {
         const container = SearchFilterElement._addContainer()
         container.appendChild(SearchFilterElement._addFilterInput())
-        container.appendChild(SearchFilterElement._addAnyButton())
-        container.appendChild(SearchFilterElement._addAllButton())
         return container
     }
 
@@ -25,25 +23,8 @@ export class SearchFilterElement {
         element.id = "search-filter-input"
         element.classList.add("input-bar")
         element.classList.add("input-box")
-        element.placeholder = "Enter search..."
+        element.placeholder = "Enter song title..."
         element.addEventListener("input", SearchFilterEvents.handleSearchFilter)
-        return element
-    }
-
-    static _addByTitleButton() {
-        const element = document.createElement("button")
-        element.id = "search-filter-bytitle-button"
-        element.textContent = "By Title"
-        element.classList.add("active")
-        element.addEventListener("click", SearchFilterEvents.handleByTitleButton)
-        return element
-    }
-
-    static _addByArtistButton() {
-        const element = document.createElement("button")
-        element.id = "search-filter-byartist-button"
-        element.textContent = "By Artist"
-        element.addEventListener("click", SearchFilterEvents.handleByArtistButton)
         return element
     }
 
@@ -56,23 +37,11 @@ class SearchFilterEvents {
     static async handleSearchFilter() {
         const input = document.getElementById("search-filter-input")
         const searchString = input.value
-        const byTitleButton = document.getElementById("search-filter-bytitle-button")
-        const byTitleButtonActive = byTitleButton.classList.contains("active")
-        await dataController.updateTrackDataBySearch(searchString, byTitleButtonActive)
+        await dataController.updateTrackDataBySearch(searchString)
         Tracklist.reloadTracklist()
     }
 
-    static async handleByTitleButton() {
-        toggleAnyButton()
-        await dataController.updateTrackDataByTags(parseTagFilterInput(), isAnyButtonActive())
-        Tracklist.reloadTracklist()
-    }
 
-    static async handleByArtistButton() {
-        toggleAllButton()
-        await dataController.updateTrackDataByTags(parseTagFilterInput(), isAnyButtonActive())
-        Tracklist.reloadTracklist()
-    }
 }
 
 

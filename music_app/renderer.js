@@ -5,7 +5,7 @@ import { TagFilterElement } from "./renderer/components/TagFilter.js"
 import { DataController } from "./renderer/data/DataController.js"
 import { ShowHideButtons } from "./renderer/components/ShowHideButtons.js"
 import { Channels } from "./renderer/data/Channels.js"
-
+import { SearchFilterElement } from "./renderer/components/SearchFilter.js"
 
 
 
@@ -22,6 +22,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     body.appendChild(ShowHideButtons.create())
     
     body.appendChild(Tracklist.create())
+
+    body.appendChild(SearchFilterElement.create())
 
     body.appendChild(TagFilterElement.create())
 

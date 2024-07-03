@@ -394,11 +394,13 @@
 
 .hidden {
     opacity: 0;
+    pointer-events: none;
     transition: opacity 1s ease-in-out;
 }
 
 .visible {
     opacity: 1;
+    pointer-events: auto;
     transition: opacity 1s ease-in-out;
 }
 
@@ -445,9 +447,12 @@
 
 .toggle-button {
     padding: 5px 15px 5px 10px;
+    height: 30px;
+    width: 100px;
     margin-left: 20px;
     background: rgba(0,0,0,0.7);
-    border-style: none;
+    border-style: solid;
+    border-color: rgba(0,0,0,0);
     box-sizing: border-box;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
@@ -459,19 +464,15 @@
 }
 
 .toggle-button:hover {
-    border-style: solid;
-    border-color: white;
+
+    box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.5);
 }
 
 .toggle-button:active {
-    border-style: solid;
-    border-color: white;
     background-color: rgba(231, 24, 24, 0.8);
     box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.5);
 }
 
 .toggle-button-active {
-    border-style: solid;
     background-color: rgba(231, 24, 24, 0.8);
-    border-color: white;
 }

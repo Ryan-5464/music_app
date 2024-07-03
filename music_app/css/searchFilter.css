@@ -1,7 +1,7 @@
-#tag-filter-container {
+#search-filter-container {
     position: fixed;
     height: 60px;
-    width: 800px;
+    width: 560px;
     top: 75%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -16,7 +16,7 @@
 
 
 
-#tag-filter-input {
+#search-filter-input {
     width: 500px;
 }
 

@@ -25,8 +25,8 @@ export class DataController {
 
 
 
-    async updateTrackDataBySearch(searchString, byTitleButtonActive) {
-        this.trackData = await this.channels.searchFilterChannel.send({searchString: searchString, byTitleButtonActive: byTitleButtonActive})
+    async updateTrackDataBySearch(searchString) {
+        this.trackData = await this.channels.searchFilterChannel.send({searchString: searchString})
     }
 
 

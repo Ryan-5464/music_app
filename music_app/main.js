@@ -10,6 +10,8 @@ const { delete_tag } = require("./databaseFunctions/delete_tag.js")
 const { TrackTagFilter } = require("./databaseFunctions/fetch_tracks_by_tag.js")
 const {fetchTrackByTrackId } = require("./databaseFunctions/fetchTracksByTrackId.js")
 const { fetchTrackSource } = require("./server_logic/convertSong.js")
+const { fetchTracksBySearch } = require("./databaseFunctions/fetchTracksBySearch.js")
+
 
 
 
@@ -72,6 +74,13 @@ app.whenReady().then(() => {
         trackTagFilter.fetchTracksByTag(config.DB_FILEPATH, data.tags, data.anyButtonActive).then((tracks) => {
             console.log("TRATTERATV", tracks)
             event.sender.send('fetch-tracks-by-tag--receive', tracks)
+        })
+    })
+
+    ipcMain.on('fetch-tracks-by-search--send', (event, data) => {
+        fetchTracksBySearch(config.DB_FILEPATH, data.searchString).then((tracks) => {
+            console.log("TRATTERATV", tracks)
+            event.sender.send('fetch-tracks-by-search--receive', tracks)
         })
     })
 

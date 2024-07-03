@@ -185,44 +185,6 @@
 }
 
 
-#search-filter-bytitle-button {
-    padding: 5px 10px 5px 10px;
-    background: #27262b;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-    box-sizing: border-box;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-}
-
-#search-filter-bytitle-button:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
-#search-filter-byartist-button {
-    padding: 5px 15px 5px 10px;
-    background: #27262b;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-    border-radius: 0px 15px 15px 0px;
-    box-sizing: border-box;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-}
-
-#search-filter-byartist-button:hover {
-    background: #ffffff;
-    color: #000000;
-}
 
 
 #tag-bar-element {
