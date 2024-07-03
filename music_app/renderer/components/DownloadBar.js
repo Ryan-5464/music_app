@@ -1,4 +1,4 @@
-import { Tracklist } from "../components/Track.js"
+import { Tracklist } from "./Track.js"
 
 
 
@@ -27,7 +27,7 @@ export class DownloadBar {
     addContainer() {
         const container = document.createElement("div")
         container.id = "download-container"
-        container.classList.add("download-container-display")
+        container.classList.add("visible", "element-container")
         return container
     }
 

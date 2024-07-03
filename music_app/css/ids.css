@@ -159,26 +159,6 @@
 }
 
 
-
-#tag-filter-any-button {
-    padding: 5px 10px 5px 10px;
-    background: #27262b;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-    box-sizing: border-box;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-}
-
-#tag-filter-any-button:hover {
-    background: #ffffff;
-    color: #000000;
-}
-
 #tag-filter-save-as-playlist-button:hover {
     background: #ffffff;
     color: #000000;
@@ -204,25 +184,6 @@
     color: var(--font-color);
 }
 
-
-#tag-filter-all-button {
-    padding: 5px 15px 5px 10px;
-    background: #27262b;
-    border-style: solid;
-    border-color: var(--border-color);
-    border-width: var(--border-width);
-    box-sizing: border-box;
-    font-family: var(--font-family);
-    font-optical-sizing: var(--font-optical-sizing);
-    font-weight: var(--font-weight-400);
-    font-style: var(--font-style);
-    color: var(--font-color);
-}
-
-#tag-filter-all-button:hover {
-    background: #ffffff;
-    color: #000000;
-}
 
 #search-filter-bytitle-button {
     padding: 5px 10px 5px 10px;

@@ -1,8 +1,8 @@
 
 #download-container {
     position: fixed;
-    --start-top: 700px;
-    --start-left: 50%;
+    top: 700px;
+    left: 50%;
     transform: translate(-50%, -50%);
     width: 650px;
     height: 120px;
@@ -10,22 +10,6 @@
     flex-direction: column;
     align-items: center;
 }
-
-
-
-.download-container-display {
-    animation: slide-down-in 1s var(--cubic-bezier-slide-in), fade-in 1s linear; 
-    animation-fill-mode: forwards;
-}
-
-
-
-
-.downlaod-container-hide {
-    animation: slide-up-out 1s var(--cubic-bezier-slide-out), fade-out 1s linear; 
-    animation-fill-mode: forwards;
-}
-
 
 
 

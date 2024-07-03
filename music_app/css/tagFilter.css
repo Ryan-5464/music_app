@@ -1,0 +1,18 @@
+#tag-filter-container {
+    position: fixed;
+    top: 700px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+#tag-filter-input {
+    width: 500px;
+}
+

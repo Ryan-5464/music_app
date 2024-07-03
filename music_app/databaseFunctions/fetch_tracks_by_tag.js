@@ -96,7 +96,7 @@ class TrackTagFilter {
         await this.database.connect(dbPath)
         console.log("EIEIEIE", tagsList)
         let tracks = null
-        if (tagsList.length === 1) {    
+        if (tagsList.length === 0) {    
             console.log("testetst")
             tracks = await this.fetchTracksNoTagFilter()
             tracks = await this.fetchTags(tracks)

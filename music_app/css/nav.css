@@ -1,39 +1,75 @@
-#nav-container {
-    height: 100vh;
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    /* background-color: var(--nav-background-color); */
-    background-color: rgba(0,0,0,0);
-    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.5);
-    z-index: 2;
-}
 
 
-.nav-button {
-    height: 60px;
+.sh {
+    height: 55px;
     width: 60px;
     margin: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0,0);
-    border-style: none;
+    background-color: rgba(0,0,0,0.7);
+    border-style: solid;
+    border-color: white;
+    border-width: 0px 5px 0px 0px;
     border-radius: 30px;
 }
 
-.nav-button:hover {
-    box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 0.7);
+.sh:hover {
+    background-color: rgba(27, 28, 88, 0.7);
+    box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 0.5);
 }
 
-.nav-button:active {
-    box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 0.7);
-}
-
-
-.nav-active-button {
+.sh:active {
+    background-color: rgba(245, 58, 89, 0.829);
     box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 1);
 }
+
+
+.sh-active {
+    height: 55px;
+    width: 60px;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(245, 58, 89, 0.829);
+    border-style: solid;
+    border-color: white;
+    border-width: 0px 5px 0px 0px;
+    border-radius: 30px;
+    box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 1);
+}
+
+
+
+#sh-tracklist-button {
+    position: fixed;
+    top: 100px;
+    left: 180px;
+}
+
+#sh-player-button {
+    position: fixed;
+    top: 680px;
+    left: 340px;
+}
+
+#sh-download-button {
+    position: fixed;
+    top: 580px;
+    left: 420px;
+}
+
+#sh-tag-button {
+    position: fixed;
+    top: 580px;
+    left: 500px;
+}
+
+#sh-search-button {
+    position: fixed;
+    top: 580px;
+    left: 580px;
+}
+
 

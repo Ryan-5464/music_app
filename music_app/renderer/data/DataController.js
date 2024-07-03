@@ -1,5 +1,7 @@
 
-class DataController {
+
+
+export class DataController {
 
 
 
@@ -15,6 +17,17 @@ class DataController {
         this.trackData = await this.channels.fetchAllTracksChannel.send({page: page, limit: limit})
     }
 
+
+
+    async updateTrackDataByTags(tags, anyButtonActive) {
+        this.trackData = await this.channels.tagFilterChannel.send({tags: tags, anyButtonActive: anyButtonActive})
+    }
+
+
+
+    async updateTrackDataBySearch(searchString, byTitleButtonActive) {
+        this.trackData = await this.channels.searchFilterChannel.send({searchString: searchString, byTitleButtonActive: byTitleButtonActive})
+    }
 
 
     async updateTagData(trackId) {

@@ -16,13 +16,12 @@ export class Tracklist {
 
 
 
-    static _reloadTracklist() {
-        const container = document.getElementById("tracklist-container")
+    static reloadTracklist() {
         const tracklist = document.getElementById("tracklist")
-        if (tracklist) {
-            container.removeChild(tracklist)
+        tracklist.innerHTML = ""
+        for (const track of dataController.trackData) {
+            tracklist.appendChild(Track.create(track))
         }
-        container.appendChild(this.addTracklist())
     }
 
 
@@ -30,7 +29,7 @@ export class Tracklist {
     static _addContainer() {
         const container = document.createElement("div")
         container.id = "tracklist-container"
-        container.classList.add("tracklist-display")
+        container.classList.add("visible", "element-container")
         return container
     }
 

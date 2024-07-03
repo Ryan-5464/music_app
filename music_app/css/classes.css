@@ -392,7 +392,15 @@
 
 /* /////////////////// */
 
+.hidden {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
 
+.visible {
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
 
 
 
@@ -432,4 +440,38 @@
     height: 1px;
     background-color: white;
     box-shadow: 0 2px 5px rgb(5, 5, 5);
+}
+
+
+.toggle-button {
+    padding: 5px 15px 5px 10px;
+    margin-left: 20px;
+    background: rgba(0,0,0,0.7);
+    border-style: none;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;  
+}
+
+.toggle-button:hover {
+    border-style: solid;
+    border-color: white;
+}
+
+.toggle-button:active {
+    border-style: solid;
+    border-color: white;
+    background-color: rgba(231, 24, 24, 0.8);
+    box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.5);
+}
+
+.toggle-button-active {
+    border-style: solid;
+    background-color: rgba(231, 24, 24, 0.8);
+    border-color: white;
 }
