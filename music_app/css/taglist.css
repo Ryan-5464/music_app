@@ -1,7 +1,7 @@
 #taglist-container {
     position: relative;
-    --start-top: 0;
-    --start-left: 0;
+    top: 0px;
+    left: 0px;
     border-style: none;
 }
 
@@ -15,21 +15,6 @@
 }
 
 
-
-.taglist-display {
-    animation: taglist-slide-left-in 1s var(--cubic-bezier-slide-in), fade-in 1s linear; 
-    animation-fill-mode: forwards;
-}
-
-
-
-
-.taglist-hide {
-    animation: taglist-slide-left-out 1s var(--cubic-bezier-slide-out), fade-out 1s linear; 
-    animation-fill-mode: forwards;
-}
-
-
 #taglist-create-tag-container {
     display: flex;
     flex-direction: row;
@@ -40,8 +25,6 @@
 
 #taglist {
     border-style: none;
-    /* display: flex;
-    flex-wrap: wrap; */
 }
 
 

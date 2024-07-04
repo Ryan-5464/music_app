@@ -9,11 +9,26 @@ import { SearchFilterElement } from "./renderer/components/SearchFilter.js"
 
 
 
+
+
 export const channels = new Channels()
 export const dataController = new DataController(channels)
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+    const minimizeButton = document.getElementById("minimize")
+    const closeButton =  document.getElementById("close")
+    console.log("output", minimizeButton, closeButton)
+
+    minimizeButton.addEventListener('click', () => {
+        console.log("trig")
+        window.electron.minimize()
+    })
+    closeButton.addEventListener('click', () => {
+        console.log("trig")
+        window.electron.close()
+    })
 
     await dataController.updateTrackDataNoFilter()
     
@@ -27,10 +42,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     body.appendChild(TagFilterElement.create())
 
-    const downloadBar = new DownloadBar(channels, dataController)
-    body.appendChild(downloadBar.create())
-
-
+    body.appendChild(DownloadBar.create())
 
     const player = new Player()
     body.appendChild(player.create())

@@ -37,6 +37,15 @@ function createHorizontalLine(id) {
 
 
 
+function timeoutText(elementId, delay) {
+    const element = document.getElementById(elementId)
+    setTimeout(() => {
+        element.textContent = ''
+    }, delay)
+}
+
+
+
 // function getActiveTrackId() {
 //     const elements = document.getElementsByClassName("active-track")
 //     const activeTrack = elements[0]

@@ -1,31 +1,11 @@
 :root {
-    --background-color: rgb(36, 36, 36);
-    --dark-charcoal-background: rgb(25,25,25);
-    --light-charcoal-background: rgb(40,40,40);
     --color-gradient-1: linear-gradient(142deg, rgba(4,19,113,0.7) 0%, rgba(251,4,54,0.7) 70%, rgba(255,253,102,0.7) 100%);
-    --border-width: 1px;
-    --border-color: #5dd9ff;
-    --border-style: solid;
-    --border-radius: 15px;
     --font-color: white;
-    --delete-icon: url('../images/delete-icon.png');
-    --base-font-size: 1em;
-    --menu-button-gradient: linear-gradient(90deg, rgba(255,74,93,1) 13%, rgba(255,212,218,1) 100%);
-    --main-background-color: #362f49;
-    --main-background-color-2: #512d94;
-    --active-color: rgb(255, 85, 150);
-    --hover-color: white;
     --font-family: "Bruno Ace", sans-serif;
     --font-optical-sizing: auto;
     --font-weight-400: 400;
     --font-weight-200: 200;
     --font-style: normal;
-    --background-transition: background-color 0.3s ease-in-out;
-    --button-height: 28px;
-
-
-    --nav-background-color: #1b1b1b;
-    --home-icon: url('../images/home-7-128.png');
-    --cubic-bezier-slide-in: cubic-bezier(.17,.67,.51,1.01);
-    --cubic-bezier-slide-out: cubic-bezier(.43,.24,.79,.48);
+    --active-color: rgba(253, 0, 97, 0.8);
+    --hover-color: rgba(20,20,20,0.8);
 }

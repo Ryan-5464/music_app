@@ -19,16 +19,28 @@ const {fetchTrackByTrackId } = require("./server/functions/fetchTrackByTrackId.j
 
 
 const createWindow = () => {
-    const win = new BrowserWindow({
+    const mainWindow = new BrowserWindow({
         width: 1400,
-        height: 814,
+        height: 788,
+        frame: false,
+        transparent: true,
+        resizable: false,
         webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: true,
             preload: path.join(__dirname, 'preload.js')
         },
-        resizable: false,
     })
 
-    win.loadFile('index.html')
+    mainWindow.loadFile('index.html')
+
+    ipcMain.on('window-minimize', () => {
+        mainWindow.minimize()
+      });
+    
+    ipcMain.on('window-close', () => {
+        mainWindow.close()
+    })
 }
 
 
@@ -36,6 +48,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
     
     DbInitializer.initializeDb(config.DB_FILEPATH)
+
 
     ipcMain.on('get-track-by-id--send', (event, data) => {
         fetchTrackByTrackId(config.DB_FILEPATH, data.trackId).then((track) => {

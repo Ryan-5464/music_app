@@ -5,11 +5,17 @@ contextBridge.exposeInMainWorld('versions', {
   node: () => process.versions.node,
   chrome: () => process.versions.chrome,
   electron: () => process.versions.electron,
-  // we can also expose variables, not just functions
+
 
 });
 
+contextBridge.exposeInMainWorld('electron', {
+    minimize: () => ipcRenderer.send('window-minimize'),
+    close: () => ipcRenderer.send('window-close')
+  });
+
 contextBridge.exposeInMainWorld('electronAPI', {
+
     channelSend: (channel, data) => { 
         ipcRenderer.send(channel, data); 
     },

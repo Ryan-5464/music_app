@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="./css/variables.css">
     <link rel="stylesheet" href="./css/base.css">
-    <link rel="stylesheet" href="./css/ids.css">
     <link rel="stylesheet" href="./css/classes.css">
     <link rel="stylesheet" href="./css/player.css">
     <link rel="stylesheet" href="./css/taglist.css">
@@ -15,17 +14,26 @@
     <link rel="stylesheet" href="./css/downloadBar.css">
     <link rel="stylesheet" href="./css/tagFilter.css">
     <link rel="stylesheet" href="./css/searchFilter.css">
-    <link rel="stylesheet" href="./css/keyframes.css">
-    <link rel="stylesheet" href="./css/nav.css">
+    <link rel="stylesheet" href="./css/shButtons.css">
     <title>Music Player</title>
 </head>
 
 <body id="body">
+    <div id="title-bar-container">
+    <div id="title-bar">
+        <button id="minimize" class="title-bar-button">
+            <img src="./images/minus-48.png" style="width: 20px; height: 20px; pointer-events: none;">
+        </button>
+        <button id="close" class="title-bar-button">
+            <img src="./images/x-mark-48.png" style="width: 20px; height: 20px; pointer-events: none;">
+        </button>
+    </div>
     <div class="video-background">
         <video autoplay muted loop id="bg-video">
             <source src="./video/music-player-background.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+    </div>
     </div>
 </body>
 

@@ -23,8 +23,9 @@
 
 
 #download-bar-button {
-    width: 60px;
-    height: 60px;
+    width: 45px;
+    height: 45px;
+    margin-left: 10px;
     background: rgba(0,0,0,0);
     border-radius: 30px;
     border-style: none;
@@ -49,13 +50,17 @@
 }
 
 .message {
+    position: fixed;
+    width: 50vw;
+    top: -40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
-    /* color: var(--font-color); */
     color: white;
     font-size: 1.2em;
 }

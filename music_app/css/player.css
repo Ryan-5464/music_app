@@ -66,14 +66,15 @@
 }
 
 .player-button:hover {
-    background-color: rgb(49, 49, 49);
+    background-color: var(--hover-color);
 }
 
 .player-button:active {
-    background-color: rgb(243, 122, 122);
-    border-style: solid;
-    border-width: 0px 5px 0px 0px;
-    border-color: rgb(247, 244, 244);
+    background-color: var(--active-color);
+}
+
+.active {
+    background-color: var(--active-color);
 }
 
 
@@ -83,3 +84,41 @@
 
 
 
+#player-ticker {
+    position: fixed;
+    width: 50vw;
+    top: 180%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: white;
+    overflow: hidden;
+    font-size: 1.2em;
+    white-space: nowrap;
+}
+
+
+
+.ticker-text {
+    display: inline-block;
+    padding-right: 30%; /* Adjust to create spacing between repeated texts */
+    animation: scrollText 60s linear infinite;
+}
+
+.ticker-text:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

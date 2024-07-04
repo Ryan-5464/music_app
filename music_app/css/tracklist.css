@@ -1,5 +1,4 @@
 #tracklist {
-    /* flex: 1; */
     height: 400px;
     width: 900px;
     margin: 25px 0px 25px 0;
@@ -24,8 +23,6 @@
     border-style: none;
     box-sizing: border-box;
     overflow: visible;
-    /* border-radius: 30px;
-    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.5); */
 }
 
 
@@ -39,22 +36,6 @@
     padding-top: 20px;
 }
 
-
-
-
-
-.tracklist-display {
-    animation: slide-down-in 1s var(--cubic-bezier-slide-in), fade-in 1s linear; 
-    animation-fill-mode: forwards;
-}
-
-
-
-
-.tracklist-hide {
-    animation: slide-up-out 1s var(--cubic-bezier-slide-out), fade-out 1s linear; 
-    animation-fill-mode: forwards;
-}
 
 
 
@@ -75,9 +56,6 @@
 
 .track {
     color: #ffffff;
-    /* display: flex;
-    align-items: center; */
-    /* justify-content: space-between; */
     padding: 5px 20px 5px 20px;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
@@ -85,22 +63,19 @@
     font-style: var(--font-style);
     font-size: 0.8em;
     border-radius: 15px;
+    margin-bottom: 10px;
 }
 
 
 
 .track-open-taglist {
     color: #ffffff;
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
     padding: 5px 20px 5px 20px;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
     font-size: 0.8em;
-    /* background-color: var(--nav-background-color); */
     background-color: rgba(0,0,0,0.2);
     backdrop-filter: blur(20px);
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);

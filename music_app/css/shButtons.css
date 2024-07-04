@@ -1,9 +1,12 @@
-
+#sh-button-container {
+    width: 0;
+    height: 0;
+    display: inline;
+}
 
 .sh {
-    height: 55px;
-    width: 60px;
-    margin: 10px;
+    height: 46px;
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,24 +18,23 @@
 }
 
 .sh:hover {
-    background-color: rgba(27, 28, 88, 0.7);
+    background-color: var(--hover-color);
     box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 0.5);
 }
 
 .sh:active {
-    background-color: rgba(245, 58, 89, 0.829);
+    background-color: var(--active-color);
     box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 1);
 }
 
 
 .sh-active {
-    height: 55px;
-    width: 60px;
-    margin: 10px;
+    height: 46px;
+    width: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(245, 58, 89, 0.829);
+    background-color: var(--active-color);
     border-style: solid;
     border-color: white;
     border-width: 0px 5px 0px 0px;
@@ -41,35 +43,37 @@
 }
 
 
-
-#sh-tracklist-button {
-    position: fixed;
-    top: 100px;
-    left: 180px;
+.sh-active:hover {
+    background-color: var(--active-color);
+    box-shadow: 10px 0 20px 5px rgba(255, 255, 255, 1);
 }
 
-#sh-player-button {
+
+#show-hide-button {
     position: fixed;
-    top: 680px;
-    left: 340px;
+    top: 8%;
+    left: 2%;
 }
 
 #sh-download-button {
+    left: 45%;
     position: fixed;
-    top: 580px;
-    left: 420px;
+    top: 82%;
+    transform: translate(-50%, -50%);
 }
 
 #sh-tag-button {
+    left: 50%;
     position: fixed;
-    top: 580px;
-    left: 500px;
+    top: 82%;
+    transform: translate(-50%, -50%);
 }
 
 #sh-search-button {
+    left: 55%;
     position: fixed;
-    top: 580px;
-    left: 580px;
+    top: 82%;
+    transform: translate(-50%, -50%);
 }
 
 

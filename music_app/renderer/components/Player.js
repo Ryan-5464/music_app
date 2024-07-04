@@ -33,17 +33,29 @@ export class Player {
         container.appendChild(this.addRepeatButton())
         container.appendChild(this.addShuffleButton())
         container.appendChild(this.addVolumeSlider())
+        container.appendChild(this.addPlayerText())
         return container
     }
 
     addAudioElement() {
         const element = document.createElement("audio")
         element.id = "audio-element"
+
+        element.addEventListener("play", () => {
+            const elements = document.getElementsByClassName("ticker-text")
+            const nowPlaying = document.getElementsByClassName("track-now-playing")[0]
+            const trackTitle = nowPlaying.children[0].children[1].textContent
+            for (const element of elements) {
+                element.textContent = trackTitle 
+            }
+        })
+
         element.addEventListener("timeupdate", () => {
             const progressPercent = (element.currentTime / element.duration) * 100
             const currentProgress = document.getElementById("player-current-progress")
             currentProgress.style.width = `${progressPercent}%`
         })
+        
         element.addEventListener("ended", async () => {
             const repeatButton = document.getElementById("player-repeat-button")
             const shuffleButton = document.getElementById("player-shuffle-button")
@@ -104,6 +116,10 @@ export class Player {
         element.max = "1"
         element.step = "0.01"
         element.value = "1"
+        element.addEventListener("input", () => {
+            const audioElement = document.getElementById("audio-element")
+            audioElement.volume = element.value
+        })
         return element
     }
     
@@ -123,6 +139,29 @@ export class Player {
         return element
     }
 
+
+    addPlayerText() {
+        const element = document.createElement("div")
+        element.id = "player-ticker"
+        const textOne = document.createElement("div")
+        const textTwo = document.createElement("div")
+        const textThree = document.createElement("div")
+        const textFour = document.createElement("div")
+        textOne.classList.add("ticker-text")
+        textTwo.classList.add("ticker-text")
+        textThree.classList.add("ticker-text")
+        textFour.classList.add("ticker-text")
+        textOne.textContent = "[Test message]"
+        textTwo.textContent = "[Test message]"
+        textThree.textContent = "[Test message]"
+        textFour.textContent = "[Test message]"
+        element.appendChild(textOne)
+        element.appendChild(textTwo)
+        element.appendChild(textThree)
+        element.appendChild(textFour)
+        return element
+    }
+
     
 
 }
@@ -130,6 +169,10 @@ export class Player {
 
 
 class PlayerEvents {
+
+    static async handlePlayNextTrack() {
+        
+    }
 
     static async handlePauseButton() {
         const audioElement = document.getElementById("audio-element")
