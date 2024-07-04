@@ -4,7 +4,7 @@ const { TrackListHandler } = require("../handlers/TrackListHandler.js")
 const { Logger } = require("../handlers/Logger.js")
 const path = require('path');
 const script_name = path.basename(__filename);
-const { get_function_name } = require("../helpers/get_function_name.js")
+const { get_function_name } = require("./helpers/getThisFunctionName.js")
 
 
 
@@ -31,8 +31,7 @@ async function download_audio(db_filepath, url) {
 
 async function initialize_database(db_filepath) {
     
-    const database_initializer = new DatabaseInitializer()
-    await database_initializer.initialize_database(db_filepath)
+    await DatabaseInitializer.initialize_database(db_filepath)
     
 }
 

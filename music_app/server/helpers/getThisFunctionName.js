@@ -1,4 +1,4 @@
-function get_function_name() {
+function getThisFunctionName() {
     const err = new Error();
     const stack = err.stack.split('\n');
     const callerStackLine = stack[2];
@@ -6,4 +6,4 @@ function get_function_name() {
     return functionName;
 }
 
-module.exports = {get_function_name }
+module.exports = { getThisFunctionName }

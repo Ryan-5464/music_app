@@ -1,6 +1,5 @@
 const fs = require('fs')
 const dataurl = require('dataurl')
-const config = require("../config.json")
 
 
 

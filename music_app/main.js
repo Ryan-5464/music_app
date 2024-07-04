@@ -1,16 +1,19 @@
 const { app, BrowserWindow, ipcMain } = require('electron/main')
 const path = require('node:path')
-const { delete_track } = require('./databaseFunctions/delete_track.js');
-const { download_audio, initialize_database } = require('./server/server_side.js');
 const config = require('./config.json');
-const { getTags } = require("./databaseFunctions/getTags.js")
-const { tag_track } = require("./databaseFunctions/tag_track.js")
-const {fetch_tracks } = require("./databaseFunctions/fetch_tracks.js")
-const { delete_tag } = require("./databaseFunctions/delete_tag.js")
-const { TrackTagFilter } = require("./databaseFunctions/fetch_tracks_by_tag.js")
-const {fetchTrackByTrackId } = require("./databaseFunctions/fetchTracksByTrackId.js")
-const { fetchTrackSource } = require("./server_logic/convertSong.js")
-const { fetchTracksBySearch } = require("./databaseFunctions/fetchTracksBySearch.js")
+
+
+const { TrackTagFilter } = require("./server/handlers/TrackTagFilter.js")
+const { DbInitializer } = require("./server/handlers/DbInitializer.js")
+const { downloadAudio } = require("./server/functions/downloadAudio.js")
+const { deleteTrack } = require("./server/functions/deleteTrack.js")
+const { getTags } = require("./server/functions/getTags.js")
+const { tagTrack } = require("./server/functions/tagTrack.js")
+const { fetchTracks } = require("./server/functions/fetchTracks.js")
+const { deleteTag } = require("./server/functions/deleteTag.js")
+const { fetchTracksBySearch } = require("./server/functions/fetchTracksBySearch.js")
+const { fetchTrackSource } = require("./server/functions/fetchTrackSource.js")
+const {fetchTrackByTrackId } = require("./server/functions/fetchTrackByTrackId.js")
 
 
 
@@ -32,7 +35,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     
-    initialize_database(config.DB_FILEPATH)
+    DbInitializer.initializeDb(config.DB_FILEPATH)
 
     ipcMain.on('get-track-by-id--send', (event, data) => {
         fetchTrackByTrackId(config.DB_FILEPATH, data.trackId).then((track) => {
@@ -41,7 +44,7 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('download-track--send', (event, data) => {
-        download_audio(config.DB_FILEPATH, data.url).then((success) => {
+        downloadAudio(config.DB_FILEPATH, data.url).then((success) => {
             if (!success) {
                 event.sender.send('download-track--receive', 'Could not download audio!')
             } else if (success === 1) {
@@ -61,7 +64,7 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('fetch-all-tracks--send', (event, data) => {
-        fetch_tracks(config.DB_FILEPATH).then((tracks) => {
+        fetchTracks(config.DB_FILEPATH).then((tracks) => {
             const start_index = (data.page - 1) * data.limit
             const end_index = Math.min(start_index + data.limit, tracks.length)
             const resultSet = tracks.slice(start_index, end_index)
@@ -85,14 +88,14 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('add-tag--send', (event, data) => {
-        tag_track(config.DB_FILEPATH, data.trackId, data.tagName).then((tags) => {
+        tagTrack(config.DB_FILEPATH, data.trackId, data.tagName).then((tags) => {
             event.sender.send('add-tag--receive', tags)
         })
     })
 
     ipcMain.on('delete-tag--send', (event, data) => {
         console.log("trig")
-        delete_tag(config.DB_FILEPATH, data.trackId, data.tagName).then(() => {
+        deleteTag(config.DB_FILEPATH, data.trackId, data.tagName).then(() => {
             event.sender.send('delete-tag--receive', "")
         })
     })
@@ -105,7 +108,7 @@ app.whenReady().then(() => {
 
     ipcMain.on('delete-track--send', (event, data) => {
         console.log("delete track id", data.trackId)
-        delete_track(config.DB_FILEPATH, data.trackId).then((result) => {
+        deleteTrack(config.DB_FILEPATH, data.trackId).then((result) => {
             console.log(`Track with id ${data.trackId} deleted.`)
             event.sender.send('delete-track--receive', result);
         });

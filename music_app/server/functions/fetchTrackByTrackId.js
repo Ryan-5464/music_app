@@ -1,18 +1,9 @@
-const { Logger } = require("../handlers/Logger.js")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
-const path = require('path');
-const script_name = path.basename(__filename);
-const { get_function_name } = require("../helpers/get_function_name.js")
 
 
 
-const logger = new Logger()
+async function fetchTrackByTrackId(dbFilepath, trackId) {
 
-
-
-async function fetchTrackByTrackId(db_filepath, trackId) {
-
-    const LOG_ID = '474799'
 
     let QUERY = `
         SELECT * FROM tracks
@@ -20,7 +11,7 @@ async function fetchTrackByTrackId(db_filepath, trackId) {
     `
     const values = [trackId]
     const database = new SqliteDatabaseHandler()
-    await database.connect(db_filepath)
+    await database.connect(dbFilepath)
     const tracks = await database.download(QUERY, values)
 
     QUERY = `
