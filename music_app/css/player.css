@@ -28,7 +28,7 @@
     height: 8px;
     width: 520px;
     margin-bottom: 15px;
-    background-color: rgb(61, 61, 61); /* Change to dark blue */
+    background-color: var(--background-color); /* Change to dark blue */
     border-style: none;
     border-radius: 5px;
     box-shadow: 0 0 5 2px black; /* Add white glow */
@@ -98,7 +98,7 @@
     font-style: var(--font-style);
     color: white;
     overflow: hidden;
-    font-size: 1.2em;
+    font-size: 1.1em;
     white-space: nowrap;
 }
 
@@ -110,10 +110,6 @@
     animation: scrollText 60s linear infinite;
 }
 
-.ticker-text:hover {
-    animation-play-state: paused;
-}
-
 @keyframes scrollText {
     0% {
         transform: translateX(100%);
@@ -121,4 +117,24 @@
     100% {
         transform: translateX(-100%);
     }
+}
+
+
+
+#player-duration-text {
+    position: relative;
+    width: 150px;
+    height: 50px;
+    top: -60%;
+    left: 123%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);   
+    color: white;
+    font-size: 0.9em;
 }

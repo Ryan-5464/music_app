@@ -56,23 +56,23 @@
 }
 
 #sh-download-button {
-    left: 45%;
+    left: 4%;
     position: fixed;
-    top: 82%;
+    top: 66%;
     transform: translate(-50%, -50%);
 }
 
 #sh-tag-button {
-    left: 50%;
+    left: 4%;
     position: fixed;
-    top: 82%;
+    top: 75%;
     transform: translate(-50%, -50%);
 }
 
 #sh-search-button {
-    left: 55%;
+    left: 4%;
     position: fixed;
-    top: 82%;
+    top: 84%;
     transform: translate(-50%, -50%);
 }
 

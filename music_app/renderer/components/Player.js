@@ -12,6 +12,7 @@ export class Player {
         container.appendChild(this.addAudioElement())
         container.appendChild(this.addProgressBar())
         container.appendChild(this.addPlayerButtonsContainer())
+        container.appendChild(this.addDurationText())
         return container
     }
 
@@ -54,6 +55,11 @@ export class Player {
             const progressPercent = (element.currentTime / element.duration) * 100
             const currentProgress = document.getElementById("player-current-progress")
             currentProgress.style.width = `${progressPercent}%`
+            const durationText = document.getElementById("player-duration-text")
+            const track = document.getElementsByClassName("track-now-playing")[0]
+            const duration = track.children[0].children[2].textContent
+            console.log(track.children[0].children[2].textContent)
+            durationText.textContent = `${format(element.currentTime)} / ${duration}`
         })
         
         element.addEventListener("ended", async () => {
@@ -162,6 +168,12 @@ export class Player {
         return element
     }
 
+    addDurationText() {
+        const container = document.createElement("div")
+        container.id = "player-duration-text"
+        return container
+    }
+
     
 
 }
@@ -171,7 +183,20 @@ export class Player {
 class PlayerEvents {
 
     static async handlePlayNextTrack() {
-        
+        const repeatButton = document.getElementById("player-repeat-button")
+        const shuffleButton = document.getElementById("player-shuffle-button")
+        if (repeatButton.classList.contains("active")) {
+            const audioElement = document.getElementById("audio-element")
+            await audioElement.play()
+            return
+        }
+        if (shuffleButton.classList.contains("active")) {
+            const trackId = handleShuffle()
+            await playTrack(trackId)
+            return
+        }
+        const trackId = nextTrack()
+        await playTrack(trackId)
     }
 
     static async handlePauseButton() {

@@ -1,39 +1,51 @@
 #tracklist {
     height: 400px;
     width: 900px;
-    margin: 25px 0px 25px 0;
-    border-radius: 10px;
-    border-style: none;
-    overflow-y: auto;
-    padding: 10px 0px 25px 0px;
-    overflow: visible;
+    overflow: auto;
 }
 
 
 
 #tracklist-container {
     position: fixed;
-    top: 300px;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
     height: 400px;
     width: 900px;
-    border-style: none;
-    box-sizing: border-box;
-    overflow: visible;
+    overflow: hidden;
+}
+
+
+
+#tracklist::-webkit-scrollbar {
+    width: 12px;               /* Width of the scrollbar */
+    height: 12px;              /* Height of the scrollbar (horizontal) */
+}
+
+#tracklist::-webkit-scrollbar-track {
+    background: var(--background-color);       /* Background of the scrollbar track */
+    border-radius: 10px;
+}
+
+#tracklist::-webkit-scrollbar-thumb {
+    background: var(--color-gradient-2);          /* Color of the scrollbar thumb */
+    border-radius: 10px;       /* Roundness of the scrollbar thumb */
+}
+
+#tracklist::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gradient-2);          /* Color of the scrollbar thumb */
 }
 
 
 
 #tracklist-title {
-    position: relative;
     font-size: 2em;
     display: flex;
     justify-content: flex-start;
     height: 60px;
-    padding-top: 20px;
 }
 
 
@@ -52,18 +64,19 @@
 .track-info-container {
     display:flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .track {
     color: #ffffff;
-    padding: 5px 20px 5px 20px;
+    padding: 5px 20px 5px 0px;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
     font-size: 0.8em;
     border-radius: 15px;
-    margin-bottom: 10px;
+    margin: 20px 0px 20px 10px;
 }
 
 
@@ -85,16 +98,10 @@
 
 
 .track-play-button {
-    position: absolute;
-    left: 20px;
-    height: 20px;
-    width: 20px;
+    padding: 0px 20px 0px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0,0);
-    border-style: none;
-    border-radius: 15px;
 }
 
 
@@ -106,47 +113,35 @@
 
 
 .track-title {
-    position: relative;
-    left: 50px;
-    width: 600px;
+    width: 680px;
 } 
 
 
 
 .track-duration {
-    position: absolute;
-    right: 120px;
+    padding-right: 20px;
 }
 
 
 
 .track-tag-button {
-    position: absolute;
-    right: 70px;
-    height: 20px;
-    width: 20px;
+    padding-right: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0,0);
-    border-style: none;
 }
 
 
 
 .delete-button-container {
-    position: absolute;
-    right: 20px;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    width: 50px;
+    width: 60px;
 }
 
 
 .track-button {
-    height: 20px;
-    width: 20px;
     background-color: rgba(0,0,0,0);
     border-style: none;
 }

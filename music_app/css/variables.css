@@ -1,5 +1,6 @@
 :root {
     --color-gradient-1: linear-gradient(142deg, rgba(4,19,113,0.7) 0%, rgba(251,4,54,0.7) 70%, rgba(255,253,102,0.7) 100%);
+    --color-gradient-2: linear-gradient(225deg, rgba(70,64,255,1) 0%, rgba(96,233,225,1) 100%);
     --font-color: white;
     --font-family: "Bruno Ace", sans-serif;
     --font-optical-sizing: auto;
@@ -8,4 +9,5 @@
     --font-style: normal;
     --active-color: rgba(253, 0, 97, 0.8);
     --hover-color: rgba(20,20,20,0.8);
+    --background-color: rgba(41,41,41,0.8);
 }
