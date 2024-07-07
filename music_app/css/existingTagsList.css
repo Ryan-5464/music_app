@@ -1,4 +1,4 @@
-#existing-tags-list-container {
+#tags-list-container {
     position: fixed;
     right: 0;
     top: 14%;
@@ -12,36 +12,40 @@
     background-color: rgba(0,0,0,0);
 }
 
-#existing-tags-list {
+#tags-list {
     overflow-y: auto;
     white-space: wrap;
 }
 
-#existing-tags-list::-webkit-scrollbar {
+#tags-list::-webkit-scrollbar {
     width: 12px;               /* Width of the scrollbar */
     height: 12px;              /* Height of the scrollbar (horizontal) */
 }
 
-#existing-tags-list::-webkit-scrollbar-track {
+#tags-list::-webkit-scrollbar-track {
     background: var(--background-color);       /* Background of the scrollbar track */
     border-radius: 10px;
 }
 
-#existing-tags-list::-webkit-scrollbar-thumb {
+#tags-list::-webkit-scrollbar-thumb {
     background: var(--color-gradient-2);          /* Color of the scrollbar thumb */
     border-radius: 10px;       /* Roundness of the scrollbar thumb */
 }
 
-#existing-tags-list::-webkit-scrollbar-thumb:hover {
+#tags-list::-webkit-scrollbar-thumb:hover {
     background: var(--color-gradient-2);          /* Color of the scrollbar thumb */
 }
 
 
-#existing-tags-title {
+#tags-list-title {
     position: relative;
     right: 50px;
     font-size: 2em;
     margin-bottom: 20px;
-    overflow: visible;
-    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    font-size: 60px;
+    color: white;
+    font-family: var(--font-family);
+    font-weight: var(--font-weight);
 }

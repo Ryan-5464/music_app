@@ -79,16 +79,6 @@ function createAllButton() {
 
 
 
-// function createSaveAsPlaylistButton() {
-//     const btn = document.createElement("button")
-//     btn.id = "tag-filter-save-as-playlist-button"
-//     btn.textContent = "Save as playlist"
-//     return btn
-// }
-
-
-
-
 
 function addTagFilterInputEventListener() {
 
