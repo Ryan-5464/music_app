@@ -16,8 +16,19 @@
 
 
 
-#download-bar-input {
+#download-bar-input-box {
     width: 500px;
+    padding: 5px 15px 5px 10px;
+    background: rgba(0,0,0,0.7);
+    border-style: none;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    font-optical-sizing: var(--font-optical-sizing);
+    font-weight: var(--font-weight-400);
+    font-style: var(--font-style);
+    color: var(--font-color);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;    
 }
 
 
@@ -49,7 +60,7 @@
     box-shadow: 10px 0 20px rgba(255, 255, 255, 1);
 }
 
-.message {
+#download-bar-message {
     position: fixed;
     width: 50vw;
     top: -40%;

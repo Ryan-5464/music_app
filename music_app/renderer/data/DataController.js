@@ -13,6 +13,13 @@ export class DataController {
     }
 
 
+
+    async downloadAudio(url) {
+        const successMsg = await this.channels.downloadTrackChannel.send({url: url})
+        return successMsg
+    }
+
+
     
     async updateTrackDataNoFilter(page=1, limit=100000) {
         this.trackData = await this.channels.fetchAllTracksChannel.send({page: page, limit: limit})
