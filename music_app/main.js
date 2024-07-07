@@ -7,14 +7,14 @@ const { TrackTagFilter } = require("./server/handlers/TrackTagFilter.js")
 const { DbInitializer } = require("./server/handlers/DbInitializer.js")
 const { downloadAudio } = require("./server/functions/downloadAudio.js")
 const { deleteTrack } = require("./server/functions/deleteTrack.js")
-const { getTags } = require("./server/functions/getTags.js")
+const { getTags, getAllTags } = require("./server/functions/getTags.js")
 const { tagTrack } = require("./server/functions/tagTrack.js")
 const { fetchTracks } = require("./server/functions/fetchTracks.js")
 const { deleteTag } = require("./server/functions/deleteTag.js")
 const { fetchTracksBySearch } = require("./server/functions/fetchTracksBySearch.js")
 const { fetchTrackSource } = require("./server/functions/fetchTrackSource.js")
 const {fetchTrackByTrackId } = require("./server/functions/fetchTrackByTrackId.js")
-
+const { renameTrack } = require("./server/functions/renameTrack.js")
 
 
 
@@ -119,6 +119,14 @@ app.whenReady().then(() => {
         })
     })
 
+    ipcMain.on('get-all-tags--send', (event, data) => {
+        console.log("1")
+        getAllTags(config.DB_FILEPATH).then((tags) => {
+            console.log("all-tags", tags)
+            event.sender.send('get-all-tags--receive', tags)
+        })
+    })
+
     ipcMain.on('delete-track--send', (event, data) => {
         console.log("delete track id", data.trackId)
         deleteTrack(config.DB_FILEPATH, data.trackId).then((result) => {
@@ -126,6 +134,13 @@ app.whenReady().then(() => {
             event.sender.send('delete-track--receive', result);
         });
     });
+
+    ipcMain.on('rename-track--send', (event, data) => {
+        renameTrack(config.DB_FILEPATH, data.trackId, data.newName).then((signal) => {
+            event.sender.send('rename-track--receive', signal);
+        });
+    });
+
 
     createWindow();
 

@@ -83,14 +83,13 @@
 
 .track-open-taglist {
     color: #ffffff;
-    padding: 5px 20px 5px 20px;
+    padding: 5px 20px 5px 0px;
     font-family: var(--font-family);
     font-optical-sizing: var(--font-optical-sizing);
     font-weight: var(--font-weight-400);
     font-style: var(--font-style);
     font-size: 0.8em;
     background-color: rgba(0,0,0,0.2);
-    backdrop-filter: blur(20px);
     box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -113,12 +112,21 @@
 
 
 .track-title {
-    width: 680px;
+    width: 560px;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-right: 20px;
 } 
+
+
+.track-rename-button {
+    padding-right: 20px;
+}
 
 
 
 .track-duration {
+    width: 50px;
     padding-right: 20px;
 }
 
@@ -137,7 +145,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    width: 60px;
+    width: 50px;
 }
 
 
@@ -153,22 +161,12 @@
 }
 
 
-.modal {
-    display: inline-flex; 
-    justify-content:center;
-    align-items:center;
-    position: fixed; 
-    z-index: 1; 
-    left: 50px;
-    top: -20px;
-    width: 300px; 
-    height: 50px; 
-    border-radius: 25px;
-    overflow: auto; 
-    background: linear-gradient(142deg, rgba(4,19,113,1) 0%, rgba(251,4,54,1) 70%, rgba(255,253,102,1) 100%);
-}
 
 
 #tag-name-input {
     margin-right: 10px;
+}
+
+#rename-track-input {
+    width: 300px;
 }

@@ -1,5 +1,6 @@
 import { dataController } from "../../renderer.js"
 import { channels } from "../../renderer.js"
+import { ExistingTagsList } from "./ExistingTagsList.js"
 
 
 
@@ -191,6 +192,7 @@ class TrackElements {
         const container = TrackElements._addContainer(trackData.track_id)
         container.appendChild(TrackElements._addPlayButton(trackData.track_id))
         container.appendChild(TrackElements._addTitle(trackData.title))
+        container.appendChild(TrackElements._addRenameButton(trackData.track_id))
         container.appendChild(TrackElements._addDuration(trackData.duration_sec))
         container.appendChild(TrackElements._addTagsButton(trackData.track_id))
         container.appendChild(TrackElements._addDeleteButton(trackData.track_id))
@@ -210,6 +212,10 @@ class TrackElements {
 
     static _addTitle(title) {
         return TitleElement.create(title)
+    }
+
+    static _addRenameButton(trackId) {
+        return RenameButtonElement.create(trackId)
     }
 
     static _addDuration(duration) {
@@ -243,11 +249,50 @@ class TitleElement {
         const element = document.createElement("div")
         element.classList.add("track-title")
         element.textContent = title
-        element.style.pointerEvents = 'none'
         return element
     }
 
 }
+
+
+
+class RenameButtonElement {
+
+    static create(trackId) {
+        const button = createButton(`track-rename-button-${trackId}`, ["track-button", "track-rename-button"], {"data-track-id": trackId}, "./images/rename-32.png", 15, 15)
+        console.log(trackId)
+        button.addEventListener("click", () => {
+            const input = document.createElement("input")
+            input.id = "rename-track-input"
+            input.classList.add("input-bar")
+            input.placeholder = "Enter new track name..."
+            
+            input.addEventListener('keypress', async (event) => {
+                if (event.key === 'Enter') {
+                    const track = dataController.findTrackInTrckData(trackId)
+                    const newName = input.value
+                    if (newName === '') {
+                        trackTitle.innerHTML = track.title
+                        return
+                    }
+                    const signal = await dataController.renameTrack(trackId, newName)
+                    console.log("signal", signal)
+                    trackTitle.innerHTML = newName
+                    await dataController.updateTrackDataNoFilter()
+                }
+            })
+
+            const track = document.getElementById(`track-${trackId}`)
+            const trackTitle = track.children[0].children[1]
+            trackTitle.innerHTML = ''
+            trackTitle.appendChild(input)
+
+        })
+        return button
+    }
+}
+
+
 
 class DurationElement {
     
@@ -351,7 +396,7 @@ export class TaglistElements {
     static async create(trackId) {
         await dataController.updateTagData(trackId)
         const container = TaglistElements._addContainer(trackId)
-        container.appendChild(TaglistElements._addSaveTagButton(trackId))
+        container.appendChild(TaglistElements._addSaveTagInput(trackId))
         for (const tag of dataController.tagData) {
             container.appendChild(TagElement.create(tag.tag, trackId))
         }
@@ -365,19 +410,25 @@ export class TaglistElements {
         return container
     }
 
-    static _addSaveTagButton(trackId) {
-        const button = createButton(null, ["save-tag-button", "track-button"], {}, "./images/plus-32.png", 18, 18)
-        button.addEventListener("click", () => {
-            let modal = document.getElementById("add-tag-modal-container")
-            if (modal) {
-                modal.remove()
-                return
+    static _addSaveTagInput(trackId) {
+        const input = document.createElement("input")
+        input.id = "save-tag-input"
+        input.classList.add("input-bar")
+        input.placeholder = "Enter tag name..."
+        input.addEventListener('keypress', async (event) => {
+            if (event.key === 'Enter') {
+                const tagName = input.value
+                if (tagName === '') {
+                    return
+                }
+                await channels.addTagChannel.send({trackId: trackId, tagName: tagName})
+                const taglist = input.parentElement
+                taglist.appendChild(TagElement.create(tagName, trackId))
+                await dataController.updateTaglistData() 
+                ExistingTagsList.addTagToTagList()
             }
-            modal = SaveTagModalElement.create(trackId)
-            button.parentElement.appendChild(modal)
-            // button.style.pointerEvents = "none"
         })
-        return button
+        return input
     }
 
 }
@@ -419,45 +470,4 @@ class TagElement {
 
 
 }
-
-
-
-class SaveTagModalElement {
-
-    static create(trackId) {
-        const container = SaveTagModalElement._addContainer()
-        container.appendChild(SaveTagModalElement._addTagNameInput())
-        container.appendChild(SaveTagModalElement._addSaveTagButton(trackId))
-        return container
-    }
-
-    static _addContainer() {
-        const container = document.createElement("div")
-        container.id = "add-tag-modal-container"
-        container.classList.add("modal")
-        return container
-    }
-
-    static _addTagNameInput() {
-        const input = document.createElement("input")
-        input.id = "tag-name-input"
-        input.classList.add("input-bar")
-        input.placeholder = "Enter tag name..."
-        return input
-    }
-
-    static _addSaveTagButton(trackId) {
-        const button = createButton(null, ["save-tag-modal-button", "track-button"], {"data-track-id": trackId}, "./images/plus-32.png", 18, 18)
-        button.addEventListener("click", async () => {
-            const saveTagInput = document.getElementById("tag-name-input")
-            const tagName = saveTagInput.value
-            await channels.addTagChannel.send({trackId: trackId, tagName: tagName})
-            const taglist = button.parentElement.parentElement
-            taglist.appendChild(TagElement.create(tagName, trackId))
-        })
-        return button
-    }
-}
-
-
 

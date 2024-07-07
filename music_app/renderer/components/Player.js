@@ -57,8 +57,7 @@ export class Player {
             currentProgress.style.width = `${progressPercent}%`
             const durationText = document.getElementById("player-duration-text")
             const track = document.getElementsByClassName("track-now-playing")[0]
-            const duration = track.children[0].children[2].textContent
-            console.log(track.children[0].children[2].textContent)
+            const duration = track.children[0].children[3].textContent
             durationText.textContent = `${format(element.currentTime)} / ${duration}`
         })
         
@@ -157,10 +156,10 @@ export class Player {
         textTwo.classList.add("ticker-text")
         textThree.classList.add("ticker-text")
         textFour.classList.add("ticker-text")
-        textOne.textContent = "[Test message]"
-        textTwo.textContent = "[Test message]"
-        textThree.textContent = "[Test message]"
-        textFour.textContent = "[Test message]"
+        textOne.textContent = ""
+        textTwo.textContent = ""
+        textThree.textContent = ""
+        textFour.textContent = ""
         element.appendChild(textOne)
         element.appendChild(textTwo)
         element.appendChild(textThree)

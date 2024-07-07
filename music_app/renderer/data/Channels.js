@@ -12,6 +12,8 @@ export class Channels {
         this.fetchAllTracksChannel = new Channel("fetch-all-tracks--send", "fetch-all-tracks--receive")
         this.playTrackChannel = new Channel("play-track--send", "play-track--receive")
         this.deleteTrackChannel = new Channel("delete-track--send", "delete-track--receive")
+        this.renameTrackChannel = new Channel("rename-track--send", "rename-track--receive")
+        this.getAllTagsChannel = new Channel("get-all-tags--send", "get-all-tags--receive")
     }
 }
 

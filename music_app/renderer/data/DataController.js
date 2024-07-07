@@ -9,6 +9,7 @@ export class DataController {
         this.channels = channels
         this.trackData = []
         this.tagData = []
+        this.taglistData = []
     }
 
 
@@ -25,6 +26,12 @@ export class DataController {
 
 
 
+    async renameTrack(trackId, newName) {
+        return await this.channels.renameTrackChannel.send({trackId: trackId, newName: newName})
+    }
+
+
+
     async updateTrackDataBySearch(searchString) {
         this.trackData = await this.channels.searchFilterChannel.send({searchString: searchString})
     }
@@ -34,7 +41,9 @@ export class DataController {
         this.tagData = await this.channels.getTagsChannel.send({trackId: trackId})
     }
 
-
+    async updateTaglistData() {
+        this.taglistData = await this.channels.getAllTagsChannel.send({})
+    }
 
     async deleteTrack(trackId) {
         await this.channels.deleteTrackChannel.send({trackId: trackId})
@@ -47,6 +56,12 @@ export class DataController {
         return source
     }
 
+
+
+    findTrackInTrckData(trackId) {
+        const track = this.trackData.find(t => t.track_id === trackId)
+        return track
+    }
 
 
 }

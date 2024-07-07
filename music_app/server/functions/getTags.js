@@ -15,4 +15,15 @@ async function getTags(dbFilepath, trackId) {
     return tags
 }
 
-module.exports = { getTags }
+
+async function getAllTags(dbFilepath) {
+    const QUERY = `
+        SELECT DISTINCT tag FROM tags;    
+    `
+    const database = new SqliteDatabaseHandler()
+    await database.connect(dbFilepath)
+    const tags = await database.download(QUERY) 
+    return tags
+}
+
+module.exports = { getTags, getAllTags }

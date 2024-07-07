@@ -6,7 +6,7 @@ import { DataController } from "./renderer/data/DataController.js"
 import { ShowHideButtons } from "./renderer/components/ShowHideButtons.js"
 import { Channels } from "./renderer/data/Channels.js"
 import { SearchFilterElement } from "./renderer/components/SearchFilter.js"
-
+import { ExistingTagsList } from "./renderer/components/ExistingTagsList.js"
 
 
 
@@ -31,22 +31,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     })
 
     await dataController.updateTrackDataNoFilter()
-    
+    await dataController.updateTaglistData()
+
     const body = document.getElementById("body")
 
     body.appendChild(ShowHideButtons.create())
     
     body.appendChild(Tracklist.create())
 
+    
     body.appendChild(SearchFilterElement.create())
-
+    
     body.appendChild(TagFilterElement.create())
-
+    
     body.appendChild(DownloadBar.create())
-
+    
     const player = new Player()
     body.appendChild(player.create())
-
+    
+    body.appendChild(ExistingTagsList.create())
 })
 
 
