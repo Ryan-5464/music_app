@@ -30,8 +30,8 @@ export function addDownloadBarEventListeners() {
 function createContainer() {
 
     const container = document.createElement("div")
-    container.id = "download-container"
-    container.classList.add("visible")
+    container.id = "download-bar-container"
+    container.classList.add("visible", "show-hide-element-container")
     return container
 }
 

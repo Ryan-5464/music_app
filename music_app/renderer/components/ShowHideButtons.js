@@ -30,7 +30,7 @@ export class ShowHideButtons {
         button.addEventListener("click", () => {
             removeActive()
             button.classList.add("sh-active")
-            const downloadContainer = document.getElementById("download-container")
+            const downloadContainer = document.getElementById("download-bar-container")
             const tagFilterContainer = document.getElementById("tag-filter-container")
             const searchFilterContainer = document.getElementById("search-filter-container")
             downloadContainer.classList.add("visible")
@@ -48,7 +48,7 @@ export class ShowHideButtons {
         button.addEventListener("click", () => {
             removeActive()
             button.classList.add("sh-active")
-            const downloadContainer = document.getElementById("download-container")
+            const downloadContainer = document.getElementById("download-bar-container")
             const tagFilterContainer = document.getElementById("tag-filter-container")
             const searchFilterContainer = document.getElementById("search-filter-container")
             downloadContainer.classList.remove("visible")
@@ -66,7 +66,7 @@ export class ShowHideButtons {
         button.addEventListener("click", () => {
             removeActive()
             button.classList.add("sh-active")
-            const downloadContainer = document.getElementById("download-container")
+            const downloadContainer = document.getElementById("download-bar-container")
             const tagFilterContainer = document.getElementById("tag-filter-container")
             const searchFilterContainer = document.getElementById("search-filter-container")
             downloadContainer.classList.remove("visible")
@@ -104,7 +104,7 @@ function showHideAll() {
 
 function show() {
     const showHideButtons = document.getElementsByClassName("sh-btn")
-    const containers = document.getElementsByClassName("element-container")
+    const containers = document.getElementsByClassName("show-hide-element-container")
     const downloadButton = document.getElementById("sh-download-button")
     const tagFilterButton = document.getElementById("sh-tag-button")
     const searchFilterButton = document.getElementById("sh-search-button")
@@ -142,7 +142,7 @@ function show() {
 
 function hide() {
     const showHideButtons = document.getElementsByClassName("sh-btn")
-    const containers = document.getElementsByClassName("element-container")
+    const containers = document.getElementsByClassName("show-hide-element-container")
     const button = document.getElementById("show-hide-button")
     if (button.classList.contains("sh-active")) {
         for (const btn of showHideButtons) {

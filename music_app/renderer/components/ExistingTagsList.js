@@ -13,7 +13,7 @@ export class ExistingTagsList {
     static _addContainer() {
         const container = document.createElement("div")
         container.id = "existing-tags-list-container"
-        container.classList.add("visible", "element-container")
+        container.classList.add("visible", "show-hide-element-container")
         return container
     }
 

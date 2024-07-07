@@ -1,13 +1,13 @@
 import { Tracklist } from  "./renderer/components/Track.js"
-import { createDownloadBarElement, addDownloadBarEventListeners } from "./renderer/components/DownloadBar.js"
 import { Player } from "./renderer/components/Player.js"
-import { TagFilterElement } from "./renderer/components/TagFilter.js"
+import { createTagFilterElement, addTagFilterEventListeners } from "./renderer/components/TagFilter.js"
 import { DataController } from "./renderer/data/DataController.js"
 import { ShowHideButtons } from "./renderer/components/ShowHideButtons.js"
 import { Channels } from "./renderer/data/Channels.js"
-import { SearchFilterElement } from "./renderer/components/SearchFilter.js"
 import { ExistingTagsList } from "./renderer/components/ExistingTagsList.js"
 
+import { createDownloadBarElement, addDownloadBarEventListeners } from "./renderer/components/DownloadBar.js"
+import { createSearchFilterElement, addSearchFilterEventListeners } from "./renderer/components/SearchFilter.js"
 
 
 
@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const body = document.getElementById("body")
     body.appendChild(ShowHideButtons.create())
     body.appendChild(Tracklist.create())
-    body.appendChild(SearchFilterElement.create())
-    body.appendChild(TagFilterElement.create())
+    body.appendChild(createSearchFilterElement())
+    body.appendChild(createTagFilterElement())
     body.appendChild(createDownloadBarElement())
     const player = new Player()
     body.appendChild(player.create())
@@ -52,7 +52,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     addDownloadBarEventListeners()
-
+    addSearchFilterEventListeners()
+    addTagFilterEventListeners()
 })
 
 
