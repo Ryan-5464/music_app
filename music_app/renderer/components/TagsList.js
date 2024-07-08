@@ -16,11 +16,12 @@ export function createTagsListElement() {
 
 
 
-export function addTagsToTagsList(tags) {
+export async function updateTagsList() {
 
     const tagsList = document.getElementById("tags-list") 
     tagsList.innerHTML = ''
-    for (const tag of tags) {
+    await dataController.updateTagsListData() 
+    for (const tag of dataController.tagsListData) {
         tagsList.appendChild(createTagElement(tag.tag))
     }
 }

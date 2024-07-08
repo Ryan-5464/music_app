@@ -8,8 +8,8 @@ export class DataController {
     constructor(channels) {
         this.channels = channels
         this.trackData = []
-        this.tagData = []
-        this.taglistData = []
+        this.trackTagsData = []
+        this.tagsListData = []
     }
 
 
@@ -23,6 +23,12 @@ export class DataController {
 
     async deleteTag(tagName, trackId) {
         await channels.deleteTagChannel.send({trackId: trackId, tagName: tagName})
+    }
+
+
+
+    async addTag(tagName, trackId) {
+        await channels.addTagChannel.send({trackId: trackId, tagName: tagName})
     }
 
 
@@ -50,12 +56,12 @@ export class DataController {
     }
 
 
-    async updateTagData(trackId) {
-        this.tagData = await this.channels.getTagsChannel.send({trackId: trackId})
+    async updateTrackTagsData(trackId) {
+        this.trackTagsData = await this.channels.getTagsChannel.send({trackId: trackId})
     }
 
-    async updateTaglistData() {
-        this.taglistData = await this.channels.getAllTagsChannel.send({})
+    async updateTagsListData() {
+        this.tagsListData = await this.channels.getAllTagsChannel.send({})
     }
 
     async deleteTrack(trackId) {
