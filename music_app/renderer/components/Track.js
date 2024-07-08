@@ -1,473 +1,188 @@
-import { dataController } from "../../renderer.js"
-import { channels } from "../../renderer.js"
-import { ExistingTagsList } from "./ExistingTagsList.js"
 
 
 
 
-export class Tracklist {
 
+export function createTrackElement(track) {
 
-    static create() {
-        const container = Tracklist._addContainer()
-        container.appendChild(Tracklist._addTitle())
-        container.appendChild(Tracklist._addTracklist())
-        return container
-    }
-
-
-
-    static reloadTracklist() {
-        const tracklist = document.getElementById("tracklist")
-        tracklist.innerHTML = ""
-        for (const track of dataController.trackData) {
-            tracklist.appendChild(Track.create(track))
-        }
-    }
+    const container = createTrackContainer(track.track_id)
+    const subContainer = createTrackSubContainer(track.track_id)
+    subContainer.appendChild(createPlayButton(track.track_id))
+    subContainer.appendChild(createTitle(track.title))
+    subContainer.appendChild(createTitleRenameButton(track.track_id))
+    subContainer.appendChild(createDuration(track.duration_sec))
+    subContainer.appendChild(createTagsButton(track.track_id))
+    subContainer.appendChild(createDeleteButtonContainer(track.track_id))
+    container.appendChild(subContainer)
+    return container
+}
 
 
 
-    static _addContainer() {
-        const container = document.createElement("div")
-        container.id = "tracklist-container"
-        container.classList.add("visible", "show-hide-element-container")
-        return container
-    }
 
 
-
-    static _addTitle() {
-        const title = document.createElement("div")
-        title.id = "tracklist-title"
-        title.classList.add("title")
-        title.textContent = "Playlist"
-        return title
-    }
-
-
+function createContainer(containerId) {
     
-    static _addTracklist() {
-        const tracklist = document.createElement("div")
-        tracklist.id = "tracklist"
-
-        tracklist.addEventListener("click", async (event) => {
-            if (event.target.tagName !== "BUTTON") {
-                return
-            }
-            if (event.target.classList.contains("track-tag-button")) {
-                return await TracklistEvents.handleTrackTagButton(event)
-            }
-            if (event.target.classList.contains("track-play-button")) {
-                return await TracklistEvents.handleTrackPlayButton(event)
-            }
-            if (event.target.classList.contains("track-delete-button")) {
-                return await TracklistEvents.handleTrackDeleteButton(event)
-            }
-            if (event.target.classList.contains("confirm-delete-button")) {
-                return await TracklistEvents.handleTrackConfirmButton(event)
-            }
-            if (event.target.classList.contains("cancel-delete-button")) {
-                return await TracklistEvents.handleTrackCancelButton(event)
-            }
-        })
-        
-        for (const track of dataController.trackData) {
-            tracklist.appendChild(Track.create(track))
-        }
-        return tracklist       
-    }
-
-
+    const container = document.createElement("div")
+    container.id = containerId
+    return container
 }
 
 
 
-class TracklistEvents {
 
-    static async handleTrackTagButton(event) {
-        const button = event.target
-        const trackId = button.getAttribute("data-track-id")
-        const taglistContainer = document.getElementById(`taglist-container-${trackId}`)
-        const taglistContainers = document.getElementsByClassName("taglist-container")
-        const track = document.getElementById(`track-${trackId}`)
-        if (taglistContainer) {
-            taglistContainer.remove()
-            track.classList.remove("track-open-taglist")
-            return
-        }
-        if (taglistContainers.length > 0) {
-            taglistContainers[0].parentElement.classList.remove("track-open-taglist")
-            taglistContainers[0].remove()
 
-        }
-        const taglist = await TaglistElements.create(trackId)
-        track.classList.add("track-open-taglist")
-        track.appendChild(taglist)
-    }
+function createTrackContainer(trackId) {
 
-    static async handleTrackPlayButton(event) {
-        const button = event.target
-        const audioElement = document.getElementById("audio-element")
-        const trackId = button.getAttribute("data-track-id")
-        const pauseButton = document.getElementById("player-pause-button")
-        if (button.classList.contains("now-playing")) {
-            audioElement.src = await dataController.fetchAudioSource(trackId) 
-            pauseButton.children[0].src = "./images/pause-32.png"
-            audioElement.play()
-            return
-        } else {
-            const playButtons = document.getElementsByClassName("track-play-button")
-            for (const playButton of playButtons) {
-                playButton.classList.remove("now-playing")
-                playButton.parentElement.parentElement.classList.remove("track-now-playing")
-            }
-            button.classList.add("now-playing")
-            button.parentElement.parentElement.classList.add("track-now-playing")
-        }
-        audioElement.src = await dataController.fetchAudioSource(trackId) 
-        pauseButton.children[0].src = "./images/pause-32.png"
-        audioElement.play()
-    }
-
-    static async handleTrackDeleteButton(event) {
-        const button = event.target
-        const trackId = button.getAttribute("data-track-id")
-        const deleteButtonContainer = document.getElementById(`delete-button-container-${trackId}`)
-        const confirm = createButton(`confirm-delete-button-${trackId}`, ["track-button", "confirm-delete-button"], {"data-track-id": trackId}, "./images/checkmark-32.png", 18, 18)
-        const cancel = createButton(`cancel-delete-button-${trackId}`, ["track-button", "cancel-delete-button"], {"data-track-id": trackId}, "./images/delete-2-32.png", 18, 18)
-        console.log("before", deleteButtonContainer, confirm, cancel)
-        deleteButtonContainer.appendChild(confirm)
-        deleteButtonContainer.appendChild(cancel)
-        console.log("after", deleteButtonContainer)
-        button.remove()
-    }
-
-    static async handleTrackConfirmButton(event) {
-        const confirm = event.target
-        const trackId = confirm.getAttribute("data-track-id")
-        await dataController.deleteTrack(trackId)
-        await dataController.updateTrackDataNoFilter()
-        const track = document.getElementById(`track-${trackId}`)
-        track.remove()
-    }
-
-    static async handleTrackCancelButton(event) {
-        const cancel = event.target
-        const trackId = cancel.getAttribute("data-track-id")
-        const trackInfoContainer = document.getElementById(`track-info-container-${trackId}`)
-        const deleteButtonContainer = document.getElementById(`delete-button-container-${trackId}`)
-        deleteButtonContainer.remove()
-        trackInfoContainer.appendChild(DeleteButtonElement.create(trackId))
-    }
-
-}
-
-class Track {
-
-    static create(trackData) {
-        const container = Track._addContainer(trackData.track_id)
-        container.appendChild(Track._addTrackData(trackData))
-        return container
-    }
-
-    static _addContainer(trackId) {
-        const container = document.createElement("div")
-        container.id = `track-${trackId}`
-        container.setAttribute(`data-track-id`, trackId)
-        container.classList.add("track")
-        return container
-    }
-    
-    static _addTrackData(trackData) {
-        return TrackElements.create(trackData)
-    }
-
+    const container = createContainer(`track-${trackId}`)
+    container.setAttribute("data-track-id", trackId)
+    container.classList.add("track")
+    return container
 }
 
 
 
-class TrackElements {
 
-    static create(trackData) {
-        const container = TrackElements._addContainer(trackData.track_id)
-        container.appendChild(TrackElements._addPlayButton(trackData.track_id))
-        container.appendChild(TrackElements._addTitle(trackData.title))
-        container.appendChild(TrackElements._addRenameButton(trackData.track_id))
-        container.appendChild(TrackElements._addDuration(trackData.duration_sec))
-        container.appendChild(TrackElements._addTagsButton(trackData.track_id))
-        container.appendChild(TrackElements._addDeleteButton(trackData.track_id))
-        return container
-    }
 
-    static _addContainer(trackId) {
-        const container = document.createElement("div")
-        container.id = `track-info-container-${trackId}`
-        container.classList.add("track-info-container")
-        return container
-    }
+function createTrackSubContainer(trackId) {
 
-    static _addPlayButton(trackId) {
-        return PlayButtonElement.create(trackId)
-    }
-
-    static _addTitle(title) {
-        return TitleElement.create(title)
-    }
-
-    static _addRenameButton(trackId) {
-        return RenameButtonElement.create(trackId)
-    }
-
-    static _addDuration(duration) {
-        return DurationElement.create(duration)
-    }
-
-    static _addTagsButton(trackId) {
-        return TagsButtonElement.create(trackId)
-    }
-
-    static _addDeleteButton(trackId) {
-        return DeleteButtonElement.create(trackId)
-    }
-
+    const container = createContainer(`track-info-container-${trackId}`)
+    container.classList.add("track-info-container")
+    return container
 }
 
 
 
-class PlayButtonElement {
 
-    static create(trackId) {
-        const button = createButton(`track-play-button-${trackId}`, ["track-button", "track-play-button"], {"data-track-id": trackId}, "./images/play-32.png", 15, 15)
-        return button
-    }
 
-}
+function createPlayButton(trackId) {
 
-class TitleElement {
-
-    static create(title) {
-        const element = document.createElement("div")
-        element.classList.add("track-title")
-        element.textContent = title
-        return element
-    }
-
+    const button = createButton(`track-play-button-${trackId}`, ["track-button", "track-play-button"], {"data-track-id": trackId}, "./images/play-32.png", 15, 15)
+    return button
 }
 
 
 
-class RenameButtonElement {
 
-    static create(trackId) {
-        const button = createButton(`track-rename-button-${trackId}`, ["track-button", "track-rename-button"], {"data-track-id": trackId}, "./images/rename-32.png", 15, 15)
-        console.log(trackId)
-        button.addEventListener("click", () => {
-            const input = document.createElement("input")
-            input.id = "rename-track-input"
-            input.classList.add("input-bar")
-            input.placeholder = "Enter new track name..."
-            
-            input.addEventListener('keypress', async (event) => {
-                if (event.key === 'Enter') {
-                    const track = dataController.findTrackInTrckData(trackId)
-                    const newName = input.value
-                    if (newName === '') {
-                        trackTitle.innerHTML = track.title
-                        return
-                    }
-                    const signal = await dataController.renameTrack(trackId, newName)
-                    console.log("signal", signal)
-                    trackTitle.innerHTML = newName
-                    await dataController.updateTrackDataNoFilter()
-                }
-            })
 
+function createTitle(trackTitle) {
+
+    const title = document.createElement("div")
+    title.classList.add("track-title")
+    title.textContent = trackTitle
+    return title
+}
+
+
+
+
+
+function createTitleRenameButton(trackId) {
+
+    const button = createButton(`track-rename-button-${trackId}`, ["track-button", "track-rename-button"], {"data-track-id": trackId}, "./images/rename-32.png", 15, 15)
+    addRenameTrackTitleButtonEventListener(button, trackId)
+    return button
+}
+
+
+
+
+
+function createDuration(trackDuration) {
+
+    const duration = document.createElement("div")
+    duration.classList.add("track-duration")
+    duration.textContent = format(trackDuration)
+    return duration
+}
+
+
+
+
+
+function createTagsButton(trackId) {
+
+    const button = createButton(`track-tag-button-${trackId}`, ["track-button", "track-tag-button"], {"data-track-id": trackId}, "./images/tag-5-32.png", 18, 18)
+    return button
+}
+
+
+
+
+
+export function createDeleteButtonContainer(trackId) {
+
+    const container = createContainer(`delete-button-container-${trackId}`)
+    container.appendChild(createDeleteButton(trackId))
+    return container
+}
+
+
+
+
+
+function createDeleteButton(trackId) {
+   
+    const button = createButton(`track-delete-button-${trackId}`, ["track-button", "track-delete-button"], {"data-track-id": trackId}, "./images/delete-32.png", 18, 18)
+    return button
+}
+
+
+
+
+
+function addRenameTrackTitleButtonEventListener(button, trackId) {
+
+    button.addEventListener("click", 
+        () => {
+
+            const input = createRenameTrackTitleInputBox(trackId)
             const track = document.getElementById(`track-${trackId}`)
             const trackTitle = track.children[0].children[1]
             trackTitle.innerHTML = ''
             trackTitle.appendChild(input)
-
-        })
-        return button
-    }
+        }
+    )
 }
 
 
 
-class DurationElement {
-    
-    static create(duration) {
-        const element = document.createElement("div")
-        element.classList.add("track-duration")
-        element.textContent = DurationElement.format(duration)
-        element.style.pointerEvents = 'none'
-        return element
-    }
-
-    static format(duration) {
-        let x = {hours: 0, minutes: 0, seconds: 0, remainingDuration: duration}
-        if (duration > 3600) {
-            let x = DurationElement.hours(x)
-            x = DurationElement.minutes(x)
-            x = DurationElement.seconds(x)
-            return `${x.hours}:${x.minutes}:${x.seconds}`
-        } else {
-            x = DurationElement.minutes(x)
-            x = DurationElement.seconds(x)
-            return `${x.minutes}:${x.seconds}`
-        }
-    }
-
-    static hours(x) {
-        x.hours = Math.floor(x.remainingDuration / 3600)
-        x.remainingDuration = x.remainingDuration - (3600 * x.hours)
-        if (x.hours < 10) {
-            x.hours = `0${x.hours}`
-        } else {
-            x.hours = `${x.hours}`
-        }
-        return x
-    }
-
-    static minutes(x) {
-        x.minutes = Math.floor(x.remainingDuration / 60)
-        x.remainingDuration = x.remainingDuration - (60 * x.minutes)
-        if (x.minutes < 10) {
-            x.minutes = `0${x.minutes}`
-        } else {
-            x.minutes = `${x.minutes}`
-        }
-        return x
-    }
-
-    static seconds(x) {
-        x.seconds = x.remainingDuration
-        if (x.seconds < 10) {
-            x.seconds = `0${x.seconds}`
-        } else {
-            x.seconds = `${x.seconds}`
-        }
-        return x
-    }
-
-}
-
-class TagsButtonElement {
-
-    static create(trackId) {
-        const button = TagsButtonElement._addButton(trackId)
-        return button
-    }
-
-    static _addButton(trackId) {
-        const button = createButton(`track-tag-button-${trackId}`, ["track-button", "track-tag-button"], {"data-track-id": trackId}, "./images/tag-5-32.png", 18, 18)
-        return button
-    }
-
-}
-
-class DeleteButtonElement {
-
-    static create(trackId) {
-        const container = DeleteButtonElement._addContainer(trackId)
-        container.appendChild(DeleteButtonElement._addDeleteButton(trackId))
-        return container
-    }
-
-    static _addContainer(trackId) {
-        const container = document.createElement("div")
-        container.id = `delete-button-container-${trackId}`
-        container.classList.add("delete-button-container")
-        return container
-    }
-
-    static _addDeleteButton(trackId) {
-        const button = createButton(`track-delete-button-${trackId}`, ["track-button", "track-delete-button"], {"data-track-id": trackId}, "./images/delete-32.png", 18, 18)
-        return button
-    }
 
 
+function createRenameTrackTitleInputBox(trackId) {
+
+    const input = document.createElement("input")
+    input.id = "rename-track-input"
+    input.classList.add("input-bar")
+    input.placeholder = "Enter new track name..."
+    addRenameTrackTitleInputBoxEventListener(input, trackId)
+    return input
 }
 
 
 
-export class TaglistElements {
 
-    static async create(trackId) {
-        await dataController.updateTagData(trackId)
-        const container = TaglistElements._addContainer(trackId)
-        container.appendChild(TaglistElements._addSaveTagInput(trackId))
-        for (const tag of dataController.tagData) {
-            container.appendChild(TagElement.create(tag.tag, trackId))
-        }
-        return container
-    }
 
-    static _addContainer(trackId) {
-        const container = document.createElement("div")
-        container.id = `taglist-container-${trackId}`
-        container.classList.add("taglist-container")
-        return container
-    }
+function addRenameTrackTitleInputBoxEventListener(input, trackId) {
 
-    static _addSaveTagInput(trackId) {
-        const input = document.createElement("input")
-        input.id = "save-tag-input"
-        input.classList.add("input-bar")
-        input.placeholder = "Enter tag name..."
-        input.addEventListener('keypress', async (event) => {
-            if (event.key === 'Enter') {
-                const tagName = input.value
-                if (tagName === '') {
-                    return
-                }
-                await channels.addTagChannel.send({trackId: trackId, tagName: tagName})
-                const taglist = input.parentElement
-                taglist.appendChild(TagElement.create(tagName, trackId))
-                await dataController.updateTaglistData() 
-                ExistingTagsList.addTagToTagList()
+    input.addEventListener("keypress", 
+        async (event) => {
+
+            if (event.key !== 'Enter') {
+                return
             }
-        })
-        return input
-    }
 
-}
-
-
-
-class TagElement {
-
-    static create(tagName, trackId) {
-        const container = this._addContainer(trackId)
-        container.appendChild(this._addTagName(tagName))
-        container.appendChild(this._addDeleteButton(trackId, tagName))
-        return container 
-    }
-
-    static _addContainer(trackId) {
-        const container =  document.createElement("div")
-        container.setAttribute("data-track-id", trackId)
-        container.classList.add("tag")
-        return container
-    }
-
-    static _addTagName(tagName) {
-        const element = document.createElement("div")
-        element.classList.add("tag-name")
-        element.textContent = tagName
-        return element
-    }
-
-    static _addDeleteButton(trackId, tagName) {
-        const button = createButton(null, ["delete-tag-button"], {"data-track-id": trackId, "data-tag-name": tagName}, "./images/delete-32.png", 14, 14)
-        button.addEventListener("click", async () => {
-            await channels.deleteTagChannel.send({trackId: trackId, tagName: tagName})
-            button.parentElement.remove()
-        })
-        return button
-    }
-
-
-
+            const track = dataController.retreiveTrackData(trackId)
+            const trackTitle = track.children[0].children[1]
+            const newName = input.value
+            if (newName === '') {
+                trackTitle.innerHTML = track.title
+                return
+            }
+            await dataController.renameTrack(trackId, newName)
+            trackTitle.innerHTML = newName
+            await dataController.updateTrackDataNoFilter()  
+        }
+    )
 }
 

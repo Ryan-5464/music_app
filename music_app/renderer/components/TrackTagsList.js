@@ -1,16 +1,19 @@
 import { dataController } from "../../renderer.js"
 import { createTrackTagElement } from "./Tag.js"
-import { addTagsToTagsList } from "./TagsList.js"
+import { updateTagsList } from "./TagsList.js"
 
 
 
 
 
-export function createTrackTagsListElement(trackId) {
+export async function createTrackTagsListElement(trackId) {
 
     const container = createContainer(trackId)
     container.appendChild(createSaveTagInputBox(trackId))
-    for (const tag of dataContr)
+    await dataController.updateTrackTagsData(trackId)
+    for (const tag of dataController.trackTagsData) {
+        container.appendChild(createTrackTagElement(tag.tag, trackId))
+    }
     return container
 }
 

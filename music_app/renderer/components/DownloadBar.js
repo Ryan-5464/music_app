@@ -1,5 +1,5 @@
-import { Tracklist } from "./Track.js"
 import { dataController } from "../../renderer.js"
+import { updateTrackList } from "./TrackList.js"
 
 
 
@@ -84,7 +84,7 @@ function addDownloadButtonEventListener() {
             msg.textContent = await dataController.downloadAudio(input.value)
             hideMessageTimer(msg, 5000)
             await dataController.updateTrackDataNoFilter()
-            Tracklist.reloadTracklist()
+            updateTrackList()
         }
     )
 }

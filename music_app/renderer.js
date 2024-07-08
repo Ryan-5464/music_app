@@ -1,4 +1,3 @@
-import { Tracklist } from  "./renderer/components/Track.js"
 import { Player } from "./renderer/components/Player.js"
 import { DataController } from "./renderer/data/DataController.js"
 import { ShowHideButtons } from "./renderer/components/ShowHideButtons.js"
@@ -7,8 +6,8 @@ import { Channels } from "./renderer/data/Channels.js"
 import { createDownloadBarElement, addDownloadBarEventListeners } from "./renderer/components/DownloadBar.js"
 import { createSearchFilterElement, addSearchFilterEventListeners } from "./renderer/components/SearchFilter.js"
 import { createTagFilterElement, addTagFilterEventListeners } from "./renderer/components/TagFilter.js"
-import { createTagsListElement, addTagsToTagsList } from "./renderer/components/TagsList.js"
-
+import { createTagsListElement, updateTagsList } from "./renderer/components/TagsList.js"
+import { createTrackListElement } from "./renderer/components/TrackList.js"
 
 
 
@@ -36,14 +35,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-    await dataController.updateTrackDataNoFilter()
-    await dataController.updateTaglistData()
+    await dataController.updateTrackDataNoFilter() // need this??
 
 
 
     const body = document.getElementById("body")
     body.appendChild(ShowHideButtons.create())
-    body.appendChild(Tracklist.create())
+    body.appendChild(createTrackListElement())
     body.appendChild(createSearchFilterElement())
     body.appendChild(createTagFilterElement())
     body.appendChild(createDownloadBarElement())
@@ -59,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-    addTagsToTagsList(dataController.taglistData)
+    updateTagsList()
 })
 
 

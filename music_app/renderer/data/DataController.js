@@ -22,13 +22,13 @@ export class DataController {
 
 
     async deleteTag(tagName, trackId) {
-        await channels.deleteTagChannel.send({trackId: trackId, tagName: tagName})
+        await this.channels.deleteTagChannel.send({trackId: trackId, tagName: tagName})
     }
 
 
 
     async addTag(tagName, trackId) {
-        await channels.addTagChannel.send({trackId: trackId, tagName: tagName})
+        await this.channels.addTagChannel.send({trackId: trackId, tagName: tagName})
     }
 
 
@@ -77,7 +77,7 @@ export class DataController {
 
 
 
-    findTrackInTrckData(trackId) {
+    retreiveTrackData(trackId) {
         const track = this.trackData.find(t => t.track_id === trackId)
         return track
     }

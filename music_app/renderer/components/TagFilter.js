@@ -1,5 +1,5 @@
-import { Tracklist } from "./Track.js"
 import { dataController } from "../../renderer.js"
+import { updateTrackList } from "./TrackList.js"
 
 
 
@@ -88,7 +88,7 @@ function addTagFilterInputEventListener() {
         async () => {
 
             await dataController.updateTrackDataByTags(parseTagFilterInput(input), isAnyButtonActive(anyBtn))
-            Tracklist.reloadTracklist()
+            updateTrackList()
         }
     )
 }
@@ -108,7 +108,7 @@ function addAnyButtonEventListener() {
 
             toggleAnyButton(anyBtn, allBtn)
             await dataController.updateTrackDataByTags(parseTagFilterInput(input), isAnyButtonActive(anyBtn))
-            Tracklist.reloadTracklist()
+            updateTrackList()
         }
     )
 }
@@ -128,7 +128,7 @@ function addAllButtonEventListener() {
 
             toggleAllButton(anyBtn, allBtn)
             await dataController.updateTrackDataByTags(parseTagFilterInput(input), isAnyButtonActive(anyBtn))
-            Tracklist.reloadTracklist()
+            updateTrackList()
         }
     )
 }
