@@ -20,6 +20,12 @@ export class DataController {
     }
 
 
+
+    async deleteTag(tagName, trackId) {
+        await channels.deleteTagChannel.send({trackId: trackId, tagName: tagName})
+    }
+
+
     
     async updateTrackDataNoFilter(page=1, limit=100000) {
         this.trackData = await this.channels.fetchAllTracksChannel.send({page: page, limit: limit})
