@@ -1,4 +1,3 @@
-import { Player } from "./renderer/components/Player.js"
 import { DataController } from "./renderer/data/DataController.js"
 import { ShowHideButtons } from "./renderer/components/ShowHideButtons.js"
 import { Channels } from "./renderer/data/Channels.js"
@@ -8,6 +7,8 @@ import { createSearchFilterElement, addSearchFilterEventListeners } from "./rend
 import { createTagFilterElement, addTagFilterEventListeners } from "./renderer/components/TagFilter.js"
 import { createTagsListElement, updateTagsList } from "./renderer/components/TagsList.js"
 import { createTrackListElement } from "./renderer/components/TrackList.js"
+import { createAudioPlayerElement } from "./renderer/components/Player.js"
+
 
 
 
@@ -45,8 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     body.appendChild(createSearchFilterElement())
     body.appendChild(createTagFilterElement())
     body.appendChild(createDownloadBarElement())
-    const player = new Player()
-    body.appendChild(player.create())
+    body.appendChild(createAudioPlayerElement())
     body.appendChild(createTagsListElement())
 
 
