@@ -3,7 +3,7 @@ const dataurl = require('dataurl')
 
 
 
-async function fetchTrackSource(filePath) {
+export async function fetchTrackSource(filePath) {
     console.log("filepath", filePath);
     try {
         const data = await new Promise((resolve, reject) => {
@@ -22,5 +22,3 @@ async function fetchTrackSource(filePath) {
     }
 }
 
-
-module.exports = { fetchTrackSource }

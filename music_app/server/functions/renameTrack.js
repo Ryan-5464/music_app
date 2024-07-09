@@ -2,7 +2,7 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 
 
 
-async function renameTrack(dbFilepath, trackId, newName) {
+export async function renameTrack(dbFilepath, trackId, newName) {
     console.log("trig")
     const QUERY = `
         UPDATE tracks
@@ -15,5 +15,3 @@ async function renameTrack(dbFilepath, trackId, newName) {
     await database.upload(QUERY, values)
     return null
 }
-
-module.exports = { renameTrack }

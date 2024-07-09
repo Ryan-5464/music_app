@@ -1,15 +1,16 @@
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
-const { Logger } = require("../handlers/Logger.js")
+const { log } = require("../handlers/Logger.js")
 const path = require('path');
 const scriptName = path.basename(__filename);
-const { getThisFunctionName } = require("../helpers/getThisFunctionName.js")
+const { getThisFunctionName } = require("../helpers/helpers.js")
 
 
 
-async function deleteTag(dbFilepath, trackId, tagName) {
+
+
+export async function deleteTag(dbFilepath, trackId, tagName) {
     
     try {
-        const logger = new Logger()
         const LOG_ID = '443434'
     
         const QUERY = `
@@ -21,7 +22,7 @@ async function deleteTag(dbFilepath, trackId, tagName) {
         await database.connect(dbFilepath)
         await database.upload(QUERY, values) 
 
-        logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Tag deleted successfully', "", Array.from(arguments))
+        log("info", LOG_ID, scriptName, getThisFunctionName(), 'Tag deleted successfully', "", Array.from(arguments))
     }
     catch (error) {
         console.log(error.message)
@@ -31,5 +32,3 @@ async function deleteTag(dbFilepath, trackId, tagName) {
 
 
 }
-
-module.exports = { deleteTag }

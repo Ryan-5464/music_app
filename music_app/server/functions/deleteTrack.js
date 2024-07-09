@@ -1,19 +1,16 @@
-const { Logger } = require("../handlers/Logger.js")
+const { log } = require("../handlers/Logger.js")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
-const { FileHandler } = require("../handlers/FileHandler.js");
+const { deleteFile } = require("../handlers/FileHandler.js");
 const config = require("../../config.json")
 const path = require('path');
 const scriptName = path.basename(__filename);
-const { getThisFunctionName } = require("../helpers/getThisFunctionName.js")
-
-
-
-const logger = new Logger()
+const { getThisFunctionName } = require("../helpers/helpers.js")
 
 
 
 
-async function deleteTrack(dbFilepath, trackId) {
+
+export async function deleteTrack(dbFilepath, trackId) {
     const LOG_ID = '273783'
 
     const QUERY = `
@@ -22,7 +19,7 @@ async function deleteTrack(dbFilepath, trackId) {
     `;
 
     const file_path = config.TRACK_FILENAME.replace("[]", trackId);
-    await FileHandler.delete(file_path);
+    await deleteFile(file_path);
 
     const database = new SqliteDatabaseHandler()
     await database.connect(dbFilepath)
@@ -30,10 +27,8 @@ async function deleteTrack(dbFilepath, trackId) {
     await database.upload(QUERY, values)
     await database.disconnect()
 
-    logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Track deleted successfully', "", Array.from(arguments))
+    log("info", LOG_ID, scriptName, getThisFunctionName(), 'Track deleted successfully', "", Array.from(arguments))
 
 }
 
 
-
-module.exports = { deleteTrack }

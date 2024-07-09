@@ -1,9 +1,9 @@
 // if debug
 const { LOG_LEVEL } = require('../../config.json');
-const { Logger } = require("./Logger.js")
+const { log } = require("./Logger.js")
 const path = require('path');
 const scriptName = path.basename(__filename);
-const { getThisFunctionName } = require("../helpers/getThisFunctionName.js")
+const { getThisFunctionName } = require("../helpers/helpers.js")
 
 
 let sqlite3
@@ -15,11 +15,10 @@ if (LOG_LEVEL === 0) {
 }
 
 
-let logger = new Logger()
 
 
 
-class SqliteDatabaseHandler {
+export class SqliteDatabaseHandler {
 
 
 
@@ -44,12 +43,12 @@ class SqliteDatabaseHandler {
                 }) 
 
             })
-            logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Connected to database', this.name, Array.from(arguments))
+            log("info", LOG_ID, scriptName, getThisFunctionName(), 'Connected to database', this.name, Array.from(arguments))
 
         }
         
         catch (error) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
         }
 
     }
@@ -61,7 +60,7 @@ class SqliteDatabaseHandler {
         const LOG_ID = '663634'
         
         if (!this.db) {
-            logger.log("warning", LOG_ID, scriptName, getThisFunctionName(), 'No database to close', this.name, Array.from(arguments))
+            log("warning", LOG_ID, scriptName, getThisFunctionName(), 'No database to close', this.name, Array.from(arguments))
             return
         }
 
@@ -78,12 +77,12 @@ class SqliteDatabaseHandler {
                 })
             })
             this.db = null
-            logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Database closed successfully', this.name, Array.from(arguments))
+            log("info", LOG_ID, scriptName, getThisFunctionName(), 'Database closed successfully', this.name, Array.from(arguments))
 
         }
 
         catch (error) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
         }
 
     }
@@ -95,7 +94,7 @@ class SqliteDatabaseHandler {
         const LOG_ID = '019292'
 
         if (!this.db) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), 'Unable to execute query, not connected to database', this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), 'Unable to execute query, not connected to database', this.name, Array.from(arguments))
             return
         }
 
@@ -111,12 +110,12 @@ class SqliteDatabaseHandler {
                     }
                 })
             })
-            logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Query executed successfully', this.name, Array.from(arguments))
+            log("info", LOG_ID, scriptName, getThisFunctionName(), 'Query executed successfully', this.name, Array.from(arguments))
 
         }
 
         catch (error) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
         }
 
     }
@@ -128,7 +127,7 @@ class SqliteDatabaseHandler {
         const LOG_ID = '624564'
 
         if (!this.db) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), 'Unable to upload, not connected to database', this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), 'Unable to upload, not connected to database', this.name, Array.from(arguments))
             return
         }
 
@@ -148,12 +147,12 @@ class SqliteDatabaseHandler {
                     }
                 })
             })
-            logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Data uploaded to database succesfully', this.name, Array.from(arguments))
+            log("info", LOG_ID, scriptName, getThisFunctionName(), 'Data uploaded to database succesfully', this.name, Array.from(arguments))
             return true
         }
     
         catch (error) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
         }
         
     }
@@ -165,7 +164,7 @@ class SqliteDatabaseHandler {
         const LOG_ID = '928482'
 
         if (!this.db) {
-            logger.log("error", LOG_ID, scriptName, getThisFunctionName(), 'Unable to upload, not connected to database', this.name, Array.from(arguments))
+            log("error", LOG_ID, scriptName, getThisFunctionName(), 'Unable to upload, not connected to database', this.name, Array.from(arguments))
             return
         }
 
@@ -183,13 +182,13 @@ class SqliteDatabaseHandler {
                         }
                     })
                 })
-                logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Data succesfully retrieved', this.name, Array.from(arguments))
+                log("info", LOG_ID, scriptName, getThisFunctionName(), 'Data succesfully retrieved', this.name, Array.from(arguments))
                 return data
 
             }
             
             catch (error) {
-                logger.log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
+                log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
             }
 
         }
@@ -208,13 +207,13 @@ class SqliteDatabaseHandler {
                         }
                     })
                 })
-                logger.log("info", LOG_ID, scriptName, getThisFunctionName(), 'Data succesfully retrieved', this.name, Array.from(arguments))
+                log("info", LOG_ID, scriptName, getThisFunctionName(), 'Data succesfully retrieved', this.name, Array.from(arguments))
                 return data
             
             }
 
             catch (error) {
-                logger.log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
+                log("error", LOG_ID, scriptName, getThisFunctionName(), error.message, this.name, Array.from(arguments))
             }
             
         }
@@ -225,5 +224,3 @@ class SqliteDatabaseHandler {
 
 
 
-
-module.exports = { SqliteDatabaseHandler }

@@ -3,8 +3,8 @@ const path = require('node:path')
 const config = require('./config.json');
 
 
-const { TrackTagFilter } = require("./server/handlers/TrackTagFilter.js")
-const { DbInitializer } = require("./server/handlers/DbInitializer.js")
+const { fetchTagFilteredTracks } = require("./server/functions/fetchTagFilteredTracks.js")
+const { initializeDb } = require("./server/functions/initializeDb.js")
 const { downloadAudio } = require("./server/functions/downloadAudio.js")
 const { deleteTrack } = require("./server/functions/deleteTrack.js")
 const { getTags, getAllTags } = require("./server/functions/getTags.js")
@@ -47,7 +47,7 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     
-    DbInitializer.initializeDb(config.DB_FILEPATH)
+    initializeDb(config.DB_FILEPATH)
 
 
     ipcMain.on('get-track-by-id--send', (event, data) => {
@@ -86,9 +86,7 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('fetch-tracks-by-tag--send', (event, data) => {
-        const trackTagFilter = new TrackTagFilter()
-        trackTagFilter.fetchTracksByTag(config.DB_FILEPATH, data.tags, data.anyButtonActive).then((tracks) => {
-            console.log("TRATTERATV", tracks)
+        fetchTagFilteredTracks(config.DB_FILEPATH, data.tags, data.anyButtonActive).then((tracks) => {
             event.sender.send('fetch-tracks-by-tag--receive', tracks)
         })
     })

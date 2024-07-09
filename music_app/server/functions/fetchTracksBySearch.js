@@ -2,7 +2,7 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 
 
 
-async function fetchTracksBySearch(dbFilepath, searchString) {
+export async function fetchTracksBySearch(dbFilepath, searchString) {
 
     let QUERY = `
         SELECT * FROM tracks WHERE title LIKE ?
@@ -26,5 +26,3 @@ async function fetchTracksBySearch(dbFilepath, searchString) {
     return tracks
 }
 
-
-module.exports = { fetchTracksBySearch }
