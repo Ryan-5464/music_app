@@ -28,31 +28,6 @@ function createButton(id=null, classes=[], attributes={}, imgSrc=null, width=nul
 
 
 
-function createHorizontalLine(id) {
-    const horizontalLine = document.createElement("div")
-    horizontalLine.id = id
-    horizontalLine.classList.add("glowing-horizontal-line")
-    return horizontalLine
-}
-
-
-
-function timeoutText(elementId, delay) {
-    const element = document.getElementById(elementId)
-    setTimeout(() => {
-        element.textContent = ''
-    }, delay)
-}
-
-
-
-// function getActiveTrackId() {
-//     const elements = document.getElementsByClassName("active-track")
-//     const activeTrack = elements[0]
-//     const activeTrackId = activeTrack.getAttribute("data-track-id")
-//     return activeTrackId
-// }
-
 
 
 function format(duration) {

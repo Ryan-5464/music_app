@@ -1,33 +1,60 @@
-export class ShowHideButtons {
 
-    static create() {
-        const container = ShowHideButtons._addContainer()
-        container.appendChild(ShowHideButtons._addShowHideButton())
-        container.appendChild(ShowHideButtons._addDownloadButton())
-        container.appendChild(ShowHideButtons._addTagFilterButton())
-        container.appendChild(ShowHideButtons._addSearchButton())
-        return container
-    }
 
-    static _addContainer() {
-        const container = document.createElement("div")
-        container.id = "sh-button-container"
-        return container
-    }
 
-    static _addShowHideButton() {
-        const button = createButton(`show-hide-button`, ["sh"], {}, "./images/visible-48.png", 24, 24)
-        button.addEventListener("click", () => {
+
+
+export function createShowHideButtonsElement() {
+
+    const container = createContainer()
+    container.appendChild(createShowHideAllButton())
+    container.appendChild(createDownloadBarButton())
+    container.appendChild(createTagFilterButton())
+    container.appendChild(createSearchFilterButton())
+    container.appendChild(createTagsListButton())
+    return container
+}
+
+
+
+
+
+function createContainer() {
+
+    const container = document.createElement("div")
+    container.id = "sh-button-container"
+    return container
+}
+
+
+
+
+
+function createShowHideAllButton() {
+
+    const button = createButton(`show-hide-button`, ["sh"], {}, "./images/visible-48.png", 24, 24)
+    
+    button.addEventListener("click", 
+        () => {
+
             button.classList.toggle("sh")
             button.classList.toggle("sh-active")
             showHideAll()
-        })
-        return button
-    }
+        }
+    )
+    return button
+}
 
-    static _addDownloadButton() {
-        const button = createButton(`sh-download-button`, ["sh","sh-active", "sh-btn"], {}, "./images/download-2-32.png", 24, 24)
-        button.addEventListener("click", () => {
+
+
+
+
+function createDownloadBarButton() {
+
+    const button = createButton(`sh-download-button`, ["sh","sh-active", "sh-btn"], {}, "./images/download-2-32.png", 24, 24)
+    
+    button.addEventListener("click", 
+        () => {
+
             removeActive()
             button.classList.add("sh-active")
             const downloadContainer = document.getElementById("download-bar-container")
@@ -39,13 +66,21 @@ export class ShowHideButtons {
             tagFilterContainer.classList.remove("visible")
             searchFilterContainer.classList.add("hidden")
             searchFilterContainer.classList.remove("visible")
-        })
-        return button
-    }
+        }
+    )
+    return button
+}
 
-    static _addTagFilterButton() {
-        const button = createButton(`sh-tag-button`, ["sh", "sh-btn"], {}, "./images/tag-5-32.png", 24, 24)
-        button.addEventListener("click", () => {
+
+
+
+
+function createTagFilterButton() {
+
+    const button = createButton(`sh-tag-button`, ["sh", "sh-btn"], {}, "./images/tag-5-32.png", 24, 24)
+    
+    button.addEventListener("click", 
+        () => {
             removeActive()
             button.classList.add("sh-active")
             const downloadContainer = document.getElementById("download-bar-container")
@@ -57,13 +92,22 @@ export class ShowHideButtons {
             tagFilterContainer.classList.add("visible")
             searchFilterContainer.classList.add("hidden")
             searchFilterContainer.classList.remove("visible")
-        })
-        return button
-    }
+        }
+    )
+    return button
+}
 
-    static _addSearchButton() {
-        const button = createButton(`sh-search-button`, ["sh", "sh-btn"], {}, "./images/search-4-32.png", 24, 24)
-        button.addEventListener("click", () => {
+
+
+
+
+function createSearchFilterButton() {
+
+    const button = createButton(`sh-search-button`, ["sh", "sh-btn"], {}, "./images/search-4-32.png", 24, 24)
+    
+    button.addEventListener("click", 
+        () => {
+
             removeActive()
             button.classList.add("sh-active")
             const downloadContainer = document.getElementById("download-bar-container")
@@ -75,15 +119,43 @@ export class ShowHideButtons {
             tagFilterContainer.classList.remove("visible")
             searchFilterContainer.classList.remove("hidden")
             searchFilterContainer.classList.add("visible")
-        })
-        return button
-    }
-
+        }
+    )
+    return button
 }
 
 
 
+
+
+function createTagsListButton() {
+
+    const button = createButton(`sh-tags-list-button`, ["sh", "sh-btn"], {}, "./images/list-2-32.png", 24, 24)
+    
+    button.addEventListener("click", 
+        () => {
+
+            const tagsList = document.getElementById("tags-list-container")
+            if (tagsList.classList.contains("visible")) {
+                tagsList.classList.remove("visible")
+                tagsList.classList.add("hidden")
+                return
+            }
+            if (tagsList.classList.contains("hidden")) {
+                tagsList.classList.remove("hidden")
+                tagsList.classList.add("visible")
+            }
+        }
+    )
+    return button
+}
+
+
+
+
+
 function removeActive() {
+
     const buttons = document.getElementsByClassName("sh-btn")
     for (const button of buttons) {
         button.classList.remove("sh-active")
@@ -92,7 +164,10 @@ function removeActive() {
 
 
 
+
+
 function showHideAll() {
+
     const button = document.getElementById("show-hide-button")
     if (button.classList.contains("sh-active")) {
         hide()
@@ -102,13 +177,18 @@ function showHideAll() {
 }
 
 
+
+
+
 function show() {
+
     const showHideButtons = document.getElementsByClassName("sh-btn")
     const containers = document.getElementsByClassName("show-hide-element-container")
     const downloadButton = document.getElementById("sh-download-button")
     const tagFilterButton = document.getElementById("sh-tag-button")
     const searchFilterButton = document.getElementById("sh-search-button")
     const button = document.getElementById("show-hide-button")
+
     if (button.classList.contains("sh-active")) {
         for (const btn of showHideButtons) {
             btn.classList.remove("visible")
@@ -140,10 +220,15 @@ function show() {
 }
 
 
+
+
+
 function hide() {
+
     const showHideButtons = document.getElementsByClassName("sh-btn")
     const containers = document.getElementsByClassName("show-hide-element-container")
     const button = document.getElementById("show-hide-button")
+    
     if (button.classList.contains("sh-active")) {
         for (const btn of showHideButtons) {
             btn.classList.remove("visible")

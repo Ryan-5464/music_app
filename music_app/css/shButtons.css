@@ -76,4 +76,10 @@
     transform: translate(-50%, -50%);
 }
 
+#sh-tags-list-button {
+    left: 4%;
+    position: fixed;
+    top: 93%;
+    transform: translate(-50%, -50%);
+}
 

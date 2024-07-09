@@ -1,3 +1,4 @@
+import { dataController } from "../../renderer.js"
 
 
 
@@ -172,11 +173,12 @@ function addRenameTrackTitleInputBoxEventListener(input, trackId) {
                 return
             }
 
-            const track = dataController.retreiveTrackData(trackId)
+            const trackData = dataController.retreiveTrackData(trackId)
+            const track = document.getElementById(`track-${trackId}`)
             const trackTitle = track.children[0].children[1]
             const newName = input.value
             if (newName === '') {
-                trackTitle.innerHTML = track.title
+                trackTitle.innerHTML = trackData.title
                 return
             }
             await dataController.renameTrack(trackId, newName)

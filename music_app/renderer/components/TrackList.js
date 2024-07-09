@@ -113,10 +113,9 @@ function addTrackListEventListener(trackList) {
 function handleTrackTagsListButton(event) {
 
     const trackId = event.target.getAttribute("data-track-id")
-    // if (closeOpenTrackTagList(trackId)) {
-    //     return
-    // }
-    closeOpenTrackTagLists()
+    if (closeOpenTrackTagList(trackId)) {
+        return
+    }
     openTrackTagList(trackId)
 }
 
@@ -124,29 +123,16 @@ function handleTrackTagsListButton(event) {
 
 
 
-// function closeOpenTrackTagList(trackId) {
+function closeOpenTrackTagList(trackId) {
 
-//     const tagListContainer = document.getElementById(`taglist-container-${trackId}`)
-//     if (tagListContainer) {
-//         tagListContainer.remove()
-//         const track = document.getElementById(`track-${trackId}`)
-//         track.classList.remove("track-open-taglist")
-//         return true
-//     }
-//     return false
-// }
-
-
-
-
-
-function closeOpenTrackTagLists() {
-
-    const tagListContainers = document.getElementsByClassName("taglist-container")
-    for (const container of tagListContainers) {
-        container.parentElement.classList.remove("track-open-taglist")
-        container.remove()
+    const tagListContainer = document.getElementById(`taglist-container-${trackId}`)
+    if (tagListContainer) {
+        tagListContainer.remove()
+        const track = document.getElementById(`track-${trackId}`)
+        track.classList.remove("track-open-taglist")
+        return true
     }
+    return false
 }
 
 
@@ -166,13 +152,16 @@ async function openTrackTagList(trackId) {
 
 function handleTrackPlayButton(event) {
 
-    const button = event.target
-    const trackId = button.getAttribute("data-track-id")
-    if (button.classList.contains("now-playing")) {
+    const trackId = event.target.getAttribute("data-track-id")
+    const track = document.getElementById(`track-${trackId}`)
+    const tracks = document.getElementsByClassName("track")
+    if (track.classList.contains("track-now-playing")) {
         replayCurrentlyPlayingTrack(trackId)
     } else {
-        button.classList.add("now-playing")
-        button.parentElement.parentElement.classList.add("track-now-playing")
+        for (const _track of tracks) {
+            _track.classList.remove("track-now-playing")
+        }
+        track.classList.add("track-now-playing")
         playTrack(trackId)
     }
 }
@@ -199,11 +188,6 @@ async function playTrack(trackId) {
     const audioElement = document.getElementById("audio-element")
     audioElement.src = await dataController.fetchAudioSource(trackId) 
     audioElement.play()
-    const playButtons = document.getElementsByClassName("track-play-button")
-    for (const playButton of playButtons) {
-        playButton.classList.remove("now-playing")
-        playButton.parentElement.parentElement.classList.remove("track-now-playing")
-    }
     const pauseButton = document.getElementById("player-pause-button")
     pauseButton.children[0].src = "./images/pause-32.png"
 }
@@ -213,14 +197,14 @@ async function playTrack(trackId) {
 
 
 function handleTrackDeleteButton(event) {
-
+    
+    const button = event.target
     const trackId = button.getAttribute("data-track-id")
     const confirm = createButton(`confirm-delete-button-${trackId}`, ["track-button", "confirm-delete-button"], {"data-track-id": trackId}, "./images/checkmark-32.png", 18, 18)
     const cancel = createButton(`cancel-delete-button-${trackId}`, ["track-button", "cancel-delete-button"], {"data-track-id": trackId}, "./images/delete-2-32.png", 18, 18)
     const deleteButtonContainer = document.getElementById(`delete-button-container-${trackId}`)
-    deleteButtonContainer.appendChild(confirm)
     deleteButtonContainer.appendChild(cancel)
-    const button = event.target
+    deleteButtonContainer.appendChild(confirm)
     button.remove()
 }
 

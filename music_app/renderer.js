@@ -1,14 +1,12 @@
 import { DataController } from "./renderer/data/DataController.js"
-import { ShowHideButtons } from "./renderer/components/ShowHideButtons.js"
 import { Channels } from "./renderer/data/Channels.js"
-
 import { createDownloadBarElement, addDownloadBarEventListeners } from "./renderer/components/DownloadBar.js"
 import { createSearchFilterElement, addSearchFilterEventListeners } from "./renderer/components/SearchFilter.js"
 import { createTagFilterElement, addTagFilterEventListeners } from "./renderer/components/TagFilter.js"
 import { createTagsListElement, updateTagsList } from "./renderer/components/TagsList.js"
 import { createTrackListElement } from "./renderer/components/TrackList.js"
 import { createAudioPlayerElement } from "./renderer/components/Player.js"
-
+import { createShowHideButtonsElement } from "./renderer/components/ShowHideButtons.js"
 
 
 
@@ -41,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     const body = document.getElementById("body")
-    body.appendChild(ShowHideButtons.create())
+    body.appendChild(createShowHideButtonsElement())
     body.appendChild(createTrackListElement())
     body.appendChild(createSearchFilterElement())
     body.appendChild(createTagFilterElement())
