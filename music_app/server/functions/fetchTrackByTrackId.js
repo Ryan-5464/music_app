@@ -2,7 +2,7 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 
 
 
-export async function fetchTrackByTrackId(dbFilepath, trackId) {
+async function fetchTrackByTrackId(dbFilepath, trackId) {
 
 
     let QUERY = `
@@ -29,3 +29,8 @@ export async function fetchTrackByTrackId(dbFilepath, trackId) {
     return track
 }
 
+
+
+
+
+module.exports = { fetchTrackByTrackId }

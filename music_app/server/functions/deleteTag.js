@@ -8,7 +8,7 @@ const { getThisFunctionName } = require("../helpers/helpers.js")
 
 
 
-export async function deleteTag(dbFilepath, trackId, tagName) {
+async function deleteTag(dbFilepath, trackId, tagName) {
     
     try {
         const LOG_ID = '443434'
@@ -27,8 +27,10 @@ export async function deleteTag(dbFilepath, trackId, tagName) {
     catch (error) {
         console.log(error.message)
     }
-
-
-
-
 }
+
+
+
+
+
+module.exports = { deleteTag }

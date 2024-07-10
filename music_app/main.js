@@ -18,8 +18,15 @@ const { renameTrack } = require("./server/functions/renameTrack.js")
 
 
 
+
+
+let mainWindow;
+
+
+
+
 const createWindow = () => {
-    const mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 1400,
         height: 788,
         frame: false,
@@ -42,6 +49,8 @@ const createWindow = () => {
         mainWindow.close()
     })
 }
+
+
 
 
 
@@ -157,6 +166,8 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 })
+
+
 
 
 

@@ -1,10 +1,10 @@
-const { SqliteDatabaseHandler } = require("./SqliteDatabaseHandler.js")
+const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
 
 
 
 
 
-export async function fetchTagFilteredTracks(dbFilepath, tagsList, anyButtonActive) {
+async function fetchTagFilteredTracks(dbFilepath, tagsList, anyButtonActive) {
 
     const database = new SqliteDatabaseHandler()
     await database.connect(dbFilepath)
@@ -17,19 +17,24 @@ export async function fetchTagFilteredTracks(dbFilepath, tagsList, anyButtonActi
         return tracks
     }
     if (anyButtonActive) {
-        tracks = await fetchTracksAnyTagFilter(tagsList)
+        tracks = await fetchTracksAnyTagFilter(database, tagsList)
         tracks = await fetchTags(database, tracks)
         await database.disconnect()
         return tracks
     }
     else {
-        tracks = await fetchTracksAllTagFilter(tagsList)
+        tracks = await fetchTracksAllTagFilter(database, tagsList)
         tracks = await fetchTags(database, tracks)
         await database.disconnect()
         return tracks
     }
 }
 
+
+
+
+
+module.exports = { fetchTagFilteredTracks }
 
 
 

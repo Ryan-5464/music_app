@@ -1,9 +1,10 @@
 {
     "LOG_LEVEL": 0,
     "DB_FILEPATH": "./database/audio_files.sqlite",
-    "TRACK_FILENAME": "./tracks/[].mp3",
+    "TRACK_FILENAME": "./tracks/[].mp4",
     "ACTIVE_LOGS": [
-        "283743"
+        "283743",
+        "038238"
     ],
     "USER_PERMISSIONS": true
 }

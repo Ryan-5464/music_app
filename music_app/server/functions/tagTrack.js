@@ -2,7 +2,7 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 
 
 
-export async function tagTrack(dbFilepath, trackId, tag) {
+async function tagTrack(dbFilepath, trackId, tag) {
     const QUERY = `
         INSERT INTO tags (track_id, tag) VALUES (?, ?);
     `
@@ -11,3 +11,9 @@ export async function tagTrack(dbFilepath, trackId, tag) {
     await database.connect(dbFilepath)
     await database.upload(QUERY, values)
 }
+
+
+
+
+
+module.exports = { tagTrack }

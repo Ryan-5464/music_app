@@ -18,7 +18,7 @@ if (LOG_LEVEL === 0) {
 
 
 
-export class SqliteDatabaseHandler {
+class SqliteDatabaseHandler {
 
 
 
@@ -222,5 +222,10 @@ export class SqliteDatabaseHandler {
 
 }
 
+
+
+
+
+module.exports = { SqliteDatabaseHandler }
 
 

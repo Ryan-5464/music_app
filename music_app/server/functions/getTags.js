@@ -3,7 +3,7 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 
 
 
-export async function getTags(dbFilepath, trackId) {
+async function getTags(dbFilepath, trackId) {
     const QUERY = `
         SELECT tag FROM tags 
         WHERE track_id = ?;
@@ -16,7 +16,7 @@ export async function getTags(dbFilepath, trackId) {
 }
 
 
-export async function getAllTags(dbFilepath) {
+async function getAllTags(dbFilepath) {
     const QUERY = `
         SELECT DISTINCT tag FROM tags;    
     `
@@ -25,3 +25,9 @@ export async function getAllTags(dbFilepath) {
     const tags = await database.download(QUERY) 
     return tags
 }
+
+
+
+
+
+module.exports = { getTags, getAllTags }

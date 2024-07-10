@@ -10,7 +10,7 @@ const { getThisFunctionName } = require("../helpers/helpers.js")
 
 
 
-export async function deleteTrack(dbFilepath, trackId) {
+async function deleteTrack(dbFilepath, trackId) {
     const LOG_ID = '273783'
 
     const QUERY = `
@@ -31,4 +31,9 @@ export async function deleteTrack(dbFilepath, trackId) {
 
 }
 
+
+
+
+
+module.exports = { deleteTrack }
 

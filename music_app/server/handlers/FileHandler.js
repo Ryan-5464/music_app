@@ -9,7 +9,7 @@ const fsp = require('fs').promises;
 
 
 
-export async function deleteFile(filePath) {
+async function deleteFile(filePath) {
     const LOG_ID = '123132'
     try {
         await fsp.unlink(filePath)
@@ -24,9 +24,15 @@ export async function deleteFile(filePath) {
 
 
 
-export function fileSizeInBytes(localFilePath) {
+function fileSizeInBytes(localFilePath) {
     const LOG_ID = '746374'
     const fileSizeB = fs.statSync(localFilePath);
     log("debug", LOG_ID, scriptName, getThisFunctionName(), '', "", Array.from(arguments))
     return fileSizeB
 }
+
+
+
+
+
+module.exports = { deleteFile, fileSizeInBytes }

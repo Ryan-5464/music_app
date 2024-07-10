@@ -10,7 +10,7 @@ const config = require('../../config.json');
 
 
 
-export function log(level, logId, filename, func, message, cls=null, args=null) {
+function log(level, logId, filename, func, message, cls=null, args=null) {
     
     if (!config.ACTIVE_LOGS.includes("ALL") && !config.ACTIVE_LOGS.includes(logId)) {
         return
@@ -40,6 +40,12 @@ export function log(level, logId, filename, func, message, cls=null, args=null) 
         return
     }
 }
+
+
+
+
+
+module.exports = { log }
 
 
 

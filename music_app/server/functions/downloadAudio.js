@@ -7,12 +7,14 @@ const fs = require('fs');
 const config = require("../../config.json")
 const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js")
 const { deleteFile, fileSizeInBytes } = require("../handlers/FileHandler.js")
+const { Readable } = require('stream');
+const { finished } = require('stream/promises');
 
 
 
 
 
-export async function downloadAudio(dbFilepath, url) {
+async function downloadAudio(dbFilepath, url) {
 
     const LOG_ID = '478382'
     const success = await download(dbFilepath, url)
@@ -22,6 +24,12 @@ export async function downloadAudio(dbFilepath, url) {
     }
     return success
 }
+
+
+
+
+
+module.exports = { downloadAudio }
 
 
 
@@ -37,13 +45,14 @@ async function download(dbFilepath, url) {
         return 1
     }   
 
-    const metadata = await requestTracks(url);
+    let response = await requestInfo(url);
+    const metadata = response.metadata
     if (!metadata) {
         log("error", LOGID, scriptName, getThisFunctionName(), 'Failed to download track', "", Array.from(arguments))
         return null
     }
   
-    const downloadSuccess = await downloadFile(url, metadata.localPath);
+    downloadSuccess = await downloadFile(response.info, metadata.localPath);
     if (!downloadSuccess) {
         log("error", LOGID, scriptName, getThisFunctionName(), 'Failed to download track', "", Array.from(arguments))
         return null
@@ -88,15 +97,16 @@ async function checkIfAudioFileExists(dbFilepath, url) {
 
 
 
-async function requestTracks(url) {
+async function requestInfo(url) {
 
     const LOGID = '192892'
 
     try {
-
-        const info = await ytdl.getInfo(url)
-        console.log(info)
-        console.log("info", info.videoDetails.videoId)
+        const trackId  = getYouTubeVideoId(url)
+        if (!trackId) {
+            return
+        }
+        const info = await getInfo(trackId)
         const metadata = {
             "trackId": info.videoDetails.videoId,
             "url": url,
@@ -108,8 +118,9 @@ async function requestTracks(url) {
         const message = `{'trackId': ${metadata.trackId}, 'url': ${metadata.url}, 'duration': ${metadata.duration}, 'localPath': ${metadata.localPath}, 'title': ${metadata.title}}`
         log("debug", LOGID, scriptName, getThisFunctionName(), message, "", Array.from(arguments))
         log("info", LOGID, scriptName, getThisFunctionName(), "Metadata retrieved", "", Array.from(arguments))
-
-        return metadata
+        const arr = {metadata, info}
+        console.log(arr)
+        return arr
 
     }
     catch (error) {
@@ -118,38 +129,6 @@ async function requestTracks(url) {
         return
 
     }
-}
-
-
-
-
-
-async function downloadFile(url, localPath) {
-
-    const LOGID = '038238'
-
-
-    try {
-
-        const video = ytdl(url,{ filter: 'audioonly', format: 'mp3' })
-        const output_stream = fs.createWriteStream(localPath)
-    
-        await new Promise((resolve, reject) => {
-            output_stream.on('finish', resolve)
-            output_stream.on('error', reject)
-            video.pipe(output_stream)
-        });
-        log("debug", LOGID, scriptName, getThisFunctionName(), 'Audio downloaded successfully', "", Array.from(arguments))
-        return true
-
-    }
-
-    catch (error) {
-
-        log("error", LOGID, scriptName, getThisFunctionName(), error.message, "", Array.from(arguments))
-        log("info", LOGID, scriptName, getThisFunctionName(), `Unable to download file from url --> ${url}`, "", Array.from(arguments))
-    }
-  
 }
 
 
@@ -191,3 +170,106 @@ async function uploadMetadata(dbFilepath, trackId, url, duration, localPath, tit
     await database.disconnect()
     return true
 }
+
+
+
+
+
+async function getInfo(videoId) {
+    const apiKey = 'AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc'
+    const headers = {
+      'X-YouTube-Client-Name': '5',
+      'X-YouTube-Client-Version': '19.09.3',
+      Origin: 'https://www.youtube.com',
+      'User-Agent': 'com.google.ios.youtube/19.09.3 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)',
+      'content-type': 'application/json'
+    }
+  
+    const b = {
+      context: {
+        client: {
+          clientName: 'IOS',
+          clientVersion: '19.09.3',
+          deviceModel: 'iPhone14,3',
+          userAgent: 'com.google.ios.youtube/19.09.3 (iPhone14,3; U; CPU iOS 15_6 like Mac OS X)',
+          hl: 'en',
+          timeZone: 'UTC',
+          utcOffsetMinutes: 0
+        }
+      },
+      videoId,
+      playbackContext: { contentPlaybackContext: { html5Preference: 'HTML5_PREF_WANTS' } },
+      contentCheckOk: true,
+      racyCheckOk: true
+    }
+  
+    const res = await fetch(`https://www.youtube.com/youtubei/v1/player?key${apiKey}&prettyPrint=false`, { method: 'POST', body: JSON.stringify(b), headers });
+    // throw an error when failed to get info
+    if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    const json = await res.json();
+    return json;
+  }
+  
+
+
+
+
+  async function downloadFile(info, localPath) {
+
+    if(info.playabilityStatus.status !== 'OK') throw new Error(info.playabilityStatus.reason);
+  
+    const formats = info.streamingData.adaptiveFormats;
+    console.log(formats)
+    let selectedFormat = formats[6];
+    const ext = selectedFormat.mimeType.match(/^\w+\/(\w+)/)[1];
+    console.log(`Downloading ${localPath}`);
+    const writer = fs.createWriteStream(localPath);
+    const res = await fetch(selectedFormat.url);
+
+    if(!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+
+    const HIGH_WATER_MARK = 256 * 1024; // 256 KB
+    const readable = Readable.fromWeb(res.body, { highWaterMark: HIGH_WATER_MARK });
+
+    // Handle stream events to diagnose and optimize
+    let i = 0; 
+    readable.on('data', (chunk) => {
+        console.log(`${i} - Received ${chunk.length} bytes of data. [${new Date().toISOString()}]`);
+        i += 1
+    });
+  
+    readable.on('end', () => {
+      console.log('Stream ended.');
+    });
+  
+    readable.on('error', (err) => {
+      console.error('Error in readable stream:', err);
+    });
+  
+    writer.on('finish', () => {
+      console.log('All data has been written.');
+    });
+  
+    writer.on('error', (err) => {
+      console.error('Error in writable stream:', err);
+    });
+
+    try {
+        console.log(res.body)
+        await finished(readable.pipe(writer));
+        console.log(`Downloaded ${localPath}`);
+        return true
+    } catch(err) {
+        return false
+    }
+  }
+
+
+
+
+
+  function getYouTubeVideoId(url) {
+    const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  }

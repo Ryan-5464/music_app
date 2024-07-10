@@ -2,13 +2,13 @@ const { SqliteDatabaseHandler } = require("../handlers/SqliteDatabaseHandler.js"
 const { log } = require("../handlers/Logger.js")
 const path = require('path');
 const scriptName = path.basename(__filename);
-const { getThisFunctionName } = require("../helpers/getThisFunctionName.js")
+const { getThisFunctionName } = require("../helpers/helpers.js")
 
 
 
 
 
-export async function initializeDb(dbFilepath) {
+async function initializeDb(dbFilepath) {
 
     const LOGID = "454353"
 
@@ -33,6 +33,11 @@ export async function initializeDb(dbFilepath) {
 
 }
 
+
+
+
+
+module.exports = { initializeDb }
 
 
 
